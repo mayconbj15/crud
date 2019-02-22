@@ -5,10 +5,13 @@ Criar o seu primeiro CRUD (Create, Read, Update, Delete) em um arquivo.
 
 Vocês devem implementar um sistema  para fazer inclusão, alteração, exclusão e busca de produtos em um arquivo indexado. Os atributos básicos dessa entidade são:
 
-**idProduto
-Nome do Produto
-Descrição
-Preço**
+- idProduto
+
+- Nome do Produto
+
+- Descrição
+
+- Preço
 
 Acrescente pelo menos mais dois atributos que o seu grupo ache interessante. 
 
