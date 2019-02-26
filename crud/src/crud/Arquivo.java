@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+import java.util.ArrayList;
+
 //colocar no array list e fazer o index para buscar por nome 
 
 public class Arquivo {
@@ -23,7 +25,7 @@ public class Arquivo {
 	public void setLastID(short lastID) {
 		this.lastID = lastID;
 	}
-
+	
 	public void writeObject(Produto produto) throws IOException {
 		try {
 			accessFile = new RandomAccessFile(this.name, "rw");
@@ -48,9 +50,15 @@ public class Arquivo {
 			e.printStackTrace();
 		}
 	}
-
-	public Produto readObject() throws IOException{
-        Produto produto = new Produto();
+	
+	/**
+	 * Método para listar todo o arquivo [EM CONSTRUÇÃO]
+	 * @return ArrayList
+	 * @throws IOException
+	 */
+	public ArrayList<Produto> list() throws IOException{
+        ArrayList<Produto> listProdutos = new ArrayList<Produto>();
+		Produto produto = new Produto();
         accessFile = new RandomAccessFile(this.name, "rw");
 
         int gap = 0;
@@ -60,20 +68,19 @@ public class Arquivo {
         accessFile.seek(2);
 
         while(accessFile.getFilePointer() < accessFile.length()){
-            produto.setId(accessFile.readShort()); 
-            gap = accessFile.readInt(); //usar essa informaÃ§Ã£o para criar o vetor de bytes
-            //System.out.println("Gap: " + gap);
-            produto.nome = accessFile.readUTF();
-            produto.descricao = accessFile.readUTF();
-            produto.preco = accessFile.readFloat();
+            short id = accessFile.readShort(); 
+            gap = accessFile.readInt();
+            byte[] byteArray = new byte[gap];
+            
+            produto.fromByteArray(byteArray, id);
+            listProdutos.add(produto);
 
-            //System.out.println("Pos: " + accessFile.getFilePointer());
-            //accessFile.seek(accessFile.getFilePointer() + gap);
-          
+            System.out.println("Pos: " + accessFile.getFilePointer());
+            accessFile.seek(accessFile.getFilePointer() + gap);
         }
        
 
-        return produto;
+        return listProdutos;
     }
 
 	public Produto readObject(int id) {
@@ -108,6 +115,7 @@ public class Arquivo {
 
 		return produto;
 	}
+	
 	//estrutura do vetor de byte
 	// ultimo id usado - [tamanho da entidade]entidade - [id - nome+tamanho etc..]
 }
