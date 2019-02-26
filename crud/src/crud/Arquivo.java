@@ -85,7 +85,6 @@ public class Arquivo {
             accessFile.seek(accessFile.getFilePointer() + gap);
         }
        
-
         return listProdutos;
     }
 
@@ -120,5 +119,5 @@ public class Arquivo {
 	}
 	
 	//estrutura do vetor de byte
-	// ultimo id usado - [tamanho da entidade]entidade - [id - nome+tamanho etc..]
+	// ultimo id usado - [id] - [lapide] - [tamanho da entidade] -> entidade
 }
