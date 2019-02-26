@@ -31,7 +31,7 @@ Como índice, vocês podem usar uma tabela hash extensível (recomendada) ou uma
   - [ ] Criar um novo vetor de bytes com os dados do produto (usando o método toByteArray() do produto)
   - [x] Mover o ponteiro para o fim do arquivo (mayconbj15)
   - [x] Armazenar esse endereço (mayconbj15)
-  - [ ] Escrever o campo lápide vazio
+  - [x] Escrever o campo lápide vazio
   - [x] Escrever o tamanho do vetor de bytes (usando o método writeInt()) (mayconbj15)
   - [x] Escrever o próprio vetor de bytes (mayconbj15)
   - [ ] Criar uma nova entrada no índice, passando o ID do produto e o seu endereço
@@ -40,7 +40,7 @@ Como índice, vocês podem usar uma tabela hash extensível (recomendada) ou uma
   - [x] Ler o ID do produto desejado
   - [ ] Buscar o endereço do produto no índice, passando o ID
   - [ ] Localizar, no arquivo de produtos, o endereço retornado
-  - [ ] Ler o lápide
+  - [x] Ler o lápide
   - [x] Ler o tamanho do vetor de bytes
   - [x] Ler o vetor de bytes
   - [ ] Se o campo lápide não estiver marcado (registro excluído), criar um novo objeto Produto vazio e carregar o vetor de bytes usando   o   seu método fromByteArray()
