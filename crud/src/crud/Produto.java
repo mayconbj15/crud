@@ -17,7 +17,7 @@ public class Produto{
     protected float preço;
 
     public Disco(){
-        this("", "", (short)-1, "", "");
+        this(-1, "", "", 0.0);
     }
 
     public Disco(String nome, String artista, short anoLancamento, String genero, String gravadora) {
