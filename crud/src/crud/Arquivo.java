@@ -29,16 +29,18 @@ public class Arquivo {
 	public void writeObject(Produto produto) throws IOException {
 		try {
 			accessFile = new RandomAccessFile(this.name, "rw");
-
+			
+			
 			produto.setId(getLastID() + 1);
 			accessFile.writeShort(produto.getId());
 			setLastID(produto.getId());
-
+			
 			byte[] byteArray = produto.setByteArray();
 
 			// go to final of file
 			accessFile.seek(accessFile.length());
 
+			accessFile.writeChar('a'); //lapide
 			accessFile.writeShort(produto.getId()); // write id
 			accessFile.writeInt(byteArray.length);
 			accessFile.write(byteArray);
@@ -68,13 +70,17 @@ public class Arquivo {
         accessFile.seek(2);
 
         while(accessFile.getFilePointer() < accessFile.length()){
-            short id = accessFile.readShort(); 
-            gap = accessFile.readInt();
-            byte[] byteArray = new byte[gap];
-            
-            produto.fromByteArray(byteArray, id);
-            listProdutos.add(produto);
-
+            if(accessFile.readChar() != '*') {
+            	short id = accessFile.readShort(); 
+                gap = accessFile.readInt();
+                byte[] byteArray = new byte[gap];
+                
+                produto.fromByteArray(byteArray, id);
+                listProdutos.add(produto);
+            } else {
+            	gap = accessFile.readInt();
+            }
+        	
             System.out.println("Pos: " + accessFile.getFilePointer());
             accessFile.seek(accessFile.getFilePointer() + gap);
         }
@@ -93,17 +99,23 @@ public class Arquivo {
 			accessFile.seek(2);
 
 			while (accessFile.getFilePointer() < accessFile.length()) {
-				short thisId = accessFile.readShort();
-				if (thisId == (short) id) {
-					byte[] byteArray = new byte[accessFile.readInt()];
-					accessFile.read(byteArray);
+				if(accessFile.readChar() != '*') {
+					short thisId = accessFile.readShort();
+					if (thisId == (short) id) {
+						byte[] byteArray = new byte[accessFile.readInt()];
+						accessFile.read(byteArray);
 
-					produto.fromByteArray(byteArray, thisId);
+						produto.fromByteArray(byteArray, thisId);
 
-					accessFile.seek(accessFile.length());
+						accessFile.seek(accessFile.length());
+					} else {
+						gap = accessFile.readInt();
+						accessFile.seek(accessFile.getFilePointer() + gap);
+					}
+					
 				} else {
-					System.out.println("Pula");
-					System.out.println("Pos: " + accessFile.getFilePointer());
+					//System.out.println("Pula");
+					//System.out.println("Pos: " + accessFile.getFilePointer());
 					gap = accessFile.readInt();
 					accessFile.seek(accessFile.getFilePointer() + gap);
 				}
@@ -117,5 +129,5 @@ public class Arquivo {
 	}
 	
 	//estrutura do vetor de byte
-	// ultimo id usado - [tamanho da entidade]entidade - [id - nome+tamanho etc..]
+	// ultimo id usado - [lapide] - [id] - [tamanho da entidade] -> entidade]
 }
