@@ -1,8 +1,6 @@
 package crud;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 
 import java.util.ArrayList;
 
@@ -22,18 +20,91 @@ public class Arquivo {
 		return this.lastID;
 	}
 
-	public void setLastID(short lastID) {
-		this.lastID = lastID;
+	private short setLastID(short lastID) {
+		return this.lastID = lastID;
+	}
+	
+	/**
+	 * Abre o arquivo da classe.
+	 * 
+	 * @return o arquivo da classe.
+	 */
+	
+	protected RandomAccessFile openFile()
+	{
+		RandomAccessFile file = null;
+		
+		try
+		{
+			file = new RandomAccessFile(name, "rw");
+			file.seek(0);
+		}
+		
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return file;
+	}
+	
+	/**
+	 * Lê o último ID usado pelo cabeçalho do arquivo.
+	 * 
+	 * Obs.: pressupõe-se que os dois primeiros bytes do arquivo são o
+	 * short que guarda o último ID usado.
+	 */
+	
+	private short readLastID()
+	{
+		RandomAccessFile file = openFile();
+		short lastID = -1;
+		
+		try
+		{
+			lastID = file.readShort();
+			file.close();
+		}
+		
+		catch (IOException IOEx) { }
+		
+		return ( lastID == -1 ? this.lastID : lastID );
+	}
+	
+	/**
+	 * Escreve {@code lastID} no cabecalho do arquivo.
+	 * 
+	 * @param lastID novo valor para o último ID
+	 * 
+	 * @return {@code lastID}
+	 */
+	
+	private short writeLastID(short lastID)
+	{
+		RandomAccessFile file = openFile();
+		
+		try
+		{
+			file.writeShort(lastID);
+			file.close();
+		}
+		
+		catch (IOException IOEx) { }
+		
+		return lastID;
 	}
 	
 	public void writeObject(Produto produto) throws IOException {
 		try {
-			accessFile = new RandomAccessFile(this.name, "rw");
+			accessFile = openFile();
 			
-			
-			produto.setId(getLastID() + 1);
-			accessFile.writeShort(produto.getId());
-			setLastID(produto.getId());
+			produto.setId( (short) (readLastID() + 1) );
+			setLastID( writeLastID( produto.getId() ) );
 			
 			byte[] byteArray = produto.setByteArray();
 
@@ -61,7 +132,7 @@ public class Arquivo {
 	public ArrayList<Produto> list() throws IOException{
         ArrayList<Produto> listProdutos = new ArrayList<Produto>();
 		Produto produto = new Produto();
-        accessFile = new RandomAccessFile(this.name, "rw");
+        accessFile = openFile();
 
         int gap = 0;
 
@@ -87,13 +158,13 @@ public class Arquivo {
        
         return listProdutos;
     }
-
+ 
 	public Produto readObject(int id) {
 		Produto produto = new Produto();
 		int gap = 0;
 
 		try {
-			accessFile = new RandomAccessFile(this.name, "rw");
+			accessFile = openFile();
 
 			accessFile.seek(2);
 
