@@ -163,13 +163,14 @@ public class Arquivo {
 		
 		return produto;
 	}
-	
+
 	/**
-	 * Método para listar todo o arquivo [EM CONSTRUÇÃO]
-	 * @return ArrayList
-	 * @throws IOException
+	 * Percorre toda a base de dados coletando as entidades.
+	 * 
+	 * @return lista com todas as entidades.
 	 */
-	public ArrayList<Produto> list() throws IOException{
+	
+	public ArrayList<Produto> list() {
         ArrayList<Produto> listProdutos = new ArrayList<Produto>();
 
 		try
@@ -189,16 +190,31 @@ public class Arquivo {
         return listProdutos;
     }
 	
+	/**
+	 * Percorre toda a base de dados procurando por uma entidade
+	 * específica que tenha o id {@code id}.
+	 * 
+	 * @param id id da entidade a ser procurada
+	 * 
+	 * @return {@code null} se a entidade não for encontrada. Caso
+	 * contrário, a entidade.
+	 */
+	
 	public Produto readObject(int id) {
 		Produto produto = null;
-
+		Produto produtoAux = null;
 		try {
 			accessFile = openFile();
 
 			accessFile.seek(2);
 
-			while (accessFile.getFilePointer() < accessFile.length()) {
-				produto = readObject(accessFile);
+			while (produto == null && accessFile.getFilePointer() < accessFile.length()) {
+				produtoAux = readObject(accessFile);
+				
+				if (produtoAux != null && produtoAux.getId() == id)
+				{
+					produto = produtoAux;
+				}
 			}
 		}
 		

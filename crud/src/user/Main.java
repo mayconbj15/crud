@@ -9,6 +9,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Main {
+	
+	public static void print(Object msg)
+	{
+		System.out.print(msg);
+	}
+	
+	public static void println(Object msg)
+	{
+		print(msg + System.lineSeparator());
+	}
+	
 	public static void main(String[] args) throws IOException {
 		File file = new File("produto.db");
 		file.delete();
@@ -24,12 +35,14 @@ public class Main {
 		arquivo.writeObject(produto1);
 		arquivo.writeObject(produto2);
 		
-		System.out.println(arquivo.readObject(2));
+		short searchedID = 1;
+		println("Procurando entidade com id = " + searchedID);
+		println(arquivo.readObject(searchedID));
 		
 		list = arquivo.list();
 		
 		for(int i=0; i<list.size(); i++) {
-			System.out.println(list.get(i));
+			println(list.get(i));
 		}
 	}
 }
