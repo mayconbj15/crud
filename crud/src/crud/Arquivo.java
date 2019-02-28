@@ -123,31 +123,6 @@ public class Arquivo {
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * Método para listar todo o arquivo [EM CONSTRUÇÃO]
-	 * @return ArrayList
-	 * @throws IOException
-	 */
-	public ArrayList<Produto> list() throws IOException{
-        ArrayList<Produto> listProdutos = new ArrayList<Produto>();
-
-		try
-		{
-			accessFile = openFile();
-			accessFile.seek(2);
-
-			while (accessFile.getFilePointer() < accessFile.length()) {
-				listProdutos.add(readObject(accessFile));
-			}
-		}
-		
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-       
-        return listProdutos;
-    }
 
 	/**
 	 * Lê um registro a partir de onde o ponteiro de {@code file} estiver e
@@ -188,6 +163,31 @@ public class Arquivo {
 		
 		return produto;
 	}
+	
+	/**
+	 * Método para listar todo o arquivo [EM CONSTRUÇÃO]
+	 * @return ArrayList
+	 * @throws IOException
+	 */
+	public ArrayList<Produto> list() throws IOException{
+        ArrayList<Produto> listProdutos = new ArrayList<Produto>();
+
+		try
+		{
+			accessFile = openFile();
+			accessFile.seek(2);
+
+			while (accessFile.getFilePointer() < accessFile.length()) {
+				listProdutos.add(readObject(accessFile));
+			}
+		}
+		
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+       
+        return listProdutos;
+    }
 	
 	public Produto readObject(int id) {
 		Produto produto = null;
