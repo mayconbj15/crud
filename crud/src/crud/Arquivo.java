@@ -71,7 +71,10 @@ public class Arquivo {
 			file.close();
 		}
 		
-		catch (IOException IOEx) { }
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 		
 		return ( lastID == -1 ? this.lastID : lastID );
 	}
@@ -94,7 +97,10 @@ public class Arquivo {
 			file.close();
 		}
 		
-		catch (IOException IOEx) { }
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 		
 		return lastID;
 	}
@@ -148,18 +154,21 @@ public class Arquivo {
 			if (lapide != '*')
 			{
 				short id = file.readShort();
-				int registerSize = file.readInt();
+				int entitySize = file.readInt();
 				
-				byte[] byteArray = new byte[registerSize];
+				byte[] byteArray = new byte[entitySize];
 				
-				file.readFully(byteArray, 0, registerSize);
+				file.readFully(byteArray, 0, entitySize);
 				
 				produto = new Produto();
 				produto.fromByteArray(byteArray, id);
 			}
 		}
 		
-		catch (IOException IOEx) { }
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 		
 		return produto;
 	}
@@ -172,14 +181,20 @@ public class Arquivo {
 	
 	public ArrayList<Produto> list() {
         ArrayList<Produto> listProdutos = new ArrayList<Produto>();
-
+        Produto produtoAux = null;
+        
 		try
 		{
 			accessFile = openFile();
 			accessFile.seek(2);
 
 			while (accessFile.getFilePointer() < accessFile.length()) {
-				listProdutos.add(readObject(accessFile));
+				produtoAux = readObject(accessFile);
+				
+				if (produtoAux != null)
+				{
+					listProdutos.add(produtoAux);
+				}
 			}
 		}
 		
@@ -203,6 +218,7 @@ public class Arquivo {
 	public Produto readObject(int id) {
 		Produto produto = null;
 		Produto produtoAux = null;
+		
 		try {
 			accessFile = openFile();
 
@@ -225,6 +241,9 @@ public class Arquivo {
 		return produto;
 	}
 	
-	//estrutura do vetor de byte
-	// ultimo id usado - [lapide] - [id] - [tamanho da entidade] -> entidade
+	// estrutura da base de dados
+	// [ ultimo_id_usado (short), registros... ]
+	//
+	// estrutura dos registros
+	// [ lápide (char), id (short), tamanho_da_entidade (int), entidade (Produto) ]
 }
