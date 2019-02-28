@@ -70,7 +70,7 @@ public class Produto{
     }
 
     public String toString(){
-        return "ID: " + this.id + "Nome: " + this.nome + '\n' + "Descrição: " + this.descricao + '\n'
+        return "ID: " + this.id + '\n' + "Nome: " + this.nome + '\n' + "Descrição: " + this.descricao + '\n'
         		+ "Preço: " + this.preco + "\n";
     }
 }

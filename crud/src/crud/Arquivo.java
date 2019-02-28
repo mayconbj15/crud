@@ -25,9 +25,9 @@ public class Arquivo {
 	}
 	
 	/**
-	 * Abre o arquivo da classe.
+	 * Abre o arquivo da base de dados.
 	 * 
-	 * @return o arquivo da classe.
+	 * @return o arquivo da base de dados.
 	 */
 	
 	protected RandomAccessFile openFile()
@@ -54,10 +54,10 @@ public class Arquivo {
 	}
 	
 	/**
-	 * Lê o último ID usado pelo cabeçalho do arquivo.
+	 * Lê o último ID usado no cabeçalho da base de dados.
 	 * 
-	 * Obs.: pressupõe-se que os dois primeiros bytes do arquivo são o
-	 * short que guarda o último ID usado.
+	 * Obs.: pressupõe-se que os dois primeiros bytes da base de dados
+	 * são o short que guarda o último ID usado.
 	 */
 	
 	private short readLastID()
@@ -77,7 +77,7 @@ public class Arquivo {
 	}
 	
 	/**
-	 * Escreve {@code lastID} no cabecalho do arquivo.
+	 * Escreve {@code lastID} no cabecalho da base de dados.
 	 * 
 	 * @param lastID novo valor para o último ID
 	 * 
@@ -110,9 +110,9 @@ public class Arquivo {
 
 			// go to final of file
 			accessFile.seek(accessFile.length());
-			
-			accessFile.writeShort(produto.getId()); // write id
+
 			accessFile.writeChar(' '); //lapide
+			accessFile.writeShort(produto.getId()); // write id
 			accessFile.writeInt(byteArray.length);
 			accessFile.write(byteArray);
 
@@ -131,37 +131,66 @@ public class Arquivo {
 	 */
 	public ArrayList<Produto> list() throws IOException{
         ArrayList<Produto> listProdutos = new ArrayList<Produto>();
-		Produto produto = new Produto();
-        accessFile = openFile();
 
-        int gap = 0;
+		try
+		{
+			accessFile = openFile();
+			accessFile.seek(2);
 
-       // byte[] byteArray = new byte[accessFile.readInt()]; // byteArray inutil por enquanto mas pretendo implementÃ¡-lo
-
-        accessFile.seek(2);
-
-        while(accessFile.getFilePointer() < accessFile.length()){
-            short id = accessFile.readShort(); 
-            if(accessFile.readChar() != '*') {
-            	 gap = accessFile.readInt();
-                 byte[] byteArray = new byte[gap];
-                 
-                 produto.fromByteArray(byteArray, id);
-                 listProdutos.add(produto);
-            } else {
-            	gap = accessFile.readInt();
-            }
-           
-            System.out.println("Pos: " + accessFile.getFilePointer());
-            accessFile.seek(accessFile.getFilePointer() + gap);
-        }
+			while (accessFile.getFilePointer() < accessFile.length()) {
+				listProdutos.add(readObject(accessFile));
+			}
+		}
+		
+		catch (IOException e) {
+			e.printStackTrace();
+		}
        
         return listProdutos;
     }
- 
+
+	/**
+	 * Lê um registro a partir de onde o ponteiro de {@code file} estiver e
+	 * retorna a entidade que o registro representa. Caso o registro esteja
+	 * desativado (lápide com '*'), o retorno é {@code null}.
+	 * 
+	 * Obs.: deixar o ponteiro em cima da lápide do registro
+	 *  
+	 * @param file arquivo já aberto
+	 * 
+	 * @return a entidade que o registro representa. Caso o registro esteja
+	 * desativado (lápide com '*'), o retorno é {@code null}.
+	 */
+	
+	public Produto readObject(RandomAccessFile file)
+	{
+		Produto produto = null;
+		
+		try
+		{
+			char lapide = file.readChar();
+			
+			if (lapide != '*')
+			{
+				short id = file.readShort();
+				int registerSize = file.readInt();
+				
+				byte[] byteArray = new byte[registerSize];
+				
+				file.readFully(byteArray, 0, registerSize);
+				
+				produto = new Produto();
+				produto.fromByteArray(byteArray, id);
+			}
+		}
+		
+		catch (IOException IOEx) { }
+		
+		return produto;
+	}
+	
 	public Produto readObject(int id) {
-		Produto produto = new Produto();
-		int gap = 0;
+		Produto produto = null;
 
 		try {
 			accessFile = openFile();
@@ -169,20 +198,11 @@ public class Arquivo {
 			accessFile.seek(2);
 
 			while (accessFile.getFilePointer() < accessFile.length()) {
-				short thisId = accessFile.readShort();
-				if(accessFile.readChar() != '*' && thisId == id) {
-					byte[] byteArray = new byte[accessFile.readInt()];
-					accessFile.read(byteArray);
-
-					produto.fromByteArray(byteArray, thisId);
-
-					accessFile.seek(accessFile.length());
-				} else {
-					gap = accessFile.readInt();
-					accessFile.seek(accessFile.getFilePointer() + gap);
-				}
+				produto = readObject(accessFile);
 			}
-		} catch (IOException e) {
+		}
+		
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 
@@ -190,5 +210,5 @@ public class Arquivo {
 	}
 	
 	//estrutura do vetor de byte
-	// ultimo id usado - [id] - [lapide] - [tamanho da entidade] -> entidade
+	// ultimo id usado - [lapide] - [id] - [tamanho da entidade] -> entidade
 }

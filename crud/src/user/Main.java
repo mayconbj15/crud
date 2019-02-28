@@ -24,7 +24,7 @@ public class Main {
 		arquivo.writeObject(produto1);
 		arquivo.writeObject(produto2);
 		
-		System.out.println(arquivo.readObject(1));
+		System.out.println(arquivo.readObject(2));
 		
 		list = arquivo.list();
 		
