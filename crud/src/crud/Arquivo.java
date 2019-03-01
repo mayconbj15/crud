@@ -8,12 +8,26 @@ import java.util.ArrayList;
 
 public class Arquivo {
 	private String name;
-	public short lastID;
+	private short lastID;
 	RandomAccessFile accessFile;
+	
+	Indice indice;
+	final int treeOrder = 21;
+	final String indexFileName = "indexes";
 
 	public Arquivo(String nameFile) {
 		this.name = nameFile;
 		this.lastID = -1;
+		
+		try
+		{
+			this.indice = new Indice(treeOrder, indexFileName);
+		}
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public short getLastID() {
@@ -73,7 +87,7 @@ public class Arquivo {
 		
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 		return ( lastID == -1 ? this.lastID : lastID );
@@ -116,6 +130,7 @@ public class Arquivo {
 
 			// go to final of file
 			accessFile.seek(accessFile.length());
+			indice.inserir(produto.getId(), accessFile.getFilePointer());
 
 			accessFile.writeChar(' '); //lapide
 			accessFile.writeShort(produto.getId()); // write id
@@ -217,20 +232,16 @@ public class Arquivo {
 	
 	public Produto readObject(int id) {
 		Produto produto = null;
-		Produto produtoAux = null;
 		
 		try {
-			accessFile = openFile();
-
-			accessFile.seek(2);
-
-			while (produto == null && accessFile.getFilePointer() < accessFile.length()) {
-				produtoAux = readObject(accessFile);
+			long entityAddress = indice.buscar(id);
+			
+			if (entityAddress != -1)
+			{
+				accessFile = openFile();
+				accessFile.seek(entityAddress);
 				
-				if (produtoAux != null && produtoAux.getId() == id)
-				{
-					produto = produtoAux;
-				}
+				produto = readObject(accessFile);
 			}
 		}
 		
