@@ -140,7 +140,7 @@ public class Arquivo {
 	 * @param file arquivo já aberto
 	 * 
 	 * @return a entidade que o registro representa. Caso o registro esteja
-	 * desativado (lápide com '*'), o retorno é {@code null}.
+	 * desativado, lápide com '*', o retorno é {@code null}.
 	 */
 	
 	public Produto readObject(RandomAccessFile file)
