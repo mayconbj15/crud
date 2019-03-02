@@ -39,6 +39,9 @@ public class Main {
 		println("Procurando entidade com id = " + searchedID);
 		println(arquivo.readObject(searchedID));
 		
+		println("Removendo entidade com id = " + searchedID);
+		arquivo.deleteObject(searchedID);
+		
 		list = arquivo.list();
 		
 		for(int i=0; i<list.size(); i++) {

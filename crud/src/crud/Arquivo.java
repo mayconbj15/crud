@@ -178,6 +178,17 @@ public class Arquivo {
 				produto = new Produto();
 				produto.fromByteArray(byteArray, id);
 			}
+			else
+			{
+				/*
+				 * Tive que mandar ele ler os atributos do produto mesmo que ele esteja apagado pois
+				 * estava dando erro na listagem quando removia um produto.
+				 */
+				short id = file.readShort();
+				int entitySize = file.readInt();
+				byte[] byteArray = new byte[entitySize];
+				file.readFully(byteArray, 0, entitySize);
+			}
 		}
 		
 		catch (IOException e)
@@ -250,6 +261,45 @@ public class Arquivo {
 		}
 
 		return produto;
+	}
+	
+	/*
+	 * Percorre toda a base de dados procurando por uma entidade
+	 * que possua o id desejado para deletar da base de dados.
+	 * 
+	 * @param id id da entidade a ser excluída.
+	 * 
+	 * @return confirmação de exclusão.
+	 */
+	public boolean deleteObject(int id) {
+		Produto produto = new Produto();
+		long address;
+		char lapide;
+		short thisId;
+		int tamanho;
+		byte[] byteArray;
+		try {
+			accessFile = openFile();
+			accessFile.seek(2);
+			while (accessFile.getFilePointer() < accessFile.length()) {
+				address = accessFile.getFilePointer();
+				lapide = accessFile.readChar();
+				thisId = accessFile.readShort();
+				tamanho = accessFile.readInt();
+				byteArray = new byte[tamanho];
+				accessFile.read(byteArray);
+				produto.fromByteArray(byteArray, (short)id);
+				if (lapide == ' ' && thisId == id) {
+					accessFile.seek(address);
+					accessFile.writeChar('*');
+					return true;
+				}
+			}
+			accessFile.close();
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	// estrutura da base de dados
