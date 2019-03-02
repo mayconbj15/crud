@@ -50,7 +50,7 @@ Como índice, vocês podem usar uma tabela hash extensível (recomendada) ou uma
 - [ ] Criar o método de exclusão, da seguinte forma:
   - [ ] Repetir todos os passos de (a) a (h) da busca acima
   - [ ] Solicitar a confirmação de exclusão do usuário
-  - [ ] Se confirmado, retornar ao início do registro (endereço retornado pelo índice) e marcar o campo lápide (por exemplo, escrevendo um   * nesse campo)
+  - [x] Se confirmado, retornar ao início do registro (endereço retornado pelo índice) e marcar o campo lápide (por exemplo, escrevendo um   * nesse campo)
   - [ ] Excluir o produto do índice por meio do seu ID
 
 - [ ] Criar o método de alteração, por meio da combinação de passos dos métodos acima:
