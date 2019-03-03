@@ -22,7 +22,10 @@ public class Main {
 	
 	public static void main(String[] args) throws IOException {
 		File file = new File("produto.db");
+		File file1 = new File("indexes");
+		
 		file.delete();
+		file1.delete();
 		
 		ArrayList<Produto> list = new ArrayList<Produto>();
 		
@@ -42,8 +45,10 @@ public class Main {
 		println("Removendo entidade com id = " + searchedID);
 		arquivo.deleteObject(searchedID);
 		
-		list = arquivo.list();
+		println("Listando bando de dados");
 		
+		list = arquivo.list();
+		println(list.size());
 		for(int i=0; i<list.size(); i++) {
 			println(list.get(i));
 		}

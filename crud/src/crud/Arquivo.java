@@ -146,6 +146,38 @@ public class Arquivo {
 	}
 
 	/**
+	 * Percorre toda a base de dados procurando por uma entidade
+	 * específica que tenha o id {@code id}.
+	 * 
+	 * @param id id da entidade a ser procurada
+	 * 
+	 * @return {@code null} se a entidade não for encontrada. Caso
+	 * contrário, a entidade.
+	 */
+	
+	public Produto readObject(int id) {
+		Produto produto = null;
+		
+		try {
+			long entityAddress = indice.buscar(id);
+			
+			if (entityAddress != -1)
+			{
+				accessFile = openFile();
+				accessFile.seek(entityAddress);
+				
+				produto = readObject(accessFile);
+			}
+		}
+		
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return produto;
+	}
+	
+	/**
 	 * Lê um registro a partir de onde o ponteiro de {@code file} estiver e
 	 * retorna a entidade que o registro representa. Caso o registro esteja
 	 * desativado (lápide com '*'), o retorno é {@code null}.
@@ -157,7 +189,6 @@ public class Arquivo {
 	 * @return a entidade que o registro representa. Caso o registro esteja
 	 * desativado, lápide com '*', o retorno é {@code null}.
 	 */
-	
 	public Produto readObject(RandomAccessFile file)
 	{
 		Produto produto = null;
@@ -198,13 +229,12 @@ public class Arquivo {
 		
 		return produto;
 	}
-
+	
 	/**
 	 * Percorre toda a base de dados coletando as entidades.
 	 * 
 	 * @return lista com todas as entidades.
 	 */
-	
 	public ArrayList<Produto> list() {
         ArrayList<Produto> listProdutos = new ArrayList<Produto>();
         Produto produtoAux = null;
@@ -230,38 +260,6 @@ public class Arquivo {
        
         return listProdutos;
     }
-	
-	/**
-	 * Percorre toda a base de dados procurando por uma entidade
-	 * específica que tenha o id {@code id}.
-	 * 
-	 * @param id id da entidade a ser procurada
-	 * 
-	 * @return {@code null} se a entidade não for encontrada. Caso
-	 * contrário, a entidade.
-	 */
-	
-	public Produto readObject(int id) {
-		Produto produto = null;
-		
-		try {
-			long entityAddress = indice.buscar(id);
-			
-			if (entityAddress != -1)
-			{
-				accessFile = openFile();
-				accessFile.seek(entityAddress);
-				
-				produto = readObject(accessFile);
-			}
-		}
-		
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return produto;
-	}
 	
 	/*
 	 * Percorre toda a base de dados procurando por uma entidade
