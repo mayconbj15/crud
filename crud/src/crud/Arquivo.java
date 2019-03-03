@@ -146,14 +146,13 @@ public class Arquivo {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * Percorre toda a base de dados procurando por uma entidade
-	 * espec�fica que tenha o id {@code id}.
+	 * específica que tenha o id {@code id}.
 	 * 
 	 * @param id id da entidade a ser procurada
 	 * 
-	 * @return {@code null} se a entidade n�o for encontrada. Caso
-	 * contr�rio, a entidade.
+	 * @return {@code null} se a entidade não for encontrada. Caso
+	 * contrário, a entidade.
 	 */
 	
 	public Produto readObject(int id) {
@@ -179,10 +178,7 @@ public class Arquivo {
 	}
 	
 	/**
-	 * L� um registro a partir de onde o ponteiro de {@code file} estiver e
-=======
 	 * Lê um registro a partir de onde o ponteiro de {@code file} estiver e
->>>>>>> e5bddf8dcea99f2127c7e6b8dc865eed20df4d5f
 	 * retorna a entidade que o registro representa. Caso o registro esteja
 	 * desativado (lápide com '*'), o retorno é {@code null}.
 	 * 
@@ -254,26 +250,16 @@ public class Arquivo {
     }
 	
 	/**
-	 * Percorre toda a base de dados procurando por uma entidade
-	 * específica que tenha o id {@code id}.
+	 * Encontra a entidade com id {@code id} e a deleta.
 	 * 
 	 * @param id id da entidade a ser procurada
 	 * 
-	 * @return {@code null} se a entidade não for encontrada. Caso
-	 * contrário, a entidade.
+	 * @return {@code true} se a exclusão for bem sucedida.
+     * Caso contrário, retorna {@code false}.
 	 */
-
-	
-	/*
-	 * Percorre toda a base de dados procurando por uma entidade
-	 * que possua o id desejado para deletar da base de dados.
-	 * 
-	 * @param id id da entidade a ser exclu�da.
-	 * 
-	 * @return confirma��o de exclus�o.
-	 */
+    
 	public boolean deleteObject(int id) {
-		Produto produto = new Produto();
+		Produto produto;
 		long address;
 		try {
 			accessFile = openFile();
@@ -303,6 +289,7 @@ public class Arquivo {
 	 * 
 	 * @return confirmação de alteração.
 	 */
+    
 	public boolean changeObject(int id) {
 		Produto produto = new Produto();
 		long address;
@@ -316,7 +303,7 @@ public class Arquivo {
 					System.out.println(produto.toString());
 					//fazer a leitura dos novos dados (abaixo exemplo)
 					Produto produto2 = new Produto("TV", "4k Full HD Master", (float)2100.00);
-					// confirmar altera��o e exclu�-lo do arquivo marcando a l�pide e inserindo o novo no fim do arquivo
+					// confirmar alteração e excluí-lo do arquivo marcando a lápide e inserindo o novo no fim do arquivo
 					// atualizar no indice
 					accessFile.seek(address);
 					accessFile.writeChar('*');

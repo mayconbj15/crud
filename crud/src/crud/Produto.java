@@ -39,7 +39,7 @@ public class Produto{
         DataOutputStream dataStream = new DataOutputStream(array);
         
         try{
-        	/*decidir nao colocar o id no array de bytes para facilicar na quest„o da busca*/
+        	/*decidir nao colocar o id no array de bytes para facilicar na quest√£o da busca*/
             //dataStream.writeShort(disco.getIdDisco());
             dataStream.writeUTF(this.nome);
             dataStream.writeUTF(this.descricao);
@@ -70,8 +70,8 @@ public class Produto{
     }
 
     public String toString(){
-        return "ID: " + this.id + '\n' + "Nome: " + this.nome + '\n' + "DescriÁ„o: " + this.descricao + '\n'
-        		+ "PreÁo: " + this.preco + "\n";
+        return "ID: " + this.id + '\n' + "Nome: " + this.nome + '\n' + "Descri√ß√£o: " + this.descricao + '\n'
+        		+ "Pre√ßo: " + this.preco + "\n";
     }
 }
 

@@ -7,7 +7,7 @@ import java.util.*;
 public class Crud 
 {   
 	/**
-	 * MÈtodo construtor da interface do CRUD
+	 * M√©todo construtor da interface do CRUD
 	 */
 	public Crud() {
 		
@@ -29,10 +29,10 @@ public class Crud
 	      System.out.println("\nDigite o nome do produto: ");
 	      nome = br.readLine();
 	            
-	      System.out.println("\nDigite a descriÁ„o do produto: ");
+	      System.out.println("\nDigite a descri√ß√£o do produto: ");
 	      descricao = br.readLine();
 	            
-	      System.out.println("\nInforme o preÁo do produto: ");
+	      System.out.println("\nInforme o pre√ßo do produto: ");
 	      preco = Float.parseFloat( br.readLine() );
 	            
 	      Produto produto = new Produto(nome, descricao, preco); 
@@ -57,10 +57,10 @@ public class Crud
 	      System.out.println("\nDigite o nome do produto: ");
 	      nome = br.readLine();
 	            
-	      System.out.println("\nDigite a descriÁ„o do produto: ");
+	      System.out.println("\nDigite a descri√ß√£o do produto: ");
 	      descricao = br.readLine();
 	            
-	      System.out.println("\nInforme o preÁo do produto: ");
+	      System.out.println("\nInforme o pre√ßo do produto: ");
 	      preco = Float.parseFloat( br.readLine() );
 	            
 	      Produto produto = new Produto(nome, descricao, preco); 
@@ -84,17 +84,17 @@ public class Crud
          Arquivo arquivo = new Arquivo("produtos.db");
          //ArrayList<Produto> list = new ArrayList<Produto>();
          int selecao = 12;
-         System.out.println("Ol·, meu nobre!\n");
+         System.out.println("Ol√°, meu nobre!\n");
          
       //TESTAR SE E' PARA SAIR
          while(selecao != 0)
          {    
             //Interface de entrada
-            System.out.println("Qual das seguintes operaÁıes o senhor deseja realizar?" + 
+            System.out.println("Qual das seguintes opera√ß√µes o senhor deseja realizar?" + 
                             "\nDigite: " + 
-                            "\n1 para inclus„o;" +
-                            "\n2 para alteraÁ„o;" +
-                            "\n3 para exclus„o;" +
+                            "\n1 para inclus√£o;" +
+                            "\n2 para altera√ß√£o;" +
+                            "\n3 para exclus√£o;" +
                             "\n4 para consulta de produtos;" +
                             "\n0 para sair.");
                              
@@ -109,15 +109,15 @@ public class Crud
             	id = Integer.parseInt( br.readLine() );
             	System.out.println("O que deseja alterar no produto?\nDigite:\n");
             	System.out.println("1 para alterar o nome;");
-            	System.out.println("1 para alterar a descriÁ„o;");
-            	System.out.println("1 para alterar o preÁo;");            
+            	System.out.println("1 para alterar a descri√ß√£o;");
+            	System.out.println("1 para alterar o pre√ßo;");            
             }
            // else if(selecao == 3){ remover(arquivo);  } 
            // else if(selecao == 4){ consultar(arquivo);}
             
          }//end while
          
-         System.out.println("AtÈ breve :)");
+         System.out.println("At√© breve :)");
       } 
       catch(IOException ioe){ ioe.printStackTrace(); }   
          
