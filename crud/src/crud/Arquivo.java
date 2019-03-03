@@ -253,8 +253,6 @@ public class Arquivo {
         return listProdutos;
     }
 	
-<<<<<<< HEAD
-=======
 	/**
 	 * Percorre toda a base de dados procurando por uma entidade
 	 * específica que tenha o id {@code id}.
@@ -264,30 +262,8 @@ public class Arquivo {
 	 * @return {@code null} se a entidade não for encontrada. Caso
 	 * contrário, a entidade.
 	 */
-	
-	public Produto readObject(int id) {
-		Produto produto = null;
-		
-		try {
-			long entityAddress = indice.buscar(id);
-			
-			if (entityAddress != -1)
-			{
-				accessFile = openFile();
-				accessFile.seek(entityAddress);
-				
-				produto = readObject(accessFile);
-			}
-		}
-		
-		catch (IOException e) {
-			e.printStackTrace();
-		}
 
-		return produto;
-	}
 	
->>>>>>> e5bddf8dcea99f2127c7e6b8dc865eed20df4d5f
 	/*
 	 * Percorre toda a base de dados procurando por uma entidade
 	 * que possua o id desejado para deletar da base de dados.
