@@ -9,6 +9,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Main {
+	
+	public static void print(Object msg)
+	{
+		System.out.print(msg);
+	}
+	
+	public static void println(Object msg)
+	{
+		print(msg + System.lineSeparator());
+	}
+	
 	public static void main(String[] args) throws IOException {
 		File file = new File("produto.db");
 		File file1 = new File("indexes");

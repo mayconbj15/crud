@@ -13,16 +13,6 @@ public class Crud
 		
 	}
 	
-	public static void print(Object msg)
-	{
-		System.out.print(msg);
-	}
-	
-	public static void println(Object msg)
-	{
-		print(msg + System.lineSeparator());
-	}
-	
    /**
     * Metodo para criar um novo registro de produto
     * @param - arquivo destino
@@ -36,20 +26,20 @@ public class Crud
 		  String nome, descricao;
 		  float preco = 0.0F;
             
-	      println("\nDigite o nome do produto: ");
+	      System.out.println("\nDigite o nome do produto: ");
 	      nome = br.readLine();
 	            
-	      println("\nDigite a descrição do produto: ");
+	      System.out.println("\nDigite a descrição do produto: ");
 	      descricao = br.readLine();
 	            
-	      println("\nInforme o preço do produto: ");
+	      System.out.println("\nInforme o preço do produto: ");
 	      preco = Float.parseFloat( br.readLine() );
 	            
 	      Produto produto = new Produto(nome, descricao, preco); 
 	               
 	      arquivo.writeObject(produto);
 	      
-	      println("Seu produto foi cadastrado com sucasso! :D\n");
+	      System.out.println("Seu produto foi cadastrado com sucasso! :D\n");
 	      
 	  }catch(IOException ioe) {ioe.printStackTrace(); }
 	  
@@ -64,20 +54,20 @@ public class Crud
 		  String nome, descricao;
 		  float preco = 0.0F;
             
-	      println("\nDigite o nome do produto: ");
+	      System.out.println("\nDigite o nome do produto: ");
 	      nome = br.readLine();
 	            
-	      println("\nDigite a descrição do produto: ");
+	      System.out.println("\nDigite a descrição do produto: ");
 	      descricao = br.readLine();
 	            
-	      println("\nInforme o preço do produto: ");
+	      System.out.println("\nInforme o preço do produto: ");
 	      preco = Float.parseFloat( br.readLine() );
 	            
 	      Produto produto = new Produto(nome, descricao, preco); 
 	               
 	      arquivo.writeObject(produto);
 	      
-	      println("Seu produto foi cadastrado com sucasso! :D\n");
+	      System.out.println("Seu produto foi cadastrado com sucasso! :D\n");
 	      
 	  }catch(IOException ioe) {ioe.printStackTrace(); }
 	  
@@ -100,7 +90,7 @@ public class Crud
          while(selecao != 0)
          {    
             //Interface de entrada
-            println("Qual das seguintes operações o senhor deseja realizar?" + 
+            System.out.println("Qual das seguintes operações o senhor deseja realizar?" + 
                             "\nDigite: " + 
                             "\n1 para inclusão;" +
                             "\n2 para alteração;" +
