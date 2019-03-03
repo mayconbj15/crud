@@ -27,7 +27,10 @@ public class Main {
 		file.delete();
 		file1.delete();
 		
-		ArrayList<Produto> list = new ArrayList<Produto>();
+		//Crud crud = new Crud();
+		Crud.menu();
+		
+		/*ArrayList<Produto> list = new ArrayList<Produto>();
 		
 		Arquivo arquivo = new Arquivo("produtos.db");
 		Produto produto = new Produto("Geladeira", "Geladeira Duplex FrostFree 30kg", (float)1200.00);
@@ -59,6 +62,6 @@ public class Main {
 		println(list.size());
 		for(int i=0; i<list.size(); i++) {
 			println(list.get(i));
-		}
+		}*/
 	}
 }

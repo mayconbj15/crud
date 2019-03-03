@@ -6,6 +6,13 @@ import java.util.*;
 
 public class Crud 
 {   
+	/**
+	 * Método construtor da interface do CRUD
+	 */
+	public Crud() {
+		
+	}
+	
    /**
     * Metodo para criar um novo registro de produto
     * @param - arquivo destino
@@ -67,7 +74,7 @@ public class Crud
    }//end alterar()
    
    
-   public static void main(String [] args) throws IOException
+   public static void menu() throws IOException
    {
       try
       {
