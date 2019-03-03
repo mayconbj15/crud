@@ -68,10 +68,10 @@ public class Arquivo {
 	}
 	
 	/**
-	 * Lê o último ID usado no cabeçalho da base de dados.
+	 * LÃª o Ãºltimo ID usado no cabeÃ§alho da base de dados.
 	 * 
-	 * Obs.: pressupõe-se que os dois primeiros bytes da base de dados
-	 * são o short que guarda o último ID usado.
+	 * Obs.: pressupÃµe-se que os dois primeiros bytes da base de dados
+	 * sÃ£o o short que guarda o Ãºltimo ID usado.
 	 */
 	
 	private short readLastID()
@@ -96,7 +96,7 @@ public class Arquivo {
 	/**
 	 * Escreve {@code lastID} no cabecalho da base de dados.
 	 * 
-	 * @param lastID novo valor para o último ID
+	 * @param lastID novo valor para o Ãºltimo ID
 	 * 
 	 * @return {@code lastID}
 	 */
@@ -146,16 +146,16 @@ public class Arquivo {
 	}
 
 	/**
-	 * Lê um registro a partir de onde o ponteiro de {@code file} estiver e
+	 * LÃª um registro a partir de onde o ponteiro de {@code file} estiver e
 	 * retorna a entidade que o registro representa. Caso o registro esteja
-	 * desativado (lápide com '*'), o retorno é {@code null}.
+	 * desativado (lÃ¡pide com '*'), o retorno Ã© {@code null}.
 	 * 
-	 * Obs.: deixar o ponteiro em cima da lápide do registro
+	 * Obs.: deixar o ponteiro em cima da lÃ¡pide do registro
 	 *  
-	 * @param file arquivo já aberto
+	 * @param file arquivo jÃ¡ aberto
 	 * 
 	 * @return a entidade que o registro representa. Caso o registro esteja
-	 * desativado, lápide com '*', o retorno é {@code null}.
+	 * desativado, lÃ¡pide com '*', o retorno Ã© {@code null}.
 	 */
 	
 	public Produto readObject(RandomAccessFile file)
@@ -165,29 +165,17 @@ public class Arquivo {
 		try
 		{
 			char lapide = file.readChar();
+			short id = file.readShort();
+			int entitySize = file.readInt();
+			
+			byte[] byteArray = new byte[entitySize];
+			
+			file.readFully(byteArray, 0, entitySize);
 			
 			if (lapide != '*')
 			{
-				short id = file.readShort();
-				int entitySize = file.readInt();
-				
-				byte[] byteArray = new byte[entitySize];
-				
-				file.readFully(byteArray, 0, entitySize);
-				
 				produto = new Produto();
 				produto.fromByteArray(byteArray, id);
-			}
-			else
-			{
-				/*
-				 * Tive que mandar ele ler os atributos do produto mesmo que ele esteja apagado pois
-				 * estava dando erro na listagem quando removia um produto.
-				 */
-				short id = file.readShort();
-				int entitySize = file.readInt();
-				byte[] byteArray = new byte[entitySize];
-				file.readFully(byteArray, 0, entitySize);
 			}
 		}
 		
@@ -233,12 +221,12 @@ public class Arquivo {
 	
 	/**
 	 * Percorre toda a base de dados procurando por uma entidade
-	 * específica que tenha o id {@code id}.
+	 * especÃ­fica que tenha o id {@code id}.
 	 * 
 	 * @param id id da entidade a ser procurada
 	 * 
-	 * @return {@code null} se a entidade não for encontrada. Caso
-	 * contrário, a entidade.
+	 * @return {@code null} se a entidade nÃ£o for encontrada. Caso
+	 * contrÃ¡rio, a entidade.
 	 */
 	
 	public Produto readObject(int id) {
@@ -267,31 +255,59 @@ public class Arquivo {
 	 * Percorre toda a base de dados procurando por uma entidade
 	 * que possua o id desejado para deletar da base de dados.
 	 * 
-	 * @param id id da entidade a ser excluída.
+	 * @param id id da entidade a ser excluï¿½da.
 	 * 
-	 * @return confirmação de exclusão.
+	 * @return confirmaï¿½ï¿½o de exclusï¿½o.
 	 */
 	public boolean deleteObject(int id) {
 		Produto produto = new Produto();
 		long address;
-		char lapide;
-		short thisId;
-		int tamanho;
-		byte[] byteArray;
 		try {
 			accessFile = openFile();
 			accessFile.seek(2);
 			while (accessFile.getFilePointer() < accessFile.length()) {
 				address = accessFile.getFilePointer();
-				lapide = accessFile.readChar();
-				thisId = accessFile.readShort();
-				tamanho = accessFile.readInt();
-				byteArray = new byte[tamanho];
-				accessFile.read(byteArray);
-				produto.fromByteArray(byteArray, (short)id);
-				if (lapide == ' ' && thisId == id) {
+				produto = readObject(accessFile);
+				if (produto != null && produto.getId() == id) {
 					accessFile.seek(address);
 					accessFile.writeChar('*');
+					return true;
+				}
+			}
+			accessFile.close();
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	/*
+	 * Percorre toda a base de dados procurando por uma entidade
+	 * que possua o id desejado para alterar na base de dados.
+	 * Para alterar marcar a lapide e inserir produto alterado no final do arquivo.
+	 * 
+	 * @param id id da entidade a ser alterada.
+	 * 
+	 * @return confirmaÃ§Ã£o de alteraÃ§Ã£o.
+	 */
+	public boolean changeObject(int id) {
+		Produto produto = new Produto();
+		long address;
+		try {
+			accessFile = openFile();
+			accessFile.seek(2);
+			while (accessFile.getFilePointer() < accessFile.length()) {
+				address = accessFile.getFilePointer();
+				produto = readObject(accessFile);
+				if (produto != null && produto.getId() == id) {
+					System.out.println(produto.toString());
+					//fazer a leitura dos novos dados (abaixo exemplo)
+					Produto produto2 = new Produto("TV", "4k Full HD Master", (float)2100.00);
+					// confirmar alteraï¿½ï¿½o e excluï¿½-lo do arquivo marcando a lï¿½pide e inserindo o novo no fim do arquivo
+					// atualizar no indice
+					accessFile.seek(address);
+					accessFile.writeChar('*');
+					writeObject(produto2);
 					return true;
 				}
 			}
@@ -306,5 +322,5 @@ public class Arquivo {
 	// [ ultimo_id_usado (short), registros... ]
 	//
 	// estrutura dos registros
-	// [ lápide (char), id (short), tamanho_da_entidade (int), entidade (Produto) ]
+	// [ lÃ¡pide (char), id (short), tamanho_da_entidade (int), entidade (Produto) ]
 }

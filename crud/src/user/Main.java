@@ -42,6 +42,10 @@ public class Main {
 		println("Removendo entidade com id = " + searchedID);
 		arquivo.deleteObject(searchedID);
 		
+		int alterar = 7;
+		println("Alterando entidade com id = " + alterar);
+		arquivo.changeObject(alterar);
+		
 		list = arquivo.list();
 		
 		for(int i=0; i<list.size(); i++) {
