@@ -26,20 +26,20 @@ public class Crud
             String nome, descricao;
             float preco = 0.0F;
 
-            IO.println("\nDigite o nome do produto: ");
+            IO.print("\nDigite o nome do produto: ");
             nome = IO.readLine();
                 
-            IO.println("\nDigite a descrição do produto: ");
+            IO.print("\nDigite a descrição do produto: ");
             descricao = IO.readLine();
                 
-            IO.println("\nInforme o preço do produto: ");
+            IO.print("\nInforme o preço do produto: ");
             preco = Float.parseFloat( IO.readLine() );
                 
             Produto produto = new Produto(nome, descricao, preco); 
                    
             arquivo.writeObject(produto);
 
-            IO.println("Seu produto foi cadastrado com sucasso! :D\n");
+            IO.println("\nSeu produto foi cadastrado com sucesso! :D\n");
           
         }catch(IOException ioe) {ioe.printStackTrace(); }
       
@@ -53,20 +53,20 @@ public class Crud
             String nome, descricao;
             float preco = 0.0F;
 
-            IO.println("\nDigite o nome do produto: ");
+            IO.print("\nDigite o nome do produto: ");
             nome = IO.readLine();
 
-            IO.println("\nDigite a descrição do produto: ");
+            IO.print("\nDigite a descrição do produto: ");
             descricao = IO.readLine();
 
-            IO.println("\nInforme o preço do produto: ");
+            IO.print("\nInforme o preço do produto: ");
             preco = Float.parseFloat( IO.readLine() );
 
             Produto produto = new Produto(nome, descricao, preco); 
                
             arquivo.writeObject(produto);
 
-            IO.println("Seu produto foi cadastrado com sucasso! :D\n");
+            IO.println("\nSeu produto foi alterado com sucesso! :D\n");
 
         }catch(IOException ioe) {ioe.printStackTrace(); }
 
@@ -98,7 +98,7 @@ public class Crud
             if      (selecao == 1) { inserir(arquivo); }
             else if (selecao == 2)
             { 
-                int id = 0;
+                int id;
                 IO.println("Digite o id do produto a ser alterado: ");
                 id = Integer.parseInt( IO.readLine() );
                 IO.println("O que deseja alterar no produto?\nDigite:\n");
@@ -111,7 +111,7 @@ public class Crud
 
         }//end while
 
-        IO.println("Até breve :)");
+        IO.println("\nAté breve :)");
 
     }//end main()
    

@@ -1,13 +1,7 @@
 package user;
 
 import util.*;
-import crud.Produto;
-import crud.Arquivo;
-
-import java.io.File;
-import java.io.IOException;
-
-import java.util.ArrayList;
+import java.io.*;
 
 public class Main {
 	
