@@ -57,7 +57,7 @@ public class Crud
          Produto produto = new Produto();
          produto = arquivo.readObject(id);	   	   
       	   
-      	   //Bloco de if's para alteracao de atributos
+      	   
          if(cod == 1)
          { 	   		   	   		      
             System.out.println("Digite o novo nome do produto: ");
@@ -72,8 +72,7 @@ public class Crud
          {
             System.out.println("Digite o novo preço do produto: ");
             produto.setPreco( Float.parseFloat( br.readLine() ) ); //Setar novo preco
-         }//end if
-      	   	   	   
+         }//end if      	   	   	   
       	   
       }
       catch(IOException ioe) { ioe.printStackTrace(); }
@@ -81,10 +80,6 @@ public class Crud
    }//end alterar()
    
    
-   public static void listar()
-   {
-      
-   }//end listar()
    
    
    public static void main(String [] args) throws IOException
@@ -94,8 +89,7 @@ public class Crud
          //definir dados    	 
          BufferedReader br = new BufferedReader( new InputStreamReader(System.in) );
          //File file = new File("produto.db");
-         Arquivo arquivo = new Arquivo("produtos.db");
-         ArrayList<Produto> list = new ArrayList<Produto>();
+         Arquivo arquivo = new Arquivo("produtos.db");        
          int selecao = 12;
          System.out.println("Olá, meu nobre!\n");
          
