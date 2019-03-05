@@ -49,13 +49,13 @@ Como índice, vocês podem usar uma tabela hash extensível (recomendada) ou uma
 
 - [ ] Criar o método de exclusão, da seguinte forma:
   - [ ] Repetir todos os passos de (a) a (h) da busca acima
-  - [ ] Solicitar a confirmação de exclusão do usuário
+  - [x] Solicitar a confirmação de exclusão do usuário
   - [x] Se confirmado, retornar ao início do registro (endereço retornado pelo índice) e marcar o campo lápide (por exemplo, escrevendo um   * nesse campo)
   - [ ] Excluir o produto do índice por meio do seu ID
 
 - [ ] Criar o método de alteração, por meio da combinação de passos dos métodos acima:
-  - [ ] Usar os passos da exclusão para localizar e apresentar o produto, mas, ao invés de apenas confirmar a exclusão, fazer a leitura dos   novos dados do produto
-  - [ ] Caso a alteração seja confirmada pelo usuário, marcar esse produto como excluído (por meio do campo lápide) e, usando os mesmos passos da inclusão, inserir o "novo" produto do fim do arquivo
+  - [x] Usar os passos da exclusão para localizar e apresentar o produto, mas, ao invés de apenas confirmar a exclusão, fazer a leitura dos   novos dados do produto
+  - [x] Caso a alteração seja confirmada pelo usuário, marcar esse produto como excluído (por meio do campo lápide) e, usando os mesmos passos da inclusão, inserir o "novo" produto do fim do arquivo
   - [ ] Atualizar o endereço do produto no índice
 
 
