@@ -5,17 +5,13 @@ import util.*;
 import crud.*;
 import java.util.*;
 
+import crud.Produto;
+import crud.Arquivo;
+
 public class Crud 
 {
    /**
-    * Método construtor da interface do CRUD
-    */
-   public Crud() {
-      
-   }
-   
-   /**
-   * Metodo para criar um novo registro de produto
+   * Método para criar um novo registro de produto
    *
    * @param - arquivo destino
    */
@@ -48,8 +44,8 @@ public class Crud
   
   
    /**
-    * M�todo para alterar dados do produto(exceto o id).
-    * [EM CONSTRU��O]
+    * Método para alterar dados do produto(exceto o id).
+    * [EM CONSTRUÇÃO]
     * @param arquivo
     * @param id
     * @param cod
@@ -63,7 +59,7 @@ public class Crud
          float preco = 0.0F;
          Produto produto = new Produto();
          
-         produto = readObject(id);// procurar o produto desejado na base de dados
+         produto = arquivo.readObject(id);// procurar o produto desejado na base de dados
          
          //Bloco de if's para alteracao de atributos
          if(cod == 1)
@@ -94,60 +90,100 @@ public class Crud
       catch(IOException ioe) {ioe.printStackTrace(); }
    
    }//end alterar()
-   
-   
-   public static void menu() throws IOException
+
+   public static void menu()
    {
-      //File file = new File("produto.db");
-      Arquivo arquivo = new Arquivo("produtos.db");
-      //ArrayList<Produto> list = new ArrayList<Produto>();
-      int selecao = 12;
-      IO.println("Olá, meu nobre!\n");
-   
-      //TESTAR SE E' PARA SAIR
-      while(selecao != 0)
-      {    
-         //Interface de entrada
-         IO.println("Qual das seguintes operações o senhor deseja realizar?" + 
-                    "\nDigite: " + 
-                    "\n1 para inclusão;" +
-                    "\n2 para alteração;" +
-                    "\n3 para exclusão;" +
-                    "\n4 para consulta de produtos;" +
-                    "\n0 para sair.");
-                          
-         selecao = Integer.parseInt( IO.readLine() ); //entrada do codigo de selecao de acao         
-          
-         //INCLUSAO
-         if      (selecao == 1) { inserir(arquivo); }
-         else if (selecao == 2)
-         { 
-            int id;
-            
-            IO.println("Digite o id do produto a ser alterado: ");
-            id = Integer.parseInt( IO.readLine() );
-            
-            if(id > 0 && id <= arquivo.getLastID())
-            {
-               IO.println("O que deseja alterar no produto?\nDigite:\n");
-               IO.println("1 para alterar o nome;");
-               IO.println("2 para alterar a descrição;");
-               IO.println("3 para alterar o preço;"); 
-               IO.println("0 para cancelar."); 
-               
-               cod = Short.parseShort( br.readLine() );
-               	
-               alterar(arquivo, id, cod);                               
-            }
-            else{ IO.println("ID inv�lido!"); }
-         }
-         // else if(selecao == 3){ remover(arquivo);  } 
-         // else if(selecao == 4){ consultar(arquivo);}
-      
-      }//end while
-   
-      IO.println("\nAté breve :)");
-   
-   }//end main()
-  
+
+	   try
+	   {
+		   //definir dados    	 
+	       BufferedReader br = new BufferedReader( new InputStreamReader(System.in) );
+	       //File file = new File("produto.db");
+	       Arquivo arquivo = new Arquivo("produtos.db");        
+	       int selecao = 12;
+	       System.out.println("Olá, meu nobre!\n");
+	         
+	       //TESTAR SE E' PARA SAIR
+	       
+	       do {
+	    	   //Interface de entrada
+		       System.out.println("Qual das seguintes operações o senhor deseja realizar?" + 
+		                         "\nDigite: " + 
+		                         "\n1 para inclusão;" +
+		                         "\n2 para alteração;" +
+		                         "\n3 para exclusão;" +
+		                         "\n4 para consulta de produtos;" +
+		                         "\n5 para listar todos os produtos" +
+		                         "\n0 para sair.");
+		       selecao = Integer.parseInt( br.readLine() ); //entrada do codigo de selecao de acao         
+			        
+		       if(selecao == 1)
+		    	   inserir(arquivo);// INCLUSAO
+		           else if(selecao == 2)// ALTERACAO
+		           { 
+		        	   int id = 0;
+		               short cod = -1; //codigo de selecao
+		            	
+		               System.out.println("Digite o id do produto a ser alterado: ");
+		               id = Integer.parseInt( br.readLine() );
+		            	
+		               //testar antes se o id existe
+		               if(id > 0 && id <= arquivo.getLastID())
+		               {
+		            	   System.out.println("O que deseja alterar no produto?\nDigite:");
+		                   System.out.println("1 para alterar o nome;");
+		                   System.out.println("2 para alterar a descrição;");
+		                   System.out.println("3 para alterar o preço;");
+		                   System.out.println("0 para cancelar;");
+		               	
+		                   cod = Short.parseShort( br.readLine() );
+		                   
+		                   alterar(arquivo, id, cod);
+		               	
+		               }
+		               else { System.out.println("Id inválido!"); }
+		               
+		            }
+		            else if(selecao == 3){
+		            	int id = 0;
+		            	short cod = -1; // codigo de selecao
+		            	IO.println("Digite o id do produto a ser excluído: ");
+		            	id = Integer.parseInt( br.readLine() );
+		            	// testar se o id existe
+			            if(id > 0 && id <= arquivo.getLastID())
+			            {
+			            	Produto produto = new Produto();
+			            	IO.println("Deseja realmente excluir o produto?\nDigite:");
+			            	IO.println("1 Sim;");
+			            	IO.println("2 Não;");
+			            	
+			            	cod = Short.parseShort( br.readLine() );
+			            	
+			            	if(cod == 1) { 
+			            		arquivo.deleteObject(id);
+			            		IO.println("\nSeu produto foi excluído com sucesso! :D\n");
+			            	}
+			            	else { IO.println("Operação cancelada!"); }
+			            }
+			            else { System.out.println("Id inválido!"); }
+			        }
+		            //else if(selecao == 4){ consultar(arquivo);}
+		            else if(selecao == 5) 
+		            {
+		            	ArrayList<Produto> list = new ArrayList<Produto>();
+		                list = arquivo.list();
+		            
+		                for(int i=0; i<list.size(); i++) {
+		                	System.out.println(list.get(i));
+		                }//end for
+		            
+		            }//end if
+		            else if(selecao == 0)
+		            	System.out.println("Até breve :)");
+	         }while(selecao != 0);
+	   }
+	   catch(IOException ioe){
+		   ioe.printStackTrace();
+	   }
+   }//end menu()
 }//end class Main

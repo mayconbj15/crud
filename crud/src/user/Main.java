@@ -3,6 +3,9 @@ package user;
 import util.*;
 import java.io.*;
 
+//import crud.Produto;
+//import crud.Arquivo;
+
 public class Main {
 	
 	public static void main(String[] args) throws IOException {
@@ -12,7 +15,6 @@ public class Main {
 		file.delete();
 		file1.delete();
 		
-		//Crud crud = new Crud();
 		Crud.menu();
 		
 		/*ArrayList<Produto> list = new ArrayList<Produto>();

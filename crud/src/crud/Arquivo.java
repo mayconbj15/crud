@@ -29,9 +29,13 @@ public class Arquivo {
          e.printStackTrace();
       }
    }
-
+/*
    public short getLastID() {
       return this.lastID;
+   }*/
+
+   public short getLastID() {
+	  return readLastID();
    }
 
    private short setLastID(short lastID) {
@@ -293,7 +297,7 @@ public class Arquivo {
 	 * @return confirmação de alteração.
 	 */
     
-   public boolean changeObject(int id) {
+   public boolean changeObject(int id, Produto produto2) {
       Produto produto = new Produto();
       long address;
       try {
@@ -305,7 +309,7 @@ public class Arquivo {
             if (produto != null && produto.getId() == id) {
                System.out.println(produto.toString());
             	//fazer a leitura dos novos dados (abaixo exemplo)
-               Produto produto2 = new Produto("TV", "4k Full HD Master", (float)2100.00);
+               //Produto produto2 = new Produto("TV", "4k Full HD Master", (float)2100.00);
             	// confirmar alteração e excluí-lo do arquivo marcando a lápide e inserindo o novo no fim do arquivo
             	// atualizar no indice
                accessFile.seek(address);
