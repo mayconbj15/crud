@@ -243,22 +243,27 @@ public class Crud
 					
 				case 1:
 					menuInclusao(arquivo);
+					IO.pause();
 					break;
 					
 				case 2:
 					menuAlteracao(arquivo);
+					IO.pause();
 					break;
 					
 				case 3:
 					menuExclusao(arquivo);
+					IO.pause();
 					break;
 					
 				case 4:
 					menuConsulta(arquivo);
+					IO.pause();
 					break;
 					
 				case 5:
 					menuListar(arquivo);
+					IO.pause();
 					break;
 					
 				default:

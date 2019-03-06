@@ -1,6 +1,5 @@
 package user;
 
-import util.*;
 import java.io.*;
 
 //import crud.Produto;

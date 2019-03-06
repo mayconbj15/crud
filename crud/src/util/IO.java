@@ -115,4 +115,9 @@ public class IO
 		
 		return readfloat();
 	}
+	
+	public static void pause() 
+	{
+		readLine("Pressione ENTER para continuar...");
+	}
 }
