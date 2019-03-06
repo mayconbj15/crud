@@ -7,20 +7,22 @@ public class Produto{
 	protected String nome;
 	protected String descricao;
 	protected float preco;
+	protected String fornecedor;
 
 	public Produto(){
-		this((short)-1, "", "", (float)0.0);
+		this((short)-1, "", "", (float)0.0, "");
 	}
 
-	public Produto(String nome, String descricao, float preco) {
-		this((short)-1, nome, descricao, preco);
+	public Produto(String nome, String descricao, float preco, String fornecedor) {
+		this((short)-1, nome, descricao, preco, fornecedor);
 	}
 
-	public Produto(short id, String nome, String descricao, float preco) {
+	public Produto(short id, String nome, String descricao, float preco, String fornecedor) {
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
 		this.preco = preco;
+		this.fornecedor = fornecedor;
 	}
 
 	public short getId(){
@@ -50,6 +52,13 @@ public class Produto{
 	public void setPreco(float preco){
 		this.preco = preco;
 	}
+	
+	public String getFornecedor() {
+		return this.fornecedor;
+	}
+	public void setFornecedor(String fornecedor) {
+		this.fornecedor = fornecedor;
+	}
 
 	public byte[] setByteArray() throws IOException{
 		ByteArrayOutputStream array = new ByteArrayOutputStream();
@@ -61,6 +70,7 @@ public class Produto{
 			dataStream.writeUTF(this.nome);
 			dataStream.writeUTF(this.descricao);
 			dataStream.writeFloat(this.preco);
+			dataStream.writeUTF(this.fornecedor);
 			
 			dataStream.close();
 			array.close();
@@ -82,6 +92,7 @@ public class Produto{
 			this.nome = dataStream.readUTF();
 			this.descricao = dataStream.readUTF();
 			this.preco = dataStream.readFloat();
+			this.fornecedor = dataStream.readUTF();
 		} 
 		catch(IOException e){
 			e.printStackTrace();
@@ -90,7 +101,7 @@ public class Produto{
 
 	public String toString(){
 		return "ID: " + this.id + '\n' + "Nome: " + this.nome + '\n' + "Descrição: " + this.descricao + '\n'
-		+ "Preço: " + this.preco + "\n";
+		+ "Preço: " + this.preco + '\n' + "Fornecedor: " + this.fornecedor + '\n';
 	}
 }
 

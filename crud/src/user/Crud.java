@@ -22,11 +22,10 @@ public class Crud
 	* para campos numéricos, estes são definidos como -1.
 	* 
 	* @return produto com os campos lidos.
-	*/
-	
+	*/	
 	public static Produto readProduct()
 	{
-		String nome, descricao;
+		String nome, descricao, fornecedor;
 		float preco;
 
 		nome = IO.readLine("\nDigite o nome do produto: ");
@@ -35,7 +34,9 @@ public class Crud
 
 		preco = IO.readfloat("\nInforme o preço do produto: ");
 		
-		return new Produto(nome, descricao, preco); 
+		fornecedor = IO.readLine("\nInforme o fornecedor: ");
+		
+		return new Produto(nome, descricao, preco, fornecedor); 
 	}
 	
 	/**
@@ -68,7 +69,7 @@ public class Crud
 	{
 		boolean success = false;
 		//definir dados
-		String nome, descricao;
+		String nome, descricao, fornecedor;
 		float preco;
 		Produto produto;
 		
@@ -95,6 +96,12 @@ public class Crud
 			{
 				preco = IO.readfloat("\nInforme o preço do produto: ");
 				produto.setPreco(preco);
+			}
+			
+			else if(cod == 4) 
+			{
+				fornecedor = IO.readLine("\nInforme o fornecedor: ");
+				produto.setFornecedor(fornecedor);
 			}
 			
 			else
@@ -145,6 +152,7 @@ public class Crud
 			IO.println("1 para alterar o nome");
 			IO.println("2 para alterar a descrição");
 			IO.println("3 para alterar o preço");
+			IO.println("4 para alterar o fornecedor");
 			IO.println("0 para cancelar");
 			IO.println("");
 			cod = IO.readint("Opção: ");

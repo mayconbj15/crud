@@ -2,8 +2,6 @@ package user;
 
 import java.io.*;
 
-//import crud.Produto;
-//import crud.Arquivo;
 
 public class Main {
 	
