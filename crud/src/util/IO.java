@@ -3,8 +3,8 @@ package util;
 import java.io.*;
 
 /**
- * @author Axell Brendow ( https://github.com/axell-brendow )
- */
+* @author Axell Brendow ( https://github.com/axell-brendow )
+*/
 
 public class IO
 {
@@ -42,5 +42,77 @@ public class IO
         print(msg);
 
         return readLine();
+    }
+    
+    public static short readshort()
+    {
+        short value = -1;
+        
+        try
+        {
+            value = Short.parseShort( readLine() );
+        }
+        
+        catch (NumberFormatException nfex)
+        {
+            nfex.printStackTrace();
+        }
+        
+        return value;
+    }
+    
+    public static short readshort(String msg)
+    {
+        print(msg);
+        
+        return readshort();
+    }
+    
+    public static int readint()
+    {
+        int value = -1;
+        
+        try
+        {
+            value = Integer.parseInt( readLine() );
+        }
+        
+        catch (NumberFormatException nfex)
+        {
+            nfex.printStackTrace();
+        }
+        
+        return value;
+    }
+    
+    public static int readint(String msg)
+    {
+        print(msg);
+        
+        return readint();
+    }
+    
+    public static float readfloat()
+    {
+        float value = -1;
+        
+        try
+        {
+            value = Float.parseFloat( readLine() );
+        }
+        
+        catch (NumberFormatException nfex)
+        {
+            nfex.printStackTrace();
+        }
+        
+        return value;
+    }
+    
+    public static float readfloat(String msg)
+    {
+        print(msg);
+        
+        return readfloat();
     }
 }
