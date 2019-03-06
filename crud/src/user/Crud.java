@@ -237,33 +237,33 @@ public class Crud
             
             switch (selecao)
             {
-            case 0:
-                IO.println("Até breve :)");
-                break;
-                
-            case 1:
-                menuInclusao(arquivo);
-                break;
-                
-            case 2:
-                menuAlteracao(arquivo);
-                break;
-                
-            case 3:
-                menuExclusao(arquivo);
-                break;
-                
-            case 4:
-                menuConsulta(arquivo);
-                break;
-                
-            case 5:
-                menuListar(arquivo);
-                break;
-                
-            default:
-                IO.println("Operação inválida\n");
-                break;
+                case 0:
+                    IO.println("Até breve :)");
+                    break;
+                    
+                case 1:
+                    menuInclusao(arquivo);
+                    break;
+                    
+                case 2:
+                    menuAlteracao(arquivo);
+                    break;
+                    
+                case 3:
+                    menuExclusao(arquivo);
+                    break;
+                    
+                case 4:
+                    menuConsulta(arquivo);
+                    break;
+                    
+                case 5:
+                    menuListar(arquivo);
+                    break;
+                    
+                default:
+                    IO.println("Operação inválida\n");
+                    break;
             }
 
             
