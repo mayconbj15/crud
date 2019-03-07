@@ -166,14 +166,15 @@ public class Arquivo {
 			produto.setId( (short) (readLastID() + 1) );
 			setLastID( writeLastID( produto.getId() ) );
 			
-			// insere a chave (id) e o dado correspondente (endereço do registro)
-			// no sistema de indexamento
-			indice.inserir(produto.getId(), accessFile.getFilePointer());
-			
 			byte[] byteArray = produto.setByteArray();
 			
 			// go to final of file
 			accessFile.seek(accessFile.length());
+			
+			// insere a chave (id) e o dado correspondente (endereço do registro)
+			// no sistema de indexamento
+			indice.inserir(produto.getId(), accessFile.getFilePointer());
+			
 			accessFile.writeChar(' '); // insere a lapide
 			accessFile.writeShort(produto.getId()); // insere o id
 			accessFile.writeInt(byteArray.length); // insere o tamanho da entidade
@@ -357,7 +358,7 @@ public class Arquivo {
 		
 		if (success)
 		{
-			writeObject(produto2);
+			success = writeObject(produto2);
 		}
 		
 		return success;
