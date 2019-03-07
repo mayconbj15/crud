@@ -4,7 +4,9 @@ import java.io.*;
 
 import java.util.ArrayList;
 
-//colocar no array list e fazer o index para buscar por nome 
+/**
+ * Classe para gerenciamento de registros na base de dados
+ */
 
 public class Arquivo {
 	private String name;
@@ -45,7 +47,7 @@ public class Arquivo {
 	/**
 	* Abre o arquivo da base de dados.
 	* 
-	* @return o arquivo da base de dados.
+	* @return O arquivo da base de dados.
 	*/
 	
 	protected RandomAccessFile openFile()
@@ -86,12 +88,21 @@ public class Arquivo {
 		try
 		{
 			lastID = file.readShort();
-			file.close();
 		}
 		
 		catch (IOException e)
 		{
 			//e.printStackTrace();
+		}
+		
+		try
+		{
+			file.close();
+		}
+		
+		catch (IOException ioex)
+		{
+			ioex.printStackTrace();
 		}
 		
 		return ( lastID == -1 ? this.lastID : lastID );
@@ -105,9 +116,9 @@ public class Arquivo {
 	/**
 	* Escreve {@code lastID} no cabecalho da base de dados.
 	* 
-	* @param lastID novo valor para o último ID
+	* @param lastID Novo valor para o último ID.
 	* 
-	* @return {@code lastID}
+	* @return {@code lastID}.
 	*/
 	
 	private short writeLastID(short lastID)
@@ -117,7 +128,6 @@ public class Arquivo {
 		try
 		{
 			file.writeShort(lastID);
-			file.close();
 		}
 		
 		catch (IOException e)
@@ -125,8 +135,27 @@ public class Arquivo {
 			e.printStackTrace();
 		}
 		
+		try
+		{
+			file.close();
+		}
+		
+		catch (IOException ioex)
+		{
+			ioex.printStackTrace();
+		}
+		
 		return lastID;
 	}
+	
+	/**
+	 * Insere uma entidade na base de dados.
+	 * 
+	 * @param produto Entidade a ser inserida.
+	 * 
+	 * @return {@code false} se alguma coisa falhar na inserção.
+	 * Caso contrário, retorna {@code true}.
+	 */
 	
 	public boolean writeObject(Produto produto) {
 		boolean success = false;
@@ -137,16 +166,18 @@ public class Arquivo {
 			produto.setId( (short) (readLastID() + 1) );
 			setLastID( writeLastID( produto.getId() ) );
 			
+			// insere a chave (id) e o dado correspondente (endereço do registro)
+			// no sistema de indexamento
+			indice.inserir(produto.getId(), accessFile.getFilePointer());
+			
 			byte[] byteArray = produto.setByteArray();
 			
 			// go to final of file
 			accessFile.seek(accessFile.length());
-			indice.inserir(produto.getId(), accessFile.getFilePointer());
-			
-			accessFile.writeChar(' '); //lapide
-			accessFile.writeShort(produto.getId()); // write id
-			accessFile.writeInt(byteArray.length);
-			accessFile.write(byteArray);
+			accessFile.writeChar(' '); // insere a lapide
+			accessFile.writeShort(produto.getId()); // insere o id
+			accessFile.writeInt(byteArray.length); // insere o tamanho da entidade
+			accessFile.write(byteArray); // insere a entidade
 			
 			accessFile.close();
 			
@@ -163,10 +194,9 @@ public class Arquivo {
 	}
 
 	/**
-	* Percorre toda a base de dados procurando por uma entidade
-	* específica que tenha o id {@code id}.
+	* Lê a entidade da base de dados que tiver o id informado.
 	* 
-	* @param id id da entidade a ser procurada
+	* @param id Id da entidade a ser procurada.
 	* 
 	* @return {@code null} se a entidade não for encontrada. Caso
 	* contrário, a entidade.
@@ -184,6 +214,8 @@ public class Arquivo {
 				accessFile.seek(entityAddress);
 				
 				produto = readObject(accessFile);
+				
+				accessFile.close();
 			}
 		}
 		
@@ -201,10 +233,11 @@ public class Arquivo {
 	* 
 	* Obs.: deixar o ponteiro em cima da lápide do registro
 	*  
-	* @param file arquivo já aberto
+	* @param file Instância de {@link crud.Arquivo} voltada
+	* para o arquivo {@link user.Main#DATABASE_FILE_NAME}.
 	* 
-	* @return a entidade que o registro representa. Caso o registro esteja
-	* desativado, lápide com '*', o retorno é {@code null}.
+	* @return {@code null} se o registro estiver desativado, lápide com '*'.
+	* Caso contrário, retorna a entidade do registro.
 	*/
 	
 	public Produto readObject(RandomAccessFile file)
@@ -237,9 +270,9 @@ public class Arquivo {
 	}
 	
 	/**
-	* Percorre toda a base de dados coletando as entidades.
+	* Coleta todas as entidades ativas da base de dados.
 	* 
-	* @return lista com todas as entidades.
+	* @return Lista com todas as entidades.
 	*/
 	
 	public ArrayList<Produto> list() {
@@ -259,6 +292,8 @@ public class Arquivo {
 					listProdutos.add(produtoAux);
 				}
 			}
+			
+			accessFile.close();
 		}
 		
 		catch (IOException e) {
@@ -269,74 +304,63 @@ public class Arquivo {
 	}
 	
 	/**
-	* Encontra a entidade com id {@code id} e a deleta.
+	* Encontra a entidade com id informado e a deleta.
 	* 
-	* @param id id da entidade a ser procurada
+	* @param id Id da entidade a ser procurada.
 	* 
 	* @return {@code true} se a exclusão for bem sucedida.
 	* Caso contrário, retorna {@code false}.
 	*/
 	
 	public boolean deleteObject(int id) {
-		Produto produto;
-		long address;
-		try {
-			accessFile = openFile();
-			accessFile.seek(2);
-			while (accessFile.getFilePointer() < accessFile.length()) {
-				address = accessFile.getFilePointer();
-				produto = readObject(accessFile);
-				if (produto != null && produto.getId() == id) {
-					accessFile.seek(address);
-					accessFile.writeChar('*');
-					return true;
-				}
+
+		boolean success = false;
+		
+		try
+		{
+			long entityAddress = indice.buscar(id);
+			
+			if (entityAddress != -1)
+			{
+				RandomAccessFile file = openFile();
+				
+				file.seek(entityAddress);
+				file.writeChar('*');
+				
+				success = indice.excluir(id);
+				
+				file.close();
 			}
-			accessFile.close();
 		}
-		catch (IOException e) {
-			e.printStackTrace();
+		
+		catch (IOException ioex)
+		{
+			ioex.printStackTrace();
 		}
-		return false;
+		
+		return success;
 	}
 
-	/*
-	* Percorre toda a base de dados procurando por uma entidade
-	* que possua o id desejado para alterar na base de dados.
-	* Para alterar marcar a lapide e inserir produto alterado no final do arquivo.
-	* 
-	* @param id id da entidade a ser alterada.
-	* 
-	* @return confirmação de alteração.
-	*/
+	/**
+	 * Altera a entidade com o id informado para a nova entidade {@code produto2}.
+	 * 
+	 * @param id Id da entidade a ser alterada.
+	 * @param produto2 Nova entidade a ser posta no lugar.
+	 * 
+	 * @return {@code true} se a alteração for bem sucedida.
+	 * Caso contrário, retorna {@code false}.
+	 */
 	
 	public boolean changeObject(int id, Produto produto2) {
-		Produto produto = new Produto();
-		long address;
-		try {
-			accessFile = openFile();
-			accessFile.seek(2);
-			while (accessFile.getFilePointer() < accessFile.length()) {
-				address = accessFile.getFilePointer();
-				produto = readObject(accessFile);
-				if (produto != null && produto.getId() == id) {
-					System.out.println(produto.toString());
-					//fazer a leitura dos novos dados (abaixo exemplo)
-					//Produto produto2 = new Produto("TV", "4k Full HD Master", (float)2100.00);
-					// confirmar alteração e excluí-lo do arquivo marcando a lápide e inserindo o novo no fim do arquivo
-					// atualizar no indice
-					accessFile.seek(address);
-					accessFile.writeChar('*');
-					writeObject(produto2);
-					return true;
-				}
-			}
-			accessFile.close();
+		
+		boolean success = deleteObject(id);
+		
+		if (success)
+		{
+			writeObject(produto2);
 		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		return false;
+		
+		return success;
 	}
 	
 	// estrutura da base de dados

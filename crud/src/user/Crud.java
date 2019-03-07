@@ -8,45 +8,23 @@ import crud.Arquivo;
 public class Crud 
 {
 	/**
-	* Método construtor da interface do CRUD
-	*/
+	 * Método construtor da interface do CRUD
+	 */
+	
 	public Crud() {
 		
 	}
-	
+
 	/**
-	* Le os campos de um produto da entrada padrão e
-	* cria o objeto equivalente.
-	* 
-	* Obs.: caso o usuário informe valores não numéricos
-	* para campos numéricos, estes são definidos como -1.
-	* 
-	* @return produto com os campos lidos.
-	*/	
-	public static Produto readProduct()
-	{
-		String nome, descricao, fornecedor;
-		float preco;
-
-		nome = IO.readLine("\nDigite o nome do produto: ");
-
-		descricao = IO.readLine("\nDigite a descrição do produto: ");
-
-		preco = IO.readfloat("\nInforme o preço do produto: ");
-		
-		fornecedor = IO.readLine("\nInforme o fornecedor: ");
-		
-		return new Produto(nome, descricao, preco, fornecedor); 
-	}
+	 * Le os campos da entidade e a insere na base de dados.
+	 * 
+	 * @param arquivo Instância de {@link crud.Arquivo} voltada
+	 * para o arquivo {@link user.Main#DATABASE_FILE_NAME}.
+	 */
 	
-	/**
-	* Metodo para criar um novo registro de produto
-	*
-	* @param - arquivo destino
-	*/
 	public static void inserir(Arquivo arquivo)
 	{
-		if ( arquivo.writeObject( readProduct() ) )
+		if ( arquivo.writeObject( Produto.readProduct() ) )
 		{
 			IO.println("\nSeu produto foi cadastrado com sucesso! :D\n");
 		}
@@ -59,70 +37,100 @@ public class Crud
 
 
 	/**
-	* Método para alterar dados do produto(exceto o id).
-	* [EM CONSTRUÇÃO]
-	* @param arquivo
-	* @param id
-	* @param cod
-	*/
+	 * Altera um campo específico do produto com id informado.
+	 * {@code cod} é responsável por indicar qual dos campos do
+	 * produto deseja-se alterar.
+	 * 
+	 * <p></p>
+	 * 
+	 * <table style="border: 1px solid black; text-align: center;">
+	 * 
+	 * 	<tr>
+	 * 		<th>{@code cod}</th> <th>campo</th>
+	 * 	</tr>
+	 * 
+	 * 	<tr>
+	 * 		<td>1</td> <td>nome</td>
+	 * 	</tr>
+	 * 
+	 * 	<tr>
+	 * 		<td>2</td> <td>descrição</td>
+	 * 	</tr>
+	 * 
+	 * 	<tr>
+	 * 		<td>3</td> <td>preço</td>
+	 * 	</tr>
+	 * 
+	 * 	<tr>
+	 * 		<td>4</td> <td>fornecedor</td>
+	 * 	</tr>
+	 * 
+	 * 	<tr>
+	 * 		<td>5</td> <td>quantidade</td>
+	 * 	</tr>
+	 * 
+	 * </table>
+	 * 
+	 * @param arquivo Instância de {@link crud.Arquivo} voltada
+	 * para o arquivo {@link user.Main#DATABASE_FILE_NAME}.
+	 * @param id Id da entidade a ser alterada.
+	 * @param cod Código do campo a ser alterado.
+	 * 
+	 * @return {@code false} se alguma coisa falhar na alteração.
+	 * Caso contrário, retorna {@code true}.
+	 */
+	
 	public static boolean alterar(Arquivo arquivo, int id, int cod)
 	{
 		boolean success = false;
-		//definir dados
-		String nome, descricao, fornecedor;
-		float preco;
-		Produto produto;
-		
-		produto = arquivo.readObject(id);// procurar o produto desejado na base de dados
+
+		Produto produto = arquivo.readObject(id);// procurar o produto desejado na base de dados
 		
 		if (produto != null) // checa se o produto foi encontrado
 		{
 			success = true;
 			
-			//Bloco de if's para alteracao de atributos
-			if(cod == 1)
+			switch (cod)
 			{
-				nome = IO.readLine("\nDigite o nome do produto: ");
-				produto.setNome(nome);
-			}
-			
-			else if(cod == 2)
-			{
-				descricao = IO.readLine("\nDigite a descrição do produto: ");
-				produto.setDescricao(descricao);
-			}
-			
-			else if(cod == 3)
-			{
-				preco = IO.readfloat("\nInforme o preço do produto: ");
-				produto.setPreco(preco);
-			}
-			
-			else if(cod == 4) 
-			{
-				fornecedor = IO.readLine("\nInforme o fornecedor: ");
-				produto.setFornecedor(fornecedor);
-			}
-			
-			else
-			{
-				success = false;
-				IO.println("\nOpção inválida !\n");
+				case 1:
+					produto.readName();
+					break;
+
+				case 2:
+					produto.readDescription();
+					break;
+
+				case 3:
+					produto.readPrice();
+					break;
+
+				case 4:
+					produto.readProvider();
+					break;
+
+				case 5:
+					produto.readQuantity();
+					break;
+
+				default:
+					success = false;
+					IO.println("\nOpção inválida !\n");
+					break;
 			}
 			
 			if (success)
 			{
-				success = arquivo.deleteObject(id) && arquivo.writeObject(produto);
+				success = arquivo.changeObject(id, produto);
 				
 				if (success)
 				{
 					IO.println("\nSeu produto foi alterado com sucesso! :D\n");
 				}
-			}
-
-			if (!success)
-			{
-				IO.println("\nFalha na alteração do produto.\n");
+				
+				else
+				{
+					IO.println("\nFalha na alteração do produto.\n");
+				}
 			}
 		}
 		
@@ -153,6 +161,7 @@ public class Crud
 			IO.println("2 para alterar a descrição");
 			IO.println("3 para alterar o preço");
 			IO.println("4 para alterar o fornecedor");
+			IO.println("5 para alterar a quantidade");
 			IO.println("0 para cancelar");
 			IO.println("");
 			cod = IO.readint("Opção: ");
@@ -218,9 +227,13 @@ public class Crud
 
 	public static void menuListar(Arquivo arquivo)
 	{
-		arquivo.list().forEach( (produto) -> IO.println(produto) );
+		arquivo.list().forEach( (produto) -> IO.println(produto + "\n") );
 	}
 
+	/**
+	 * Gerencia a interação com o usuário.
+	 */
+	
 	public static void menu()
 	{
 		Arquivo arquivo = new Arquivo(Main.DATABASE_FILE_NAME);		   
@@ -284,5 +297,7 @@ public class Crud
 			IO.println("--------------------------------------------\n");
 			
 		} while (selecao != 0);
+		
 	}//end menu()
+	
 }//end class Main

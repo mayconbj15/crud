@@ -2,25 +2,51 @@
 Intel Core i7-8700K Coffee Lake
 Processador
 2299.90
+Intel
+3
+
 1
 GEFORCE GTX 1080 FTW2 ICX Gaming
-Placa de vÌdeo
+Placa de v√≠deo
 2799.90
+NVIDIA
+5
+
 1
 RTX 2070 Gaming OC
-Placa de vÌdeo
+Placa de v√≠deo
 3649.90
+Gigabyte
+6
+
 1
 GeForce RTX 2060 XC
-Placa de vÌdeo
+Placa de v√≠deo
 1899.90
+Gigabyte
+10
+
 1
-Razer Naga Trinity Chroma Mec‚nico
+Razer Naga Trinity Chroma Mec√¢nico
 Mouse gamer
 599.90
+KaBuM
+4
+
 1
 Logitech G933 Artemis Spectrum
 Headset gamer
 849.90
+Pichau
+3
+
 5
+
+2
+0
+5
+4
+
+5
+
 0
