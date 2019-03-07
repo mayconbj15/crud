@@ -5,10 +5,6 @@ import util.*;
 import crud.Produto;
 import crud.Arquivo;
 
-/**
- * Classe que gerencia a interação com o usuário.
- */
-
 public class Crud 
 {
 	/**
