@@ -35,7 +35,12 @@ public class Indice {
 		protected int	 TAMANHO_ELEMENTO;		// Os elementos são de tamanho fixo
 		protected int	 TAMANHO_PAGINA;		// A página será de tamanho fixo, calculado a partir da ordem
 
-		// Construtor da página
+		/**
+		 * Construtor da página.
+		 * 
+		 * @param o Ordem da Árvore B+.
+		 */
+		
 		public Pagina(int o) {
 
 			// Inicialização dos atributos
@@ -66,7 +71,15 @@ public class Indice {
 			TAMANHO_PAGINA = 4 + maxElementos*TAMANHO_ELEMENTO + maxFilhos*8 + 16;
 		}
 		
-		// Retorna o vetor de bytes que representa a página para armazenamento em arquivo
+		/**
+		 * Obtem o vetor de bytes que representa esta página.
+		 * 
+		 * @return O vetor de bytes que representa esta página
+		 * para armazenamento em arquivo.
+		 * 
+		 * @throws IOException
+		 */
+		
 		protected byte[] getBytes() throws IOException {
 			
 			// Um fluxo de bytes é usado para construção do vetor de bytes
@@ -101,8 +114,14 @@ public class Indice {
 			return ba.toByteArray();
 		}
 
+		/**
+		 * Reconstrói uma página a partir de um vetor de bytes lido no arquivo.
+		 * 
+		 * @param buffer Vetor de bytes lido do arquivo.
+		 * 
+		 * @throws IOException
+		 */
 		
-		// Reconstrói uma página a partir de um vetor de bytes lido no arquivo
 		protected void setBytes(byte[] buffer) throws IOException {
 			
 			// Usa um fluxo de bytes para leitura dos atributos
@@ -127,6 +146,14 @@ public class Indice {
 	
 	// ------------------------------------------------------------------------------
 		
+	/**
+	 * Construtor da página.
+	 * 
+	 * @param o Ordem da Árvore B+.
+	 * @param na Nome do arquivo com os índices.
+	 * 
+	 * @throws IOException
+	 */
 	
 	public Indice(int o, String na) throws IOException {
 		
@@ -142,17 +169,34 @@ public class Indice {
 			arquivo.writeLong(-1);	// raiz vazia
 	}
 	
-	// Testa se a árvore está vazia. Uma árvore vazia é identificada pela raiz == -1
+	/**
+	 * Testa se a árvore está vazia. Uma árvore vazia é identificada pela raiz == -1.
+	 * 
+	 * @return {@code true} se a árvore estiver vazia. Caso contrário, {@code false}.
+	 * 
+	 * @throws IOException
+	 */
+	
 	public boolean vazia() throws IOException {
 		long raiz;
 		arquivo.seek(0);
 		raiz = arquivo.readLong();
 		return raiz == -1;
 	}
+
+	/**
+	 * Busca recursivamente por um elemento a partir da chave {@code c}.
+	 * Este método invoca o método recursivo buscar1, passando a raiz como
+	 * referência.
+	 * 
+	 * @param c Chave do elemento procurado.
+	 * 
+	 * @return -1 se não existir a chave procurada. Caso contrário, o
+	 * elemento cuja chave é {@code c}.
+	 * 
+	 * @throws IOException
+	 */
 	
-		
-	// Busca recursiva por um elemento a partir da chave. Este metodo invoca 
-	// o método recursivo buscar1, passando a raiz como referência.
 	public long buscar(int c) throws IOException {
 		
 		// Recupera a raiz da árvore
@@ -167,8 +211,19 @@ public class Indice {
 			return -1;
 	}
 	
-	// Busca recursiva. Este método recebe a referência de uma página e busca
-	// pela chave na mesma. A busca continua pelos filhos, se houverem.
+	/**
+	 * Este método recebe a referência de uma página e busca pela chave na mesma.
+	 * A busca continua pelos filhos, se houverem.
+	 * 
+	 * @param chave Chave do elemento procurado.
+	 * @param pagina Referência para a página atual.
+	 * 
+	 * @return -1 se não existir a chave procurada. Caso contrário, o
+	 * elemento cuja chave é a informada.
+	 * 
+	 * @throws IOException
+	 */
+	
 	private long buscar1(int chave, long pagina) throws IOException {
 		
 		// Como a busca é recursiva, a descida para um filho inexistente
