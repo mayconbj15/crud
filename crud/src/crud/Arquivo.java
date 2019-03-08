@@ -152,18 +152,19 @@ public class Arquivo {
 	 * Insere uma entidade na base de dados.
 	 * 
 	 * @param produto Entidade a ser inserida.
+	 * @param id Último ID da base de dados + 1
 	 * 
 	 * @return {@code false} se alguma coisa falhar na inserção.
 	 * Caso contrário, retorna {@code true}.
 	 */
 	
-	public boolean writeObject(Produto produto) {
+	private boolean writeObject(Produto produto, short id) {
 		boolean success = false;
 		
 		try {
 			accessFile = openFile();
 			
-			produto.setId( (short) (readLastID() + 1) );
+			produto.setId(id);
 			setLastID( writeLastID( produto.getId() ) );
 			
 			byte[] byteArray = produto.setByteArray();
@@ -192,6 +193,19 @@ public class Arquivo {
 		}
 		
 		return success;
+	}
+	
+	/**
+	 * Insere uma entidade na base de dados.
+	 * 
+	 * @param produto Entidade a ser inserida.
+	 * 
+	 * @return {@code false} se alguma coisa falhar na inserção.
+	 * Caso contrário, retorna {@code true}.
+	 */
+	
+	public boolean writeObject(Produto produto) {
+		return writeObject(produto, (short) (readLastID() + 1));
 	}
 
 	/**
@@ -358,7 +372,7 @@ public class Arquivo {
 		
 		if (success)
 		{
-			success = writeObject(produto2);
+			success = writeObject(produto2, (short) id);
 		}
 		
 		return success;
