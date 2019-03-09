@@ -151,20 +151,25 @@ public class Arquivo {
 	/**
 	 * Insere uma entidade na base de dados.
 	 * 
+	 * <p>
+	 * <b>Importante</b>: esta função não le o último ID usado do
+	 * cabeçalho da base de dados nem escreve o id recebido no
+	 * cabeçalho da base de dados, caso for necessário, gerencie
+	 * isso por conta própria.
+	 * </p> 
+	 * 
 	 * @param produto Entidade a ser inserida.
+	 * @param id Id da entidade.
 	 * 
 	 * @return {@code false} se alguma coisa falhar na inserção.
 	 * Caso contrário, retorna {@code true}.
 	 */
 	
-	public boolean writeObject(Produto produto) {
+	public boolean writeObject(Produto produto, int id) {
 		boolean success = false;
 		
 		try {
 			accessFile = openFile();
-			
-			produto.setId( (short) (readLastID() + 1) );
-			setLastID( writeLastID( produto.getId() ) );
 			
 			byte[] byteArray = produto.setByteArray();
 			
@@ -173,10 +178,10 @@ public class Arquivo {
 			
 			// insere a chave (id) e o dado correspondente (endereço do registro)
 			// no sistema de indexamento
-			indice.inserir(produto.getId(), accessFile.getFilePointer());
+			indice.inserir(id, accessFile.getFilePointer());
 			
 			accessFile.writeChar(' '); // insere a lapide
-			accessFile.writeShort(produto.getId()); // insere o id
+			accessFile.writeShort(id); // insere o id
 			accessFile.writeInt(byteArray.length); // insere o tamanho da entidade
 			accessFile.write(byteArray); // insere a entidade
 			
@@ -192,6 +197,23 @@ public class Arquivo {
 		}
 		
 		return success;
+	}
+	
+	/**
+	 * Insere uma entidade na base de dados.
+	 * 
+	 * @param produto Entidade a ser inserida.
+	 * 
+	 * @return {@code false} se alguma coisa falhar na inserção.
+	 * Caso contrário, retorna {@code true}.
+	 */
+	
+	public boolean writeObject(Produto produto) {
+		int newId = readLastID() + 1;
+
+		writeLastID((short) newId);
+		
+		return writeObject(produto, newId);
 	}
 
 	/**
@@ -358,7 +380,7 @@ public class Arquivo {
 		
 		if (success)
 		{
-			success = writeObject(produto2);
+			success = writeObject(produto2, id);
 		}
 		
 		return success;
