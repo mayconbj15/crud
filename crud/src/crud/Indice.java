@@ -2,9 +2,12 @@ package crud;
 
 import java.io.*;
 
-// Árvore B+ para ser usada como índice direto de algum arquivo de entidades
-// CHAVE: Int	(usado para id de alguma entidade)
-// VALOR: Long	(usado para endereço do registro dessa entidade no arquivo)
+/**
+ * Árvore B+ para ser usada como índice direto de algum arquivo de entidades.
+ * 
+ * CHAVE: Int	(usado para id de alguma entidade)
+ * VALOR: Long	(usado para endereço do registro dessa entidade no arquivo)
+ */
 
 public class Indice {
 
@@ -21,7 +24,10 @@ public class Indice {
 	private boolean cresceu;
 	private boolean diminuiu;
 	
-	// Esta classe representa uma página da árvore (folha ou não folha). 
+	/**
+	 * Esta classe representa uma página da árvore (folha ou não folha).
+	 */
+	
 	private class Pagina {
 
 		protected int	 ordem;					// Número máximo de filhos que uma página pode ter
@@ -260,8 +266,19 @@ public class Indice {
 			return buscar1(chave, pa.filhos[i+1]);
 	}
 		
-	// Atualiza recursivamente um valor a partir da sua chave. Este metodo invoca 
-	// o método recursivo atualizar1, passando a raiz como referência.
+	/**
+	 * Atualiza recursivamente um valor a partir da sua chave. Este metodo invoca
+	 * o método recursivo atualizar1, passando a raiz como referência.
+	 * 
+	 * @param c Chave do elemento procurado.
+	 * @param d Novo valor a ser colocado junto da chave.
+	 * 
+	 * @return {@code false} se não existir a chave procurada. Caso contrário,
+	 * retorna {@code true}.
+	 * 
+	 * @throws IOException
+	 */
+	
 	public boolean atualizar(int c, long d) throws IOException {
 		
 		// Recupera a raiz da árvore
@@ -276,8 +293,19 @@ public class Indice {
 			return false;
 	}
 	
-	// Atualização recursiva. Este método recebe a referência de uma página, uma
-	// chave de busca e o dado correspondente a ela. 
+	/**
+	 * Atualiza recursivamente um valor a partir da sua chave.
+	 * 
+	 * @param chave Chave do elemento procurado.
+	 * @param dado Novo valor a ser colocado junto da chave.
+	 * @param pagina Referência para a página atual.
+	 * 
+	 * @return {@code false} se não existir a chave procurada. Caso contrário,
+	 * retorna {@code true}.
+	 * 
+	 * @throws IOException
+	 */
+	
 	private boolean atualizar1(int chave, long dado, long pagina) throws IOException {
 		
 		// Como a busca é recursiva, a descida para um filho inexistente
@@ -317,10 +345,20 @@ public class Indice {
 			return atualizar1(chave, dado, pa.filhos[i+1]);
 	}
 		
+	/**
+	 * Inclusão de novos elementos na árvore. A inclusão é recursiva. A primeira
+	 * função chama a segunda recursivamente, passando a raiz como referência.
+	 * Eventualmente, a árvore pode crescer para cima.
+	 * 
+	 * @param c Chave do elemento procurado.
+	 * @param d Novo valor a ser colocado junto da chave.
+	 * 
+	 * @return {@code false} se a inserção falhar. Caso contrário,
+	 * retorna {@code true}.
+	 * 
+	 * @throws IOException
+	 */
 	
-	// Inclusão de novos elementos na árvore. A inclusão é recursiva. A primeira
-	// função chama a segunda recursivamente, passando a raiz como referência.
-	// Eventualmente, a árvore pode crescer para cima.
 	public boolean inserir(int c, long d) throws IOException {
 
 		// Validação da chave
@@ -375,9 +413,18 @@ public class Indice {
 		return inserido;
 	}
 	
+	/**
+	 * Função recursiva de inclusão. A função recebe uma referência para uma
+	 * página. As inclusões são sempre feitas em uma folha.
+	 *
+	 * @param pagina Referência para a página atual.
+	 * 
+	 * @return {@code false} se a inserção falhar. Caso contrário,
+	 * retorna {@code true}.
+	 * 
+	 * @throws IOException
+	 */
 	
-	// Função recursiva de inclusão. A função passa uma página de referência.
-	// As inclusões são sempre feitas em uma folha.
 	private boolean inserir1(long pagina) throws IOException {
 		
 		// Testa se passou para o filho de uma página folha. Nesse caso, 
@@ -568,10 +615,20 @@ public class Indice {
 		return true;
 	}
 
-	
-	// Remoção elementos na árvore. A remoção é recursiva. A primeira
-	// função chama a segunda recursivamente, passando a raiz como referência.
-	// Eventualmente, a árvore pode reduzir seu tamanho, por meio da exclusão da raiz.
+	/**
+	 * Função recursiva de exclusão. A primeira função chama a segunda
+	 * recursivamente, passando a raiz como referência. Eventualmente, a
+	 * árvore pode reduzir seu tamanho, por meio da exclusão da raiz. As
+	 * exclusões são sempre feitas em folhas e a fusão é propagada para cima.
+	 * 
+	 * @param chave Chave a ser buscada.
+	 * 
+	 * @return {@code false} se a exclusão falhar. Caso contrário, retorna
+	 * {@code true}.
+	 * 
+	 * @throws IOException
+	 */
+
 	public boolean excluir(int chave) throws IOException {
 				
 		// Encontra a raiz da árvore
@@ -607,10 +664,20 @@ public class Indice {
 		 
 		return excluido;
 	}
-	
 
-	// Função recursiva de exclusão. A função passa uma página de referência.
-	// As exclusões são sempre feitas em folhas e a fusão é propagada para cima.
+	/**
+	 * Função recursiva de exclusão. A função recebe uma página de referência.
+	 * As exclusões são sempre feitas em folhas e a fusão é propagada para cima.
+	 * 
+	 * @param chave Chave a ser buscada.
+	 * @param pagina Endereço da página de referência.
+	 * 
+	 * @return {@code false} se a exclusão falhar. Caso contrário, retorna
+	 * {@code true}.
+	 * 
+	 * @throws IOException
+	 */
+
 	private boolean excluir1(int chave, long pagina) throws IOException {
 		
 		// Declaração de variáveis
@@ -885,9 +952,13 @@ public class Indice {
 		return excluido;
 	}
 	
-	
-	// Imprime a árvore, usando uma chamada recursiva.
-	// A função recursiva é chamada com uma página de referência (raiz)
+	/**
+	 * Imprime toda a árvore recursivamente. A função recursiva é chamada
+	 * com uma página de referência (raiz).
+	 * 
+	 * @throws IOException
+	 */
+
 	public void print() throws IOException {
 		long raiz;
 		arquivo.seek(0);
@@ -897,7 +968,14 @@ public class Indice {
 		System.out.println();
 	}
 	
-	// Impressão recursiva
+	/**
+	 * Imprime toda a subárvore de uma página a incluindo.
+	 * 
+	 * @param pagina Endereço da página.
+	 * 
+	 * @throws IOException
+	 */
+	
 	private void print1(long pagina) throws IOException {
 		
 		// Retorna das chamadas recursivas
@@ -932,8 +1010,12 @@ public class Indice {
 		}
 	}
 	   
-	
-	// Apaga o arquivo do índice, para que possa ser reconstruído
+	/**
+	 * Apaga o arquivo do índice, para que possa ser reconstruído.
+	 * 
+	 * @throws IOException
+	 */
+
 	public void apagar() throws IOException {
 
 		File f = new File(nomeArquivo);

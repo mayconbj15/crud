@@ -50,7 +50,7 @@ public class Arquivo {
 	* @return O arquivo da base de dados.
 	*/
 	
-	protected RandomAccessFile openFile()
+	private RandomAccessFile openFile()
 	{
 		RandomAccessFile file = null;
 		
@@ -152,7 +152,7 @@ public class Arquivo {
 	 * Insere uma entidade na base de dados.
 	 * 
 	 * <p>
-	 * <b>Importante</b>: esta função não le o último ID usado do
+	 * <b>Importante</b>: esta função não lê o último ID usado do
 	 * cabeçalho da base de dados nem escreve o id recebido no
 	 * cabeçalho da base de dados, caso for necessário, gerencie
 	 * isso por conta própria.
@@ -165,7 +165,7 @@ public class Arquivo {
 	 * Caso contrário, retorna {@code true}.
 	 */
 	
-	public boolean writeObject(Produto produto, int id) {
+	private boolean writeObject(Produto produto, int id) {
 		boolean success = false;
 		
 		try {
@@ -263,7 +263,7 @@ public class Arquivo {
 	* Caso contrário, retorna a entidade do registro.
 	*/
 	
-	public Produto readObject(RandomAccessFile file)
+	private Produto readObject(RandomAccessFile file)
 	{
 		Produto produto = null;
 		
