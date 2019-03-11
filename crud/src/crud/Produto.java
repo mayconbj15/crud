@@ -174,7 +174,14 @@ public class Produto{
 	
 	public float readPrice()
 	{
-		return setPreco( IO.readfloat("\nInforme o preço do produto: ") );
+		float price = IO.readfloat("\nInforme o preço do produto: ");
+		
+		while (price < 0)
+		{
+			price = IO.readfloat("\nInforme o preço do produto: ");
+		}
+		
+		return setPreco( price );
 	}
 	
 	/**
@@ -198,7 +205,14 @@ public class Produto{
 	
 	public int readQuantity()
 	{
-		return setQuantidade( IO.readint("\nInforme a quantidade de produtos: ") );
+		int quantity = IO.readint("\nInforme a quantidade de produtos: ");
+		
+		while (quantity < 0)
+		{
+			quantity = IO.readint("\nInforme a quantidade de produtos: ");
+		}
+		
+		return setQuantidade( quantity );
 	}
 	
 	/**
