@@ -39,10 +39,6 @@ public class Arquivo {
 	public short getLastID() {
 		return readLastID();
 	}
-
-	private short setLastID(short lastID) {
-		return this.lastID = lastID;
-	}
 	
 	/**
 	* Abre o arquivo da base de dados.
@@ -105,7 +101,7 @@ public class Arquivo {
 			ioex.printStackTrace();
 		}
 		
-		return ( lastID == -1 ? this.lastID : lastID );
+		return ( lastID == -1 ? this.lastID : (this.lastID = lastID) );
 	}
 	
 	public boolean idIsValid(short id)
