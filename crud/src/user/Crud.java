@@ -9,14 +9,19 @@ import crud.Arquivo;
  * Classe que gerencia a interação com o usuário.
  */
 
-public class Crud 
-{
+public class Crud<E>{
+	private Arquivo<E> arquivo;
+	
 	/**
 	 * Método construtor da interface do CRUD
 	 */
 	
 	public Crud() {
 		
+	}
+	
+	public Crud(String crudName, E type) {
+		this.arquivo = new Arquivo<E>(crudName);
 	}
 
 	/**
@@ -26,9 +31,9 @@ public class Crud
 	 * para o arquivo {@link user.Main#DATABASE_FILE_NAME}.
 	 */
 	
-	public static void inserir(Arquivo arquivo)
+	public void inserir()
 	{
-		if ( arquivo.writeObject( Produto.readProduct() ) )
+		if ( arquivo.writeObject( E.readProduct() ) )
 		{
 			IO.println("\nSeu produto foi cadastrado com sucesso! :D\n");
 		}
@@ -84,36 +89,36 @@ public class Crud
 	 * Caso contrário, retorna {@code true}.
 	 */
 	
-	public static boolean alterar(Arquivo arquivo, int id, int cod)
+	public boolean alterar(int id, int cod)
 	{
 		boolean success = false;
 
-		Produto produto = arquivo.readObject(id);// procurar o produto desejado na base de dados
+		E item = arquivo.readObject(id);// procurar o produto desejado na base de dados
 		
-		if (produto != null) // checa se o produto foi encontrado
+		if (item != null) // checa se o produto foi encontrado
 		{
 			success = true;
 			
 			switch (cod)
 			{
 				case 1:
-					produto.readName();
+					E.readName();
 					break;
 
 				case 2:
-					produto.readDescription();
+					E.readDescription();
 					break;
 
 				case 3:
-					produto.readPrice();
+					E.readPrice();
 					break;
 
 				case 4:
-					produto.readProvider();
+					E.readProvider();
 					break;
 
 				case 5:
-					produto.readQuantity();
+					E.readQuantity();
 					break;
 
 				default:
@@ -124,7 +129,7 @@ public class Crud
 			
 			if (success)
 			{
-				success = arquivo.changeObject(id, produto);
+				success = arquivo.changeObject(id, E);
 				
 				if (success)
 				{
@@ -179,7 +184,7 @@ public class Crud
 		}
 	}
 
-	public static void menuExclusao(Arquivo arquivo)
+	public static <E> void menuExclusao(Arquivo<E> arquivo)
 	{ 
 		int cod = -1; //codigo de selecao
 		short id = IO.readshort("Digite o id do produto a ser excluído: ");
@@ -214,7 +219,7 @@ public class Crud
 		}
 	}
 
-	public static void menuConsulta(Arquivo arquivo)
+	public static <E> void menuConsulta(Arquivo<E> arquivo)
 	{
 		short id = IO.readshort("Digite o id do produto a ser procurado: ");
 		
@@ -229,18 +234,19 @@ public class Crud
 		}
 	}
 
-	public static void menuListar(Arquivo arquivo)
+	public static <E> void menuListar(Arquivo<E> arquivo)
 	{
-		arquivo.list().forEach( (produto) -> IO.println(produto + "\n") );
+		arquivo.list().forEach( (E) -> IO.println(E + "\n") );
 	}
 
 	/**
 	 * Gerencia a interação com o usuário.
+	 * @param <E>
 	 */
 	
-	public static void menu()
+	public static <E> void menu(E item)
 	{
-		Arquivo arquivo = new Arquivo(Main.DATABASE_FILE_NAME);		   
+		Arquivo<E> arquivo = new Arquivo<E>(Main.DATABASE_FILE_NAME);		   
 		int selecao;
 		
 		IO.println("Olá, meu nobre!\n");

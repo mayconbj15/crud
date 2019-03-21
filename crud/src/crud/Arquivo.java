@@ -5,10 +5,10 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
- * Classe para gerenciamento de registros na base de dados
+ * Classe para gerenciamento de registros de tipos genéricos na base de dados
  */
 
-public class Arquivo {
+public class Arquivo<E> {
 	private String name;
 	private short lastID;
 	RandomAccessFile accessFile;
@@ -161,13 +161,13 @@ public class Arquivo {
 	 * Caso contrário, retorna {@code true}.
 	 */
 	
-	private boolean writeObject(Produto produto, int id) {
+	private boolean writeObject(E produto, int id) {
 		boolean success = false;
 		
 		try {
 			accessFile = openFile();
 			
-			byte[] byteArray = produto.setByteArray();
+			byte[] byteArray = E.setByteArray();
 			
 			// go to final of file
 			accessFile.seek(accessFile.length());
@@ -221,8 +221,8 @@ public class Arquivo {
 	* contrário, a entidade.
 	*/
 	
-	public Produto readObject(int id) {
-		Produto produto = null;
+	public E readObject(int id) {
+		E item = null;
 		
 		try {
 			long entityAddress = indice.buscar(id);
@@ -232,7 +232,7 @@ public class Arquivo {
 				accessFile = openFile();
 				accessFile.seek(entityAddress);
 				
-				produto = readObject(accessFile);
+				item = readObject(accessFile);
 				
 				accessFile.close();
 			}
@@ -242,7 +242,7 @@ public class Arquivo {
 			e.printStackTrace();
 		}
 
-		return produto;
+		return item;
 	}
 	
 	/**
@@ -259,7 +259,7 @@ public class Arquivo {
 	* Caso contrário, retorna a entidade do registro.
 	*/
 	
-	private Produto readObject(RandomAccessFile file)
+	private E readObject(RandomAccessFile file)
 	{
 		Produto produto = null;
 		
@@ -296,7 +296,7 @@ public class Arquivo {
 	
 	public ArrayList<Produto> list() {
 		ArrayList<Produto> listProdutos = new ArrayList<Produto>();
-		Produto produtoAux = null;
+		E produtoAux = null;
 		
 		try
 		{
