@@ -32,5 +32,5 @@ public interface Entidade {
 		return null;
 	}*/
 	
-	public Produto readProduct();
+	public Produto readProduct(); //mudar a parte do código na Crud que usa essa função, em inserir L:45
 }
