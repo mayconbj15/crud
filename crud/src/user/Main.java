@@ -19,7 +19,12 @@ public class Main {
 		
 		Produto produtos = new Produto();
 		
-		Crud<Produto> crudProduto = new Crud<Produto>();
-		crudProduto.menu(produtos);
+		try {
+			Crud<Produto> crudProduto = new Crud<Produto>("crudProdutos.db", produtos.getClass().getDeclaredConstructor());
+			crudProduto.menu(produtos);
+		}
+		catch(NoSuchMethodException nsme) {
+			nsme.printStackTrace();
+		}
 	}
 }

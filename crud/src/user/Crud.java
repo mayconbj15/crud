@@ -6,13 +6,17 @@ import crud.Produto;
 import crud.Arquivo;
 import crud.Entidade;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * Classe que gerencia a interação com o usuário.
  */
 
 public class Crud<T extends Entidade>{
 	private Arquivo<T> arquivo;
-	
+	private Constructor<? extends Entidade> constructor;
+	private String crudName;
 	/**
 	 * Método construtor da interface do CRUD
 	 */
@@ -21,9 +25,11 @@ public class Crud<T extends Entidade>{
 		
 	}
 	
-	/*public Crud(String crudName, T type) {
-		this.arquivo = new Arquivo<T>(type.class.getConstructor(), crudName);
-	}*/
+	public Crud(String crudName, Constructor<? extends Entidade> constructor2) {
+		//this.arquivo = new Arquivo<T>(type.class.getConstructor(), crudName);
+		this.crudName = crudName;
+		this.constructor = constructor2;
+	}
 
 	/**
 	 * Le os campos da entidade e a insere na base de dados.
@@ -33,17 +39,28 @@ public class Crud<T extends Entidade>{
 	 */
 	
 	public void inserir(Arquivo<T> arquivo){
-		T item = null;
-		
-		if ( arquivo.writeObject( (T)item.readProduct() ) )
-		{
-			IO.println("\nSeu produto foi cadastrado com sucesso! :D\n");
+		//T item;
+		try {
+			T item = (T) constructor.newInstance();
+			if ( arquivo.writeObject( (T)item.readProduct() ) )
+			{
+				IO.println("\nSeu produto foi cadastrado com sucesso! :D\n");
+			}
+			
+			else
+			{
+				IO.println("\nFalha no cadastramento do produto.\n");
+			}
+		}catch(IllegalAccessException iae) {
+			iae.printStackTrace();
+		}catch(InstantiationException ie) {
+			ie.printStackTrace();
+		}catch(InvocationTargetException ite) {
+			ite.printStackTrace();
 		}
 		
-		else
-		{
-			IO.println("\nFalha no cadastramento do produto.\n");
-		}
+		
+	
 	}//end inserir()
 
 
@@ -238,7 +255,7 @@ public class Crud<T extends Entidade>{
 
 	public void menuListar(Arquivo<T> arquivo)
 	{
-		arquivo.list().forEach( (E) -> IO.println(E + "\n") );
+		arquivo.list().forEach( (T) -> IO.println(T + "\n") );
 	}
 
 	/**
@@ -248,67 +265,74 @@ public class Crud<T extends Entidade>{
 	
 	public void menu(T item)
 	{
-		Arquivo<T> arquivo = new Arquivo<T>(Main.DATABASE_FILE_NAME);		   
-		int selecao;
-		
-		IO.println("Olá, meu nobre!\n");
-		
-		do {
-			//Interface de entrada
-			IO.println("Qual das seguintes operações o senhor deseja realizar ?");
-			IO.println("Digite:");
-			IO.println("1 para inclusão");
-			IO.println("2 para alteração");
-			IO.println("3 para exclusão");
-			IO.println("4 para consulta de produtos");
-			IO.println("5 para listar todos os produtos");
-			IO.println("0 para sair");
-			IO.println("");
-			selecao = IO.readint("Operação: ");
+		try {
+			Arquivo<T> arquivo = new Arquivo<T>(item.getClass().getConstructor(), Main.DATABASE_FILE_NAME);
 			
-			IO.println("\nOperação iniciada...\n");
+			int selecao;
 			
-			switch (selecao)
-			{
-				case 0:
-					IO.println("Até breve :)");
-					break;
-					
-				case 1:
-					menuInclusao(arquivo);
-					IO.pause();
-					break;
-					
-				case 2:
-					menuAlteracao(arquivo);
-					IO.pause();
-					break;
-					
-				case 3:
-					menuExclusao(arquivo);
-					IO.pause();
-					break;
-					
-				case 4:
-					menuConsulta(arquivo);
-					IO.pause();
-					break;
-					
-				case 5:
-					menuListar(arquivo);
-					IO.pause();
-					break;
-					
-				default:
-					IO.println("Operação inválida\n");
-					break;
-			}
+			IO.println("Olá, meu nobre!\n");
+			
+			do {
+				//Interface de entrada
+				IO.println("Qual das seguintes operações o senhor deseja realizar ?");
+				IO.println("Digite:");
+				IO.println("1 para inclusão");
+				IO.println("2 para alteração");
+				IO.println("3 para exclusão");
+				IO.println("4 para consulta de produtos");
+				IO.println("5 para listar todos os produtos");
+				IO.println("0 para sair");
+				IO.println("");
+				selecao = IO.readint("Operação: ");
+				
+				IO.println("\nOperação iniciada...\n");
+				
+				switch (selecao)
+				{
+					case 0:
+						IO.println("Até breve :)");
+						break;
+						
+					case 1:
+						menuInclusao(arquivo);
+						IO.pause();
+						break;
+						
+					case 2:
+						menuAlteracao(arquivo);
+						IO.pause();
+						break;
+						
+					case 3:
+						menuExclusao(arquivo);
+						IO.pause();
+						break;
+						
+					case 4:
+						menuConsulta(arquivo);
+						IO.pause();
+						break;
+						
+					case 5:
+						menuListar(arquivo);
+						IO.pause();
+						break;
+						
+					default:
+						IO.println("Operação inválida\n");
+						break;
+				}
 
-			
-			IO.println("\nOperação finalizada.\n");
-			IO.println("--------------------------------------------\n");
-			
-		} while (selecao != 0);
+				
+				IO.println("\nOperação finalizada.\n");
+				IO.println("--------------------------------------------\n");
+				
+			} while (selecao != 0);
+		}catch(NoSuchMethodException nsme) {
+			nsme.printStackTrace();
+		}
+				   
+	
 		
 	}//end menu()
 	
