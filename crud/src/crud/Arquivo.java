@@ -4,22 +4,27 @@ import java.io.*;
 
 import java.util.ArrayList;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * Classe para gerenciamento de registros de tipos genéricos na base de dados
  */
 
-public class Arquivo<E> {
+public class Arquivo<T extends Entidade> {
 	private String name;
 	private short lastID;
 	RandomAccessFile accessFile;
+	private Constructor<T> constructor;
 	
 	Indice indice;
 	final int treeOrder = 21;
 	final String indexFileName = "indexes";
 
-	public Arquivo(String nameFile) {
+	public Arquivo(Constructor<T> constructor, String nameFile) {
 		this.name = nameFile;
 		this.lastID = -1;
+		this.constructor = constructor;
 		
 		try
 		{
@@ -161,13 +166,13 @@ public class Arquivo<E> {
 	 * Caso contrário, retorna {@code true}.
 	 */
 	
-	private boolean writeObject(E produto, int id) {
+	private boolean writeObject(T item, int id) {
 		boolean success = false;
 		
 		try {
 			accessFile = openFile();
 			
-			byte[] byteArray = E.setByteArray();
+			byte[] byteArray = item.setByteArray();
 			
 			// go to final of file
 			accessFile.seek(accessFile.length());
@@ -204,12 +209,12 @@ public class Arquivo<E> {
 	 * Caso contrário, retorna {@code true}.
 	 */
 	
-	public boolean writeObject(Produto produto) {
+	public boolean writeObject(T item) {
 		int newId = readLastID() + 1;
 
 		writeLastID((short) newId);
 		
-		return writeObject(produto, newId);
+		return writeObject(item, newId);
 	}
 
 	/**
@@ -221,8 +226,8 @@ public class Arquivo<E> {
 	* contrário, a entidade.
 	*/
 	
-	public E readObject(int id) {
-		E item = null;
+	public T readObject(int id) {
+		T item = null;
 		
 		try {
 			long entityAddress = indice.buscar(id);
@@ -259,9 +264,9 @@ public class Arquivo<E> {
 	* Caso contrário, retorna a entidade do registro.
 	*/
 	
-	private E readObject(RandomAccessFile file)
+	private T readObject(RandomAccessFile file)
 	{
-		Produto produto = null;
+		T item = null;
 		
 		try
 		{
@@ -275,8 +280,17 @@ public class Arquivo<E> {
 			
 			if (lapide != '*')
 			{
-				produto = new Produto();
-				produto.fromByteArray(byteArray, id);
+				try {
+					item = constructor.newInstance();
+				}catch(IllegalAccessException iae) {
+					iae.printStackTrace();
+				}catch(InstantiationException ie) {
+					ie.printStackTrace();
+				}catch(InvocationTargetException ite) {
+					ite.printStackTrace();
+				}
+				
+				item.fromByteArray(byteArray, id);
 			}
 		}
 		
@@ -285,7 +299,7 @@ public class Arquivo<E> {
 			e.printStackTrace();
 		}
 		
-		return produto;
+		return item;
 	}
 	
 	/**
@@ -294,9 +308,9 @@ public class Arquivo<E> {
 	* @return Lista com todas as entidades.
 	*/
 	
-	public ArrayList<Produto> list() {
-		ArrayList<Produto> listProdutos = new ArrayList<Produto>();
-		E produtoAux = null;
+	public ArrayList<T> list() {
+		ArrayList<T> listProdutos = new ArrayList<T>();
+		T produtoAux = null;
 		
 		try
 		{
@@ -370,13 +384,13 @@ public class Arquivo<E> {
 	 * Caso contrário, retorna {@code false}.
 	 */
 	
-	public boolean changeObject(int id, Produto produto2) {
+	public boolean changeObject(int id, T item2) {
 		
 		boolean success = deleteObject(id);
 		
 		if (success)
 		{
-			success = writeObject(produto2, id);
+			success = writeObject(item2, id);
 		}
 		
 		return success;
