@@ -4,13 +4,14 @@ import util.*;
 
 import crud.Produto;
 import crud.Arquivo;
+import crud.Entidade;
 
 /**
  * Classe que gerencia a interação com o usuário.
  */
 
-public class Crud<E>{
-	private Arquivo<E> arquivo;
+public class Crud<T extends Entidade>{
+	private Arquivo<T> arquivo;
 	
 	/**
 	 * Método construtor da interface do CRUD
@@ -20,9 +21,9 @@ public class Crud<E>{
 		
 	}
 	
-	public Crud(String crudName, E type) {
-		this.arquivo = new Arquivo<E>(crudName);
-	}
+	/*public Crud(String crudName, T type) {
+		this.arquivo = new Arquivo<T>(type.class.getConstructor(), crudName);
+	}*/
 
 	/**
 	 * Le os campos da entidade e a insere na base de dados.
@@ -31,9 +32,10 @@ public class Crud<E>{
 	 * para o arquivo {@link user.Main#DATABASE_FILE_NAME}.
 	 */
 	
-	public void inserir()
-	{
-		if ( arquivo.writeObject( E.readProduct() ) )
+	public void inserir(Arquivo<T> arquivo){
+		T item = null;
+		
+		if ( arquivo.writeObject( (T)item.readProduct() ) )
 		{
 			IO.println("\nSeu produto foi cadastrado com sucesso! :D\n");
 		}
@@ -89,11 +91,11 @@ public class Crud<E>{
 	 * Caso contrário, retorna {@code true}.
 	 */
 	
-	public boolean alterar(int id, int cod)
+	public boolean alterar(Arquivo<T> arquivo, int id, int cod)
 	{
 		boolean success = false;
 
-		E item = arquivo.readObject(id);// procurar o produto desejado na base de dados
+		T item = arquivo.readObject(id);// procurar o produto desejado na base de dados
 		
 		if (item != null) // checa se o produto foi encontrado
 		{
@@ -102,23 +104,23 @@ public class Crud<E>{
 			switch (cod)
 			{
 				case 1:
-					E.readName();
+					item.readName();
 					break;
 
 				case 2:
-					E.readDescription();
+					item.readDescription();
 					break;
 
 				case 3:
-					E.readPrice();
+					item.readPrice();
 					break;
 
 				case 4:
-					E.readProvider();
+					item.readProvider();
 					break;
 
 				case 5:
-					E.readQuantity();
+					item.readQuantity();
 					break;
 
 				default:
@@ -129,7 +131,7 @@ public class Crud<E>{
 			
 			if (success)
 			{
-				success = arquivo.changeObject(id, E);
+				success = arquivo.changeObject(id, item);
 				
 				if (success)
 				{
@@ -151,12 +153,12 @@ public class Crud<E>{
 		return success;
 	}//end alterar()
 
-	public static void menuInclusao(Arquivo arquivo)
+	public void menuInclusao(Arquivo<T> arquivo)
 	{
 		inserir(arquivo);
 	}
 
-	public static void menuAlteracao(Arquivo arquivo)
+	public void menuAlteracao(Arquivo<T> arquivo)
 	{ 
 		int cod = -1; //codigo de selecao
 		short id = IO.readshort("Digite o id do produto a ser alterado: ");
@@ -184,7 +186,7 @@ public class Crud<E>{
 		}
 	}
 
-	public static <E> void menuExclusao(Arquivo<E> arquivo)
+	public void menuExclusao(Arquivo<T> arquivo)
 	{ 
 		int cod = -1; //codigo de selecao
 		short id = IO.readshort("Digite o id do produto a ser excluído: ");
@@ -219,7 +221,7 @@ public class Crud<E>{
 		}
 	}
 
-	public static <E> void menuConsulta(Arquivo<E> arquivo)
+	public void menuConsulta(Arquivo<T> arquivo)
 	{
 		short id = IO.readshort("Digite o id do produto a ser procurado: ");
 		
@@ -234,7 +236,7 @@ public class Crud<E>{
 		}
 	}
 
-	public static <E> void menuListar(Arquivo<E> arquivo)
+	public void menuListar(Arquivo<T> arquivo)
 	{
 		arquivo.list().forEach( (E) -> IO.println(E + "\n") );
 	}
@@ -244,9 +246,9 @@ public class Crud<E>{
 	 * @param <E>
 	 */
 	
-	public static <E> void menu(E item)
+	public void menu(T item)
 	{
-		Arquivo<E> arquivo = new Arquivo<E>(Main.DATABASE_FILE_NAME);		   
+		Arquivo<T> arquivo = new Arquivo<T>(Main.DATABASE_FILE_NAME);		   
 		int selecao;
 		
 		IO.println("Olá, meu nobre!\n");

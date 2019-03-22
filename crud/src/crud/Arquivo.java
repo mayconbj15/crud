@@ -15,13 +15,13 @@ public class Arquivo<T extends Entidade> {
 	private String name;
 	private short lastID;
 	RandomAccessFile accessFile;
-	private Constructor<T> constructor;
+	//private Constructor<T> constructor;
 	
 	Indice indice;
 	final int treeOrder = 21;
 	final String indexFileName = "indexes";
 
-	public Arquivo(Constructor<T> constructor, String nameFile) {
+	/*public Arquivo(Constructor<T> constructor, String nameFile) {
 		this.name = nameFile;
 		this.lastID = -1;
 		this.constructor = constructor;
@@ -35,7 +35,23 @@ public class Arquivo<T extends Entidade> {
 		{
 			e.printStackTrace();
 		}
+	}*/
+	
+	public Arquivo(String nameFile) {
+		this.name = nameFile;
+		this.lastID = -1;
+		
+		try
+		{
+			this.indice = new Indice(treeOrder, indexFileName);
+		}
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
+	
 	/*
 	public short getLastID() {
 		return this.lastID;
@@ -281,13 +297,11 @@ public class Arquivo<T extends Entidade> {
 			if (lapide != '*')
 			{
 				try {
-					item = constructor.newInstance();
+					item = (T)item.getClass().newInstance();
 				}catch(IllegalAccessException iae) {
 					iae.printStackTrace();
 				}catch(InstantiationException ie) {
 					ie.printStackTrace();
-				}catch(InvocationTargetException ite) {
-					ite.printStackTrace();
 				}
 				
 				item.fromByteArray(byteArray, id);

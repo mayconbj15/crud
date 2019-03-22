@@ -2,6 +2,8 @@ package user;
 
 import java.io.*;
 
+import crud.Produto;
+
 
 public class Main {
 	
@@ -15,6 +17,9 @@ public class Main {
 		file.delete();
 		file1.delete();
 		
-		Crud.menu();
+		Produto produtos = new Produto();
+		
+		Crud<Produto> crudProduto = new Crud<Produto>();
+		crudProduto.menu(produtos);
 	}
 }

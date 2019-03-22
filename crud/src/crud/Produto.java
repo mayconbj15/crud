@@ -8,7 +8,7 @@ import util.IO;
  * Entidade comum da base de dados.
  */
 
-public class Produto{
+public class Produto implements Entidade{
 	private short id;
 	private String nome;
 	private String descricao;
@@ -225,7 +225,7 @@ public class Produto{
 	* @return Produto com os campos lidos.
 	*/
 	
-	public static Produto readProduct()
+	public Produto readProduct()
 	{
 		Produto produto = new Produto();
 		
