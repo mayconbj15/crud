@@ -25,7 +25,7 @@ public class Arquivo<T extends Entidade> {
 	private Constructor<T> constructor;
 	
 	private Indice indice;
-	private final int treeOrder = 21;
+	private final int TREE_ORDER = 21;
 	private String indexFileName;
 	
 	/**
@@ -45,7 +45,7 @@ public class Arquivo<T extends Entidade> {
 		
 		try
 		{
-			this.indice = new Indice(treeOrder, indexFileName);
+			this.indice = new Indice(TREE_ORDER, indexFileName);
 		}
 		
 		catch (IOException e)
@@ -141,7 +141,7 @@ public class Arquivo<T extends Entidade> {
 	 * Caso contrário, retorna {@code true}.
 	 */
 	
-	private boolean writeObject(T item) {
+	public boolean writeObject(T item) {
 		boolean success = false;
 		
 		try {
@@ -345,9 +345,9 @@ public class Arquivo<T extends Entidade> {
 	
 	public boolean changeObject(int id, T item2) {
 		
-		boolean success = deleteObject(id);
+		boolean success = false;
 		
-		if (success)
+		if (deleteObject(id))
 		{
 			item2.setId(id);
 			success = writeObject(item2);
