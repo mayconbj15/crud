@@ -54,9 +54,6 @@ public class Main {
 				COMPOSITE_TREE_ORDER,
 				COMPOSITE_INDEXES_FILE_NAME
 			);
-			
-			Crud crudMaster = new Crud(databaseProduto, databaseCategoria);
-			crudMaster.menu();
 		}
 		
 		catch(NoSuchMethodException nsme) {
@@ -72,5 +69,8 @@ public class Main {
 		
 		startFiles();
 		startVariables();
+		
+		Crud crudMaster = new Crud(databaseProduto, databaseCategoria);
+		crudMaster.menu();
 	}
 }
