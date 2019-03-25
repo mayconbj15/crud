@@ -13,7 +13,7 @@ public class Main {
 	public static final String DATABASE_FILE_NAME_PRODUTOS = "produtos.db";
 	public static final String INDEXES_FILE_NAME_PRODUTOS = "produtos.idx";
 	public static final String DATABASE_FILE_NAME_CATEGORIAS = "categorias.db";
-	public static final String INDEXES_FILE_NAME_CATEGORIAS = "produtos.idx";
+	public static final String INDEXES_FILE_NAME_CATEGORIAS = "categorias.idx";
 	
 	public static Arquivo<Produto> databaseProduto;
 	public static Arquivo<Categoria> databaseCategoria;
