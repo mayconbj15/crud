@@ -49,8 +49,8 @@ public class Produto implements Entidade{
 		return idCategoria;
 	}
 
-	public void setIdCategoria(int idCategoria) {
-		this.idCategoria = idCategoria;
+	public int setIdCategoria(int idCategoria) {
+		return this.idCategoria = idCategoria;
 	}
 
 	public String getNome(){
@@ -96,7 +96,7 @@ public class Produto implements Entidade{
 	/**
 	 * <p>
 	 * Obs.: a estrutura do arranjo é a seguinte:
-	 * [ id, nome, descrição, preço, fornecedor, quantidade ]
+	 * [ id, idCategoria, nome, descrição, preço, fornecedor, quantidade ]
 	 * </p>
 	 * 
 	 * {@inheritDoc}
@@ -109,6 +109,7 @@ public class Produto implements Entidade{
 		
 		try{
 			dataStream.writeInt(this.id);
+			dataStream.writeInt(this.idCategoria);
 			dataStream.writeUTF(this.nome);
 			dataStream.writeUTF(this.descricao);
 			dataStream.writeFloat(this.preco);
@@ -129,7 +130,7 @@ public class Produto implements Entidade{
 	/**
 	 * <p>
 	 * Obs.: a estrutura de {@code byteArray} deve ser a seguinte:
-	 * [ id, nome, descrição, preço, fornecedor, quantidade ]
+	 * [ id, idCategoria, nome, descrição, preço, fornecedor, quantidade ]
 	 * </p>
 	 * 
 	 * {@inheritDoc}
@@ -142,6 +143,7 @@ public class Produto implements Entidade{
 
 		try{
 			this.id = dataStream.readInt();
+			this.idCategoria = dataStream.readInt();
 			this.nome = dataStream.readUTF();
 			this.descricao = dataStream.readUTF();
 			this.preco = dataStream.readFloat();
@@ -154,6 +156,20 @@ public class Produto implements Entidade{
 		catch(IOException e){
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Lê a categoria do produto da entrada padrão e redefine
+	 * o campo {@link #idCategoria} desta entidade.
+	 *  
+	 * @return A categoria lida.
+	 */
+	
+	public int readCategory()
+	{
+		return setIdCategoria(
+			IO.readLineUntilPositiveInt("\nInforme a categoria do produto: ")
+		);
 	}
 	
 	/**
@@ -233,7 +249,8 @@ public class Produto implements Entidade{
 	public Produto readProduct()
 	{
 		Produto produto = new Produto();
-		
+
+		produto.readCategory();
 		produto.readName();
 		produto.readDescription();
 		produto.readPrice();
