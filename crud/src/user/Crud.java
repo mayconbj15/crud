@@ -3,11 +3,7 @@ package user;
 import util.*;
 import crud.Arquivo;
 import entidades.Categoria;
-import entidades.Entidade;
 import entidades.Produto;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Classe que gerencia a interação com o usuário.
