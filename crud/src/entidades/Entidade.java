@@ -1,4 +1,4 @@
-package crud;
+package entidades;
 
 public interface Entidade {
 	

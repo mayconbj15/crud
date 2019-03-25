@@ -1,10 +1,9 @@
 package user;
 
 import util.*;
-
-import crud.Produto;
 import crud.Arquivo;
-import crud.Entidade;
+import entidades.Entidade;
+import entidades.Produto;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -15,8 +14,9 @@ import java.lang.reflect.InvocationTargetException;
 
 public class Crud<T extends Entidade>{
 	private Arquivo<T> arquivo;
-	private Constructor<? extends Entidade> constructor;
+	private Constructor<T> constructor;
 	private String crudName;
+	
 	/**
 	 * Método construtor da interface do CRUD
 	 */
@@ -25,7 +25,7 @@ public class Crud<T extends Entidade>{
 		
 	}
 	
-	public Crud(String crudName, Constructor<? extends Entidade> constructor2) {
+	public Crud(String crudName, Constructor<T> constructor2) {
 		//this.arquivo = new Arquivo<T>(type.class.getConstructor(), crudName);
 		this.crudName = crudName;
 		this.constructor = constructor2;

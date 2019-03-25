@@ -4,6 +4,8 @@ import java.io.*;
 
 import java.util.ArrayList;
 
+import entidades.Entidade;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -34,12 +36,12 @@ public class Arquivo<T extends Entidade> {
 	 * @param nameFile Nome do arquivo da base de dados.
 	 */
 	
-	public Arquivo(Constructor<T> constructor, String nameFile) {
-		this.name = nameFile;
+	public Arquivo(Constructor<T> constructor, String databaseFileName, String indexesFileName) {
+		this.name = databaseFileName;
 		this.lastID = -1;
 		this.constructor = constructor;
 		// cada entidade tem que ter um arquivo de indice com nome personalizado
-		this.indexFileName = constructor.getClass().getName() + "_indexes.idx";
+		this.indexFileName = indexesFileName;
 		
 		try
 		{

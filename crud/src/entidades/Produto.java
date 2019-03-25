@@ -1,11 +1,11 @@
-package crud;
+package entidades;
 
 import java.io.*;
 
 import util.IO;
 
 /**
- * Entidade comum da base de dados.
+ * Classe das entidades produto.
  */
 
 public class Produto implements Entidade{
@@ -43,6 +43,14 @@ public class Produto implements Entidade{
 	@Override
 	public int setId(int id){
 		return this.id = id;
+	}
+	
+	public int getIdCategoria() {
+		return idCategoria;
+	}
+
+	public void setIdCategoria(int idCategoria) {
+		this.idCategoria = idCategoria;
 	}
 
 	public String getNome(){
