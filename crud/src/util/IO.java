@@ -62,14 +62,14 @@ public class IO
 		return line;
 	}
 	
-	public static String readLineUntilPositiveInt(String msg)
+	public static int readLineUntilPositiveInt(String msg)
 	{
-		return readLineUntilItMatch(msg, REGEX_INT_POSITIVE);
+		return Integer.parseInt(readLineUntilItMatch(msg, REGEX_INT_POSITIVE));
 	}
 	
-	public static String readLineUntilPositiveFloat(String msg)
+	public static float readLineUntilPositiveFloat(String msg)
 	{
-		return readLineUntilItMatch(msg, REGEX_FLOAT_POSITIVE);
+		return Float.parseFloat(readLineUntilItMatch(msg, REGEX_FLOAT_POSITIVE));
 	}
 	
 	public static short readshort()

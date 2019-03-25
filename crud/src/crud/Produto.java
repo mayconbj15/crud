@@ -10,14 +10,16 @@ import util.IO;
 
 public class Produto implements Entidade{
 	private int id;
+	private int idCategoria;
 	private String nome;
 	private String descricao;
 	private float preco;
 	private String fornecedor;
 	private int quantidade;
 
-	public Produto(int id, String nome, String descricao, float preco, String fornecedor, int quantidade) {
+	public Produto(int id, int idCategoria, String nome, String descricao, float preco, String fornecedor, int quantidade) {
 		this.id = id;
+		this.idCategoria = idCategoria;
 		this.nome = nome;
 		this.descricao = descricao;
 		this.preco = preco;
@@ -26,7 +28,7 @@ public class Produto implements Entidade{
 	}
 
 	public Produto(String nome, String descricao, float preco, String fornecedor, int quantidade) {
-		this( -1, nome, descricao, preco, fornecedor, quantidade );
+		this( -1, -1, nome, descricao, preco, fornecedor, quantidade );
 	}
 
 	public Produto(){
@@ -179,14 +181,9 @@ public class Produto implements Entidade{
 	
 	public float readPrice()
 	{
-		float price = IO.readfloat("\nInforme o preço do produto: ");
-		
-		while (price < 0)
-		{
-			price = IO.readfloat("\nInforme o preço do produto: ");
-		}
-		
-		return setPreco( price );
+		return setPreco(
+			IO.readLineUntilPositiveFloat("\nInforme o preço do produto: ")
+		);
 	}
 	
 	/**
@@ -210,14 +207,9 @@ public class Produto implements Entidade{
 	
 	public int readQuantity()
 	{
-		int quantity = IO.readint("\nInforme a quantidade de produtos: ");
-		
-		while (quantity < 0)
-		{
-			quantity = IO.readint("\nInforme a quantidade de produtos: ");
-		}
-		
-		return setQuantidade( quantity );
+		return setQuantidade(
+			IO.readLineUntilPositiveInt("\nInforme a quantidade de produtos: ")
+		);
 	}
 	
 	/**
@@ -246,6 +238,7 @@ public class Produto implements Entidade{
 	public String toString(){
 		return
 			"ID: " + this.id + '\n' +
+			"IDCategoria: " + this.idCategoria + '\n' +
 			"Nome: " + this.nome + '\n' +
 			"Descrição: " + this.descricao + '\n' +
 			"Preço: " + this.preco + '\n' +
