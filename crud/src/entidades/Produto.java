@@ -246,7 +246,7 @@ public class Produto implements Entidade{
 	* @return Produto com os campos lidos.
 	*/
 	
-	public Produto readProduct()
+	public static Produto readProduct()
 	{
 		Produto produto = new Produto();
 

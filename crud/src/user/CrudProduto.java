@@ -121,7 +121,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 
 	public void menuInclusao()
 	{
-		inserir(new Produto().readProduct());
+		inserir(Produto.readProduct());
 	}
 
 	public void menuAlteracao()
