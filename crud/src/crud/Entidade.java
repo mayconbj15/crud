@@ -1,36 +1,41 @@
 package crud;
 
-import java.io.IOException;
-
 public interface Entidade {
-	public short getId();
-	public short setId(int id);
-	public String getNome();
-	public String setNome(String nome);
-	public String getDescricao();
-	public String setDescricao(String descricao);
-	public float getPreco();
-	public float setPreco(float preco);
-	public String getFornecedor();
-	public String setFornecedor(String fornecedor);
-	public int getQuantidade();
-	public int setQuantidade(int quantidade);
 	
-	//colocar esses métodos na crud
-	public String readName();
-	public String readDescription();
-	public float readPrice();
-	public String readProvider();
-	public int readQuantity();
+	/**
+	 * Obtem o ID da entidade.
+	 * 
+	 * @return O ID da entidade.
+	 */
 	
-	public byte[] setByteArray() throws IOException;
-	//public void fromByteArray(byte[] b) throws IOException;
-	public void fromByteArray(byte[] byteArray, short id);
+	public int getId();
 	
-	//isso ir para a crud
-	/*public static Produto readProduct() {
-		return null;
-	}*/
+	/**
+	 * Atribui um novo ID à entidade.
+	 * 
+	 * @param id Novo ID.
+	 * 
+	 * @return {@code id}.
+	 */
 	
-	public Produto readProduct(); //mudar a parte do código na Crud que usa essa função, em inserir L:45
+	public int setId(int id);
+	
+	/**
+	 * Gera um arranjo de bytes com os campos internos da entidade.
+	 * 
+	 * @return Arranjo de bytes com os campos internos da entidade.
+	 */
+	
+	public byte[] setByteArray();
+	
+	/**
+	 * Redefine os campos internos da entidade de acordo com um
+	 * arranjo de bytes previamente criado pelo método
+	 * {@link #setByteArray()}.
+	 * 
+	 * @param b Arranjo de bytes previamente criado pelo método
+	 * {@link #setByteArray()}.
+	 */
+	
+	public void fromByteArray(byte[] b);
 }

@@ -8,7 +8,13 @@ import java.io.*;
 
 public class IO
 {
-	static BufferedReader reader = new BufferedReader( new InputStreamReader( System.in ) );
+	public static final String REGEX_DIGITS = "\\d+";
+	public static final String REGEX_INT = "[+|-]?" + REGEX_DIGITS;
+	public static final String REGEX_INT_POSITIVE = "[+]?" + REGEX_DIGITS;
+	public static final String REGEX_FLOAT = REGEX_INT + "(\\." + REGEX_DIGITS + ")?";
+	public static final String REGEX_FLOAT_POSITIVE = REGEX_INT_POSITIVE + "(\\." + REGEX_DIGITS + ")?";
+	
+	private static BufferedReader reader = new BufferedReader( new InputStreamReader( System.in ) );
 
 	public static void print(Object msg)
 	{
@@ -42,6 +48,28 @@ public class IO
 		print(msg);
 
 		return readLine();
+	}
+	
+	public static String readLineUntilItMatch(String msg, String regex)
+	{
+		String line = readLine(msg);
+		
+		while (!line.matches(regex))
+		{
+			line = readLine(msg);
+		}
+		
+		return line;
+	}
+	
+	public static String readLineUntilPositiveInt(String msg)
+	{
+		return readLineUntilItMatch(msg, REGEX_INT_POSITIVE);
+	}
+	
+	public static String readLineUntilPositiveFloat(String msg)
+	{
+		return readLineUntilItMatch(msg, REGEX_FLOAT_POSITIVE);
 	}
 	
 	public static short readshort()

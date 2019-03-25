@@ -9,22 +9,14 @@ import util.IO;
  */
 
 public class Produto implements Entidade{
-	private short id;
+	private int id;
 	private String nome;
 	private String descricao;
 	private float preco;
 	private String fornecedor;
 	private int quantidade;
 
-	public Produto(){
-		this( (short) -1, "", "", 0f, "", 0 );
-	}
-
-	public Produto(String nome, String descricao, float preco, String fornecedor, int quantidade) {
-		this( (short) -1, nome, descricao, preco, fornecedor, quantidade );
-	}
-
-	public Produto(short id, String nome, String descricao, float preco, String fornecedor, int quantidade) {
+	public Produto(int id, String nome, String descricao, float preco, String fornecedor, int quantidade) {
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
@@ -33,12 +25,22 @@ public class Produto implements Entidade{
 		this.quantidade = quantidade;
 	}
 
-	public short getId(){
+	public Produto(String nome, String descricao, float preco, String fornecedor, int quantidade) {
+		this( -1, nome, descricao, preco, fornecedor, quantidade );
+	}
+
+	public Produto(){
+		this( "", "", 0f, "", 0 );
+	}
+
+	@Override
+	public int getId(){
 		return this.id;
 	}
-	
-	public short setId(int id){
-		return this.id = (short)id;
+
+	@Override
+	public int setId(int id){
+		return this.id = id;
 	}
 
 	public String getNome(){
@@ -82,21 +84,21 @@ public class Produto implements Entidade{
 	}
 
 	/**
-	 * Gera um arranjo de bytes com os campos desta entidade.
-	 * 
+	 * <p>
 	 * Obs.: a estrutura do arranjo é a seguinte:
-	 * [ nome, descrição, preço, fornecedor, quantidade ]
+	 * [ id, nome, descrição, preço, fornecedor, quantidade ]
+	 * </p>
 	 * 
-	 * @return Arranjo de bytes com os campos desta entidade.
+	 * {@inheritDoc}
 	 */
-	
+
+	@Override
 	public byte[] setByteArray() {
 		ByteArrayOutputStream array = new ByteArrayOutputStream();
 		DataOutputStream dataStream = new DataOutputStream(array);
 		
 		try{
-			/*decidir nao colocar o id no array de bytes para facilicar na questão da busca*/
-			//dataStream.writeShort(disco.getIdDisco());
+			dataStream.writeInt(this.id);
 			dataStream.writeUTF(this.nome);
 			dataStream.writeUTF(this.descricao);
 			dataStream.writeFloat(this.preco);
@@ -105,8 +107,8 @@ public class Produto implements Entidade{
 			
 			dataStream.close();
 			array.close();
-			
 		} 
+		
 		catch(IOException e){
 			e.printStackTrace();
 		}
@@ -115,26 +117,29 @@ public class Produto implements Entidade{
 	}
 
 	/**
-	 * Extrai os valores desta entidade de {@code byteArray}.
-	 * 
+	 * <p>
 	 * Obs.: a estrutura de {@code byteArray} deve ser a seguinte:
-	 * [ nome, descrição, preço, fornecedor, quantidade ]
+	 * [ id, nome, descrição, preço, fornecedor, quantidade ]
+	 * </p>
 	 * 
-	 * @param byteArray Arranjo de bytes com cada um dos campos da entidade.
-	 * @param id Id da entidade.
+	 * {@inheritDoc}
 	 */
-	
-	public void fromByteArray(byte[] byteArray, short id){
+
+	@Override
+	public void fromByteArray(byte[] byteArray){
 		ByteArrayInputStream byteArrayStream = new ByteArrayInputStream(byteArray);
 		DataInputStream dataStream = new DataInputStream(byteArrayStream);
 
 		try{
-			this.id = id;
+			this.id = dataStream.readInt();
 			this.nome = dataStream.readUTF();
 			this.descricao = dataStream.readUTF();
 			this.preco = dataStream.readFloat();
 			this.fornecedor = dataStream.readUTF();
 			this.quantidade = dataStream.readInt();
+			
+			byteArrayStream.close();
+			dataStream.close();
 		} 
 		catch(IOException e){
 			e.printStackTrace();
@@ -240,12 +245,12 @@ public class Produto implements Entidade{
 
 	public String toString(){
 		return
-				"ID: " + this.id + '\n' +
-				"Nome: " + this.nome + '\n' +
-				"Descrição: " + this.descricao + '\n' +
-				"Preço: " + this.preco + '\n' +
-				"Fornecedor: " + this.fornecedor + '\n' +
-				"Quantidade: " + this.quantidade;
+			"ID: " + this.id + '\n' +
+			"Nome: " + this.nome + '\n' +
+			"Descrição: " + this.descricao + '\n' +
+			"Preço: " + this.preco + '\n' +
+			"Fornecedor: " + this.fornecedor + '\n' +
+			"Quantidade: " + this.quantidade;
 	}
 }
 

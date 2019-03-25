@@ -12,19 +12,34 @@ import java.lang.reflect.InvocationTargetException;
  */
 
 public class Arquivo<T extends Entidade> {
-	private String name;
-	private short lastID;
-	RandomAccessFile accessFile;
-	private Constructor<? extends Entidade> constructor;
+	// deslocamento em relação ao início do arquivo que
+	// deve ser dado para pular o metadados/cabeçalho
+	// da base de dados
+	private static final int HEADER_OFFSET = Integer.BYTES; // tamanho do int
 	
-	Indice indice;
-	final int treeOrder = 21;
-	final String indexFileName = "indexes";
-
-	public Arquivo(Constructor<? extends Entidade> constructor, String nameFile) {
+	private String name;
+	private int lastID;
+	RandomAccessFile accessFile;
+	private Constructor<T> constructor;
+	
+	private Indice indice;
+	private final int treeOrder = 21;
+	private String indexFileName;
+	
+	/**
+	 * Cria um objeto que gerencia uma base de dados de objetos
+	 * do tipo {@code T}.
+	 *  
+	 * @param constructor Construtor do tipo {@code T}.
+	 * @param nameFile Nome do arquivo da base de dados.
+	 */
+	
+	public Arquivo(Constructor<T> constructor, String nameFile) {
 		this.name = nameFile;
 		this.lastID = -1;
 		this.constructor = constructor;
+		// cada entidade tem que ter um arquivo de indice com nome personalizado
+		this.indexFileName = constructor.getClass().getName() + "_indexes.idx";
 		
 		try
 		{
@@ -35,30 +50,6 @@ public class Arquivo<T extends Entidade> {
 		{
 			e.printStackTrace();
 		}
-	}
-	
-	public Arquivo(String nameFile) {
-		this.name = nameFile;
-		this.lastID = -1;
-		
-		try
-		{
-			this.indice = new Indice(treeOrder, indexFileName);
-		}
-		
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	/*
-	public short getLastID() {
-		return this.lastID;
-	}*/
-
-	public short getLastID() {
-		return readLastID();
 	}
 	
 	/**
@@ -93,18 +84,18 @@ public class Arquivo<T extends Entidade> {
 	/**
 	* Lê o último ID usado no cabeçalho da base de dados.
 	* 
-	* Obs.: pressupõe-se que os dois primeiros bytes da base de dados
-	* são o short que guarda o último ID usado.
+	* Obs.: pressupõe-se que os quatro primeiros bytes da base de dados
+	* são o int que guarda o último ID usado.
 	*/
 	
-	private short readLastID()
+	private int readLastID()
 	{
 		RandomAccessFile file = openFile();
-		short lastID = -1;
+		int lastID = -1;
 		
 		try
 		{
-			lastID = file.readShort();
+			lastID = file.readInt();
 		}
 		
 		catch (IOException e)
@@ -125,64 +116,30 @@ public class Arquivo<T extends Entidade> {
 		return ( lastID == -1 ? this.lastID : (this.lastID = lastID) );
 	}
 	
-	public boolean idIsValid(short id)
+	/**
+	 * Checa se é possível que o id recebido exista na base de dados.
+	 * 
+	 * @param id Id a ser analisado.
+	 * 
+	 * @return {@code true} se for possível que o id recebido exista
+	 * na base de dados. Caso contrário, {@code false}.
+	 */
+	
+	public boolean idIsValid(int id)
 	{
 		return id > -1 && id <= readLastID();
-	}
-
-	/**
-	* Escreve {@code lastID} no cabecalho da base de dados.
-	* 
-	* @param lastID Novo valor para o último ID.
-	* 
-	* @return {@code lastID}.
-	*/
-	
-	private short writeLastID(short lastID)
-	{
-		RandomAccessFile file = openFile();
-		
-		try
-		{
-			file.writeShort(lastID);
-		}
-		
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		
-		try
-		{
-			file.close();
-		}
-		
-		catch (IOException ioex)
-		{
-			ioex.printStackTrace();
-		}
-		
-		return lastID;
 	}
 	
 	/**
 	 * Insere uma entidade na base de dados.
 	 * 
-	 * <p>
-	 * <b>Importante</b>: esta função não lê o último ID usado do
-	 * cabeçalho da base de dados nem escreve o id recebido no
-	 * cabeçalho da base de dados, caso for necessário, gerencie
-	 * isso por conta própria.
-	 * </p> 
-	 * 
-	 * @param produto Entidade a ser inserida.
-	 * @param id Id da entidade.
+	 * @param item Entidade a ser inserida.
 	 * 
 	 * @return {@code false} se alguma coisa falhar na inserção.
 	 * Caso contrário, retorna {@code true}.
 	 */
 	
-	private boolean writeObject(T item, int id) {
+	private boolean writeObject(T item) {
 		boolean success = false;
 		
 		try {
@@ -195,10 +152,9 @@ public class Arquivo<T extends Entidade> {
 			
 			// insere a chave (id) e o dado correspondente (endereço do registro)
 			// no sistema de indexamento
-			indice.inserir(id, accessFile.getFilePointer());
+			indice.inserir(item.getId(), accessFile.getFilePointer());
 			
 			accessFile.writeChar(' '); // insere a lapide
-			accessFile.writeShort(id); // insere o id
 			accessFile.writeInt(byteArray.length); // insere o tamanho da entidade
 			accessFile.write(byteArray); // insere a entidade
 			
@@ -206,9 +162,9 @@ public class Arquivo<T extends Entidade> {
 			
 			success = true;
 		} 
-		catch (FileNotFoundException fNFE) {
-			fNFE.printStackTrace();
-		} 
+		catch (FileNotFoundException fnfe) {
+			fnfe.printStackTrace();
+		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -217,20 +173,57 @@ public class Arquivo<T extends Entidade> {
 	}
 	
 	/**
-	 * Insere uma entidade na base de dados.
-	 * 
-	 * @param produto Entidade a ser inserida.
-	 * 
-	 * @return {@code false} se alguma coisa falhar na inserção.
-	 * Caso contrário, retorna {@code true}.
-	 */
+	* Lê um registro a partir de onde o ponteiro de {@code file} estiver e
+	* retorna a entidade que o registro representa. Caso o registro esteja
+	* desativado (lápide com '*'), o retorno é {@code null}.
+	* 
+	* Obs.: deixar o ponteiro em cima da lápide do registro
+	*  
+	* @param file Instância de {@link crud.Arquivo} voltada
+	* para o arquivo {@link user.Main#DATABASE_FILE_NAME}.
+	* 
+	* @return {@code null} se o registro estiver desativado, lápide com '*'.
+	* Caso contrário, retorna a entidade do registro.
+	*/
 	
-	public boolean writeObject(T item) {
-		int newId = readLastID() + 1;
-
-		writeLastID((short) newId);
+	private T readObject(RandomAccessFile file)
+	{
+		T item = null;
 		
-		return writeObject(item, newId);
+		try
+		{
+			char lapide = file.readChar();
+			int entitySize = file.readInt();
+			
+			byte[] byteArray = new byte[entitySize];
+			
+			file.readFully(byteArray, 0, entitySize);
+			
+			if (lapide != '*')
+			{
+				try {
+					//item = (T)item.getClass().newInstance();
+					item = (T)constructor.newInstance();
+					item.fromByteArray(byteArray);
+				}
+				catch(IllegalAccessException iae) {
+					iae.printStackTrace();
+				}
+				catch(InstantiationException ie) {
+					ie.printStackTrace();
+				}
+				catch(InvocationTargetException ite) {
+					ite.printStackTrace();
+				}
+			}
+		}
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return item;
 	}
 
 	/**
@@ -267,79 +260,26 @@ public class Arquivo<T extends Entidade> {
 	}
 	
 	/**
-	* Lê um registro a partir de onde o ponteiro de {@code file} estiver e
-	* retorna a entidade que o registro representa. Caso o registro esteja
-	* desativado (lápide com '*'), o retorno é {@code null}.
-	* 
-	* Obs.: deixar o ponteiro em cima da lápide do registro
-	*  
-	* @param file Instância de {@link crud.Arquivo} voltada
-	* para o arquivo {@link user.Main#DATABASE_FILE_NAME}.
-	* 
-	* @return {@code null} se o registro estiver desativado, lápide com '*'.
-	* Caso contrário, retorna a entidade do registro.
-	*/
-	
-	private T readObject(RandomAccessFile file)
-	{
-		T item = null;
-		
-		try
-		{
-			char lapide = file.readChar();
-			short id = file.readShort();
-			int entitySize = file.readInt();
-			
-			byte[] byteArray = new byte[entitySize];
-			
-			file.readFully(byteArray, 0, entitySize);
-			
-			if (lapide != '*')
-			{
-				try {
-					//item = (T)item.getClass().newInstance();
-					item = (T)constructor.newInstance();
-				}catch(IllegalAccessException iae) {
-					iae.printStackTrace();
-				}catch(InstantiationException ie) {
-					ie.printStackTrace();
-				}catch(InvocationTargetException ite) {
-					ite.printStackTrace();
-				}
-				
-				item.fromByteArray(byteArray, id);
-			}
-		}
-		
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		
-		return item;
-	}
-	
-	/**
 	* Coleta todas as entidades ativas da base de dados.
 	* 
 	* @return Lista com todas as entidades.
 	*/
 	
 	public ArrayList<T> list() {
-		ArrayList<T> listProdutos = new ArrayList<T>();
-		T produtoAux = null;
+		ArrayList<T> entitiesList = new ArrayList<T>();
+		T entityAux = null;
 		
 		try
 		{
 			accessFile = openFile();
-			accessFile.seek(2);
+			accessFile.seek(HEADER_OFFSET);
 			
 			while (accessFile.getFilePointer() < accessFile.length()) {
-				produtoAux = readObject(accessFile);
+				entityAux = readObject(accessFile);
 				
-				if (produtoAux != null)
+				if (entityAux != null)
 				{
-					listProdutos.add(produtoAux);
+					entitiesList.add(entityAux);
 				}
 			}
 			
@@ -350,7 +290,7 @@ public class Arquivo<T extends Entidade> {
 			e.printStackTrace();
 		}
 		
-		return listProdutos;
+		return entitiesList;
 	}
 	
 	/**
@@ -407,15 +347,16 @@ public class Arquivo<T extends Entidade> {
 		
 		if (success)
 		{
-			success = writeObject(item2, id);
+			item2.setId(id);
+			success = writeObject(item2);
 		}
 		
 		return success;
 	}
 	
 	// estrutura da base de dados
-	// [ ultimo_id_usado (short), registros... ]
+	// [ ultimo_id_usado (int), registros... ]
 	//
 	// estrutura dos registros
-	// [ lápide (char), id (short), tamanho_da_entidade (int), entidade (Produto) ]
+	// [ lápide (char), tamanho_da_entidade (int), entidade ]
 }
