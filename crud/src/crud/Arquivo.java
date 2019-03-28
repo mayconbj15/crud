@@ -7,7 +7,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * Classe para gerenciamento de registros de tipos genéricos na base de dados
+ * Classe para gerenciamento de registros de tipos genéricos numa base de dados
  */
 
 public class Arquivo<T extends Entidade> {
@@ -51,10 +51,10 @@ public class Arquivo<T extends Entidade> {
 	}
 	
 	/**
-	* Abre o arquivo da base de dados.
-	* 
-	* @return O arquivo da base de dados.
-	*/
+	 * Abre o arquivo da base de dados.
+	 * 
+	 * @return O arquivo da base de dados.
+	 */
 	
 	private RandomAccessFile openFile()
 	{
@@ -80,11 +80,11 @@ public class Arquivo<T extends Entidade> {
 	}
 	
 	/**
-	* Lê o último ID usado no cabeçalho da base de dados.
-	* 
-	* Obs.: pressupõe-se que os quatro primeiros bytes da base de dados
-	* são o int que guarda o último ID usado.
-	*/
+	 * Lê o último ID usado no cabeçalho da base de dados.
+	 * 
+	 * Obs.: pressupõe-se que os quatro primeiros bytes da base de dados
+	 * são o int que guarda o último ID usado.
+	 */
 	
 	private int readLastID()
 	{
@@ -115,12 +115,12 @@ public class Arquivo<T extends Entidade> {
 	}
 
 	/**
-	* Escreve {@code lastID} no cabecalho da base de dados.
-	* 
-	* @param lastID Novo valor para o último ID.
-	* 
-	* @return {@code lastID}.
-	*/
+	 * Escreve {@code lastID} no cabecalho da base de dados.
+	 * 
+	 * @param lastID Novo valor para o último ID.
+	 * 
+	 * @return {@code lastID}.
+	 */
 	
 	private int writeLastID(int lastID)
 	{
@@ -168,8 +168,8 @@ public class Arquivo<T extends Entidade> {
 	 * 
 	 * @param entity Entidade a ser inserida.
 	 * 
-	 * @return {@code false} se alguma coisa falhar na inserção.
-	 * Caso contrário, retorna {@code true}.
+	 * @return {@code true} se tudo der certo;
+	 * {@code false} caso contrário.
 	 */
 	
 	public boolean writeObject(T entity) {
@@ -208,18 +208,18 @@ public class Arquivo<T extends Entidade> {
 	}
 	
 	/**
-	* Lê um registro a partir de onde o ponteiro de {@code file} estiver e
-	* retorna a entidade que o registro representa. Caso o registro esteja
-	* desativado (lápide com '*'), o retorno é {@code null}.
-	* 
-	* Obs.: deixar o ponteiro em cima da lápide do registro
-	*  
-	* @param file Instância de {@link crud.Arquivo} voltada
-	* para o arquivo {@link user.Main#DATABASE_FILE_NAME}.
-	* 
-	* @return {@code null} se o registro estiver desativado, lápide com '*'.
-	* Caso contrário, retorna a entidade do registro.
-	*/
+	 * Lê um registro a partir de onde o ponteiro de {@code file} estiver e
+	 * retorna a entidade que o registro representa. Caso o registro esteja
+	 * desativado (lápide com '*'), o retorno é {@code null}.
+	 * 
+	 * Obs.: deixar o ponteiro em cima da lápide do registro
+	 *  
+	 * @param file Instância de {@link crud.Arquivo} voltada
+	 * para o arquivo {@link user.Main#DATABASE_FILE_NAME}.
+	 * 
+	 * @return {@code null} se o registro estiver desativado, lápide com '*'.
+	 * Caso contrário, retorna a entidade do registro.
+	 */
 	
 	private T readObject(RandomAccessFile file)
 	{
@@ -261,13 +261,13 @@ public class Arquivo<T extends Entidade> {
 	}
 
 	/**
-	* Lê a entidade da base de dados que tiver o id informado.
-	* 
-	* @param id Id da entidade a ser procurada.
-	* 
-	* @return {@code null} se a entidade não for encontrada. Caso
-	* contrário, a entidade.
-	*/
+	 * Lê a entidade da base de dados que tiver o id informado.
+	 * 
+	 * @param id Id da entidade a ser procurada.
+	 * 
+	 * @return {@code null} se a entidade não for encontrada;
+	 * a própria entidade caso contrário.
+	 */
 	
 	public T readObject(int id) {
 		T entity = null;
@@ -294,10 +294,10 @@ public class Arquivo<T extends Entidade> {
 	}
 	
 	/**
-	* Coleta todas as entidades ativas da base de dados.
-	* 
-	* @return Lista com todas as entidades.
-	*/
+	 * Coleta todas as entidades ativas da base de dados.
+	 * 
+	 * @return Lista com todas as entidades ativas.
+	 */
 	
 	public ArrayList<T> list() {
 		ArrayList<T> entitiesList = new ArrayList<T>();
@@ -328,13 +328,13 @@ public class Arquivo<T extends Entidade> {
 	}
 	
 	/**
-	* Encontra a entidade com id informado e a deleta.
-	* 
-	* @param id Id da entidade a ser procurada.
-	* 
-	* @return {@code true} se a exclusão for bem sucedida.
-	* Caso contrário, retorna {@code false}.
-	*/
+	 * Encontra a entidade com id informado e a deleta.
+	 * 
+	 * @param id Id da entidade a ser procurada.
+	 * 
+	 * @return {@code true} se tudo der certo;
+	 * {@code false} caso contrário.
+	 */
 	
 	public boolean deleteObject(int id) {
 
@@ -372,8 +372,8 @@ public class Arquivo<T extends Entidade> {
 	 * @param id Id da entidade a ser alterada.
 	 * @param entity Nova entidade a ser posta no lugar.
 	 * 
-	 * @return {@code true} se a alteração for bem sucedida.
-	 * Caso contrário, retorna {@code false}.
+	 * @return {@code true} se tudo der certo;
+	 * {@code false} caso contrário.
 	 */
 	
 	public boolean changeObject(int id, T entity) {

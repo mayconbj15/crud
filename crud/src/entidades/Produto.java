@@ -1,8 +1,6 @@
 package entidades;
 
 import java.io.*;
-import java.util.Arrays;
-
 import util.IO;
 
 /**

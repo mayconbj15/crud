@@ -16,6 +16,11 @@ public class CrudProduto extends CrudAbstract<Produto>
 		super(database);
 	}
 
+	public void menuInclusao()
+	{
+		inserir(Produto.readProduct());
+	}
+
 	/**
 	 * Altera um campo específico do produto com id informado.
 	 * {@code cod} é responsável por indicar qual dos campos do
@@ -118,11 +123,6 @@ public class CrudProduto extends CrudAbstract<Produto>
 
 		return success;
 	}//end alterar()
-
-	public void menuInclusao()
-	{
-		inserir(Produto.readProduct());
-	}
 
 	public void menuAlteracao()
 	{ 
@@ -252,7 +252,6 @@ public class CrudProduto extends CrudAbstract<Produto>
 					IO.println("Operação inválida\n");
 					break;
 			}
-
 			
 			IO.println("\nOperação finalizada.\n");
 			IO.println("--------------------------------------------\n");
