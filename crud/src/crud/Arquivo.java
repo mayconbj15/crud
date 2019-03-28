@@ -1,12 +1,8 @@
 package crud;
 
 import java.io.*;
-
 import java.util.ArrayList;
-
 import entidades.Entidade;
-import util.IO;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -41,7 +37,6 @@ public class Arquivo<T extends Entidade> {
 		this.name = databaseFileName;
 		this.lastID = -1;
 		this.constructor = constructor;
-		// cada entidade tem que ter um arquivo de indice com nome personalizado
 		this.indexFileName = indexesFileName;
 		
 		try
@@ -171,30 +166,28 @@ public class Arquivo<T extends Entidade> {
 	/**
 	 * Insere uma entidade na base de dados.
 	 * 
-	 * @param item Entidade a ser inserida.
+	 * @param entity Entidade a ser inserida.
 	 * 
 	 * @return {@code false} se alguma coisa falhar na inserção.
 	 * Caso contrário, retorna {@code true}.
 	 */
 	
-	public boolean writeObject(T item) {
+	public boolean writeObject(T entity) {
 		boolean success = false;
 		
 		try {
 			accessFile = openFile();
 			
-			item.setId( readLastID() + 1 );
+			writeLastID( entity.setId( readLastID() + 1 ) );
 			
-			writeLastID(item.getId());
-			
-			byte[] byteArray = item.setByteArray();
+			byte[] byteArray = entity.setByteArray();
 			
 			// go to final of file
 			accessFile.seek(accessFile.length());
 			
 			// insere a chave (id) e o dado correspondente (endereço do registro)
 			// no sistema de indexamento
-			indice.inserir(item.getId(), accessFile.getFilePointer());
+			indice.inserir(entity.getId(), accessFile.getFilePointer());
 			
 			accessFile.writeChar(' '); // insere a lapide
 			accessFile.writeInt(byteArray.length); // insere o tamanho da entidade
@@ -230,7 +223,7 @@ public class Arquivo<T extends Entidade> {
 	
 	private T readObject(RandomAccessFile file)
 	{
-		T item = null;
+		T entity = null;
 		
 		try
 		{
@@ -244,9 +237,8 @@ public class Arquivo<T extends Entidade> {
 			if (lapide != '*')
 			{
 				try {
-					//item = (T)item.getClass().newInstance();
-					item = constructor.newInstance();
-					item.fromByteArray(byteArray);
+					entity = constructor.newInstance();
+					entity.fromByteArray(byteArray);
 				}
 				catch(IllegalAccessException iae) {
 					iae.printStackTrace();
@@ -265,7 +257,7 @@ public class Arquivo<T extends Entidade> {
 			e.printStackTrace();
 		}
 		
-		return item;
+		return entity;
 	}
 
 	/**
@@ -278,7 +270,7 @@ public class Arquivo<T extends Entidade> {
 	*/
 	
 	public T readObject(int id) {
-		T item = null;
+		T entity = null;
 		
 		try {
 			long entityAddress = indice.buscar(id);
@@ -288,7 +280,7 @@ public class Arquivo<T extends Entidade> {
 				accessFile = openFile();
 				accessFile.seek(entityAddress);
 				
-				item = readObject(accessFile);
+				entity = readObject(accessFile);
 				
 				accessFile.close();
 			}
@@ -298,7 +290,7 @@ public class Arquivo<T extends Entidade> {
 			e.printStackTrace();
 		}
 
-		return item;
+		return entity;
 	}
 	
 	/**
@@ -374,23 +366,24 @@ public class Arquivo<T extends Entidade> {
 	}
 
 	/**
-	 * Altera a entidade com o id informado para a nova entidade {@code produto2}.
+	 * Substitui a entidade com o id informado pela nova
+	 * entidade recebida.
 	 * 
 	 * @param id Id da entidade a ser alterada.
-	 * @param produto2 Nova entidade a ser posta no lugar.
+	 * @param entity Nova entidade a ser posta no lugar.
 	 * 
 	 * @return {@code true} se a alteração for bem sucedida.
 	 * Caso contrário, retorna {@code false}.
 	 */
 	
-	public boolean changeObject(int id, T item2) {
+	public boolean changeObject(int id, T entity) {
 		
 		boolean success = false;
 		
 		if (deleteObject(id))
 		{
-			item2.setId(id);
-			success = writeObject(item2);
+			entity.setId(id);
+			success = writeObject(entity);
 		}
 		
 		return success;

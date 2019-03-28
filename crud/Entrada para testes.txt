@@ -1,10 +1,13 @@
 1
+1
+0
 Intel Core i7-8700K Coffee Lake
 Processador
 2299.90
 Intel
 3
 
+1
 1
 GEFORCE GTX 1080 FTW2 ICX Gaming
 Placa de vídeo
@@ -13,12 +16,14 @@ NVIDIA
 5
 
 1
+1
 RTX 2070 Gaming OC
 Placa de vídeo
 3649.90
 Gigabyte
 6
 
+1
 1
 GeForce RTX 2060 XC
 Placa de vídeo
@@ -27,6 +32,7 @@ Gigabyte
 10
 
 1
+2
 Razer Naga Trinity Chroma Mecânico
 Mouse gamer
 599.90
@@ -34,6 +40,7 @@ KaBuM
 4
 
 1
+3
 Logitech G933 Artemis Spectrum
 Headset gamer
 849.90
@@ -50,6 +57,7 @@ Pichau
 5
 
 1
+4
 Gamer AOC LED 31.5” Agon
 Monitor gamer
 2142.72
@@ -57,5 +65,7 @@ AOC
 1
 
 5
+
+0
 
 0
