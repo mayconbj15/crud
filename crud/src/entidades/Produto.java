@@ -1,6 +1,7 @@
 package entidades;
 
 import java.io.*;
+import java.util.Arrays;
 
 import util.IO;
 
@@ -16,7 +17,7 @@ public class Produto implements Entidade{
 	private float preco;
 	private String fornecedor;
 	private int quantidade;
-
+	
 	public Produto(int id, int idCategoria, String nome, String descricao, float preco, String fornecedor, int quantidade) {
 		this.id = id;
 		this.idCategoria = idCategoria;

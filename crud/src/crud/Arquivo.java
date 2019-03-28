@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 import entidades.Entidade;
+import util.IO;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -117,6 +118,41 @@ public class Arquivo<T extends Entidade> {
 		
 		return ( lastID == -1 ? this.lastID : (this.lastID = lastID) );
 	}
+
+	/**
+	* Escreve {@code lastID} no cabecalho da base de dados.
+	* 
+	* @param lastID Novo valor para o último ID.
+	* 
+	* @return {@code lastID}.
+	*/
+	
+	private int writeLastID(int lastID)
+	{
+		RandomAccessFile file = openFile();
+		
+		try
+		{
+			file.writeInt(lastID);
+		}
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		try
+		{
+			file.close();
+		}
+		
+		catch (IOException ioex)
+		{
+			ioex.printStackTrace();
+		}
+		
+		return lastID;
+	}
 	
 	/**
 	 * Checa se é possível que o id recebido exista na base de dados.
@@ -146,6 +182,10 @@ public class Arquivo<T extends Entidade> {
 		
 		try {
 			accessFile = openFile();
+			
+			item.setId( readLastID() + 1 );
+			
+			writeLastID(item.getId());
 			
 			byte[] byteArray = item.setByteArray();
 			
@@ -199,13 +239,13 @@ public class Arquivo<T extends Entidade> {
 			
 			byte[] byteArray = new byte[entitySize];
 			
-			file.readFully(byteArray, 0, entitySize);
+			file.read(byteArray);
 			
 			if (lapide != '*')
 			{
 				try {
 					//item = (T)item.getClass().newInstance();
-					item = (T)constructor.newInstance();
+					item = constructor.newInstance();
 					item.fromByteArray(byteArray);
 				}
 				catch(IllegalAccessException iae) {
