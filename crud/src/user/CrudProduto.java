@@ -18,7 +18,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 
 	public void menuInclusao()
 	{
-		inserir(Produto.readProduct());
+		inserir(Produto.readProduct()); // checar se categoria é válida
 	}
 
 	/**

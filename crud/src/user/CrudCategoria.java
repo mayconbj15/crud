@@ -2,7 +2,6 @@ package user;
 
 import crud.Arquivo;
 import entidades.Categoria;
-import entidades.Produto;
 import util.IO;
 
 public class CrudCategoria extends CrudAbstract<Categoria>
