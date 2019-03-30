@@ -1,5 +1,7 @@
 package user;
 
+import java.io.IOException;
+
 import crud.Arquivo;
 import entidades.Categoria;
 import util.IO;
@@ -185,13 +187,36 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		
 		consultar(id);
 	}
-
+	
 	public void menuListar()
 	{
-		listar();
+		int cod = -1;
+		int idCategoria = -1;
+		
+		IO.println("O que deseja listar ?");
+		IO.println("Digite:");
+		IO.println("1 Todas as categorias;");
+		IO.println("2 Produtos de uma categoria.");
+		IO.println("");
+		cod = IO.readint("Opção: ");
+		
+		switch(cod) 
+		{
+			case 1:
+				listar();
+				break;
+			case 2:
+				IO.readint("Entre com a categoria desejada: ");
+				//listarProdutos(idCategoria);
+				break;
+			default:
+				IO.println("Opção inválida.");
+		
+		}	
 	}
+		
 	
-	public void menuExclusao()
+	public void menuExclusao() throws IOException
 	{ 
 		int cod = -1; //codigo de selecao
 		int id = IO.readint("Digite o id da categoria a ser alterada: ");
@@ -208,15 +233,37 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 			
 			if (cod == 1)
 			{
-				excluir(id);
-			}
-		}
-		
+				if(Main.databaseProduto.indice.vazia())
+				{
+					excluir(id);				
+				}
+				else
+				{
+					cod = -1;
+					
+					IO.println("AVISO: Ainda há produtos nesta categoria.");
+					IO.println("Deseja excluí-los também? ");
+					IO.println("Digite:");
+					IO.println("1 Sim");
+					IO.println("2 Não");
+					IO.println("");
+					cod = IO.readint("Opção: ");
+					
+					if(cod == 1) 
+					{
+						excluir(id);
+					}//end if
+					
+				}//end if
+				
+			}//end if
+		}		
 		else
 		{
 			IO.println("Id inválido!");
-		}
-	}
+		}//end if
+		
+	}//end menuExclusao
 
 	
 	public void menu()
