@@ -28,6 +28,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 			System.out.println("Categoria do produto não valida");
 		}
 		else{
+			System.out.println("Categoria " + Main.databaseCategoria.search(produto.getIdCategoria()).getNome());
 			produto.readName();
 			produto.readDescription();
 			produto.readPrice();

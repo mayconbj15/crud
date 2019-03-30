@@ -375,6 +375,25 @@ public class Arquivo<T extends Entidade> {
 		
 		return success;
 	}
+	
+	public T search(int id) throws IOException{
+		T entity = null;
+		long address = indice.buscar(id);
+			try{
+				if(address != -1){
+					accessFile = openFile();
+					accessFile.seek(address);
+					
+					entity = readObject(accessFile);
+				}
+			}catch(IOException io){
+				io.printStackTrace();
+			}
+		
+		
+		return entity;
+		
+	}
 
 	/**
 	 * Substitui a entidade com o id informado pela nova
