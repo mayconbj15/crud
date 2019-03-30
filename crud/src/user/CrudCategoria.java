@@ -23,9 +23,9 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 	}
 
 	/**
-	 * Altera um campo específico do produto com id informado.
-	 * {@code cod} é responsável por indicar qual dos campos do
-	 * produto deseja-se alterar.
+	 * Altera um campo específico da categoria com id informado.
+	 * {@code cod} é responsável por indicar qual dos campos da
+	 * categoria deseja-se alterar.
 	 * 
 	 * <p></p>
 	 * 
@@ -36,27 +36,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 	 * 	</tr>
 	 * 
 	 * 	<tr>
-	 * 		<td>1</td> <td>categoria</td>
-	 * 	</tr>
-	 * 
-	 * 	<tr>
 	 * 		<td>2</td> <td>nome</td>
-	 * 	</tr>
-	 * 
-	 * 	<tr>
-	 * 		<td>3</td> <td>descrição</td>
-	 * 	</tr>
-	 * 
-	 * 	<tr>
-	 * 		<td>4</td> <td>preço</td>
-	 * 	</tr>
-	 * 
-	 * 	<tr>
-	 * 		<td>5</td> <td>fornecedor</td>
-	 * 	</tr>
-	 * 
-	 * 	<tr>
-	 * 		<td>6</td> <td>quantidade</td>
 	 * 	</tr>
 	 * 
 	 * </table>
@@ -67,44 +47,22 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 	 * @return {@code false} se alguma coisa falhar na alteração.
 	 * Caso contrário, retorna {@code true}.
 	 */
-	
-	/*public boolean alterar(int id, int cod)
+	public boolean alterar(int id, int cod)
 	{
 		boolean success = false;
 
-		// procurar o produto desejado na base de dados
-		Produto produto = database.readObject(id);
+		// procurar a categoria desejada na base de dados
+		Categoria categoria =  database.readObject(id);
 		
-		if (produto != null) // checa se o produto foi encontrado
+		if (categoria != null) // checa se a categoria foi encontrada
 		{
 			success = true;
 			
 			switch (cod)
 			{
 				case 1:
-					produto.readCategory();
+					categoria.readName();
 					break;
-
-				case 2:
-					produto.readName();
-					break;
-
-				case 3:
-					produto.readDescription();
-					break;
-
-				case 4:
-					produto.readPrice();
-					break;
-
-				case 5:
-					produto.readProvider();
-					break;
-
-				case 6:
-					produto.readQuantity();
-					break;
-
 				default:
 					success = false;
 					IO.println("\nOpção inválida !\n");
@@ -113,7 +71,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 			
 			if (success)
 			{
-				success = alterar(id, produto);
+				success = alterar(id, categoria);
 			}
 		}
 		
@@ -123,24 +81,20 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		}
 
 		return success;
-	}//end alterar()*/
+	}//end alterar()
 
-	/*public void menuAlteracao()
+	public void menuAlteracao()
 	{ 
 		int cod = -1; //codigo de selecao
-		int id = IO.readint("Digite o id do produto a ser alterado: ");
+		listar();
+		int id = IO.readint("Digite o id da categoria a ser alterada: ");
 
 		//testar antes se o id existe
 		if(database.idIsValid(id))
 		{
-			IO.println("O que deseja alterar no produto?");
+			IO.println("O que deseja alterar na categoria?");
 			IO.println("Digite:");
-			IO.println("1 para alterar a categoria");
-			IO.println("2 para alterar o nome");
-			IO.println("3 para alterar a descrição");
-			IO.println("4 para alterar o preço");
-			IO.println("5 para alterar o fornecedor");
-			IO.println("6 para alterar a quantidade");
+			IO.println("1 para alterar o nome");
 			IO.println("0 para cancelar");
 			IO.println("");
 			cod = IO.readint("Opção: ");
@@ -152,7 +106,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		{
 			IO.println("Id inválido!");
 		}
-	}*//*
+	}/*
 
 	public void menuExclusao()
 	{ 
@@ -200,7 +154,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		
 	}//end listarProdutos()
 	
-	public void menuListar()
+	public void menuListar() throws IOException
 	{
 		int cod = -1;
 		int idCategoria = -1;
@@ -278,7 +232,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 	}//end menuExclusao
 
 	
-	public void menu()
+	public void menu() throws IOException
 	{
 		int selecao;
 		
@@ -289,8 +243,8 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 			IO.println("Qual das seguintes operações o senhor deseja realizar ?");
 			IO.println("Digite:");
 			IO.println("1 para inclusão");
-			//IO.println("2 para alteração");
-			IO.println("3 para exclusão");
+			IO.println("2 para alteração");
+			//IO.println("3 para exclusão");
 			IO.println("4 para consulta de categoria");
 			IO.println("5 para listar todas as categorias");
 			IO.println("0 para sair");
@@ -308,12 +262,12 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 				case 1:
 					menuInclusao();
 					IO.pause();
-					break;/*
+					break;
 					
 				case 2:
 					menuAlteracao();
 					IO.pause();
-					break;*//*
+					break;/*
 					
 				case 3:
 					menuExclusao();
