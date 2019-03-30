@@ -1,7 +1,11 @@
 package entidades;
 
 import java.io.*;
+
+import user.Main;
 import util.IO;
+
+import java.util.ArrayList;
 
 /**
  * Classe das entidades produto.
@@ -166,6 +170,10 @@ public class Produto implements Entidade{
 	
 	public int readCategory()
 	{
+		ArrayList<Categoria> categorias = Main.databaseCategoria.list();
+		for(int i=0; i<categorias.size(); i++){
+			System.out.println(categorias.get(i));
+		}
 		return setIdCategoria(
 			IO.readLineUntilPositiveInt("\nInforme a categoria do produto: ")
 		);
