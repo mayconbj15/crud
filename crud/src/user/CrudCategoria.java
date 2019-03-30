@@ -188,6 +188,18 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		consultar(id);
 	}
 	
+	public void listarProdutos(int id) throws IOException 
+	{				
+		int [] lista = Main.indiceComposto.lista(id);
+		int tamanho = lista.length;
+		
+		for(int y = 0; y < tamanho; y++)
+		{
+			Main.crudProduto.consultar(lista[y]);
+		}//end for
+		
+	}//end listarProdutos()
+	
 	public void menuListar()
 	{
 		int cod = -1;
@@ -207,7 +219,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 				break;
 			case 2:
 				idCategoria = IO.readint("Entre com a categoria desejada: ");
-				//listarProdutos(idCategoria);
+				listarProdutos(idCategoria);
 				break;
 			default:
 				IO.println("Opção inválida.");		
