@@ -25,7 +25,7 @@ public class Arquivo<T extends Entidade> {
 	RandomAccessFile accessFile;
 	private Constructor<T> constructor;
 	
-	private Indice indice;
+	public Indice indice;
 	private final int TREE_ORDER = 21;
 	private String indexFileName;
 	
@@ -180,10 +180,6 @@ public class Arquivo<T extends Entidade> {
 		boolean success = false;
 		
 		try {
-			if(entity.getIdCategoria() != -1 && Main.databaseCategoria.indice.buscar(entity.getIdCategoria()) == -1){
-				System.out.println("Categoria do produto não valida");
-			}
-			else{
 				accessFile = openFile();
 				
 				writeLastID( entity.setId( readLastID() + 1 ) );
@@ -197,8 +193,7 @@ public class Arquivo<T extends Entidade> {
 				// no sistema de indexamento
 
 				indice.inserir(entity.getId(), accessFile.getFilePointer());
-
-								
+			
 				//inserir o id de categoria e o id do produto na árvore b+
 				if(entity.getIdCategoria() != -1){
 					Main.indiceComposto.inserir(entity.getIdCategoria(), entity.getId());
@@ -212,8 +207,6 @@ public class Arquivo<T extends Entidade> {
 				accessFile.close();
 				
 				success = true;
-			}
-			
 		} 
 		catch (FileNotFoundException fnfe) {
 			fnfe.printStackTrace();

@@ -13,7 +13,11 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 
 	public void menuInclusao()
 	{
-		inserir(Categoria.readCategoria());
+		Categoria categoria = new Categoria();
+		
+		categoria.setNome(categoria.readName());
+		
+		inserir(categoria);
 	}
 
 	/**

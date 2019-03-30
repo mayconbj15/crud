@@ -2,6 +2,8 @@ package user;
 
 import util.*;
 
+import java.io.IOException;
+
 import crud.Arquivo;
 import entidades.Produto;
 
@@ -16,9 +18,24 @@ public class CrudProduto extends CrudAbstract<Produto>
 		super(database);
 	}
 
-	public void menuInclusao()
+	public void menuInclusao() throws IOException
 	{
-		inserir(Produto.readProduct()); // checar se categoria é válida
+		Produto produto = new Produto();
+		
+		produto.readCategory();
+		
+		if(Main.databaseCategoria.indice.buscar(produto.getIdCategoria()) == -1){
+			System.out.println("Categoria do produto não valida");
+		}
+		else{
+			produto.readName();
+			produto.readDescription();
+			produto.readPrice();
+			produto.readProvider();
+			produto.readQuantity();
+			
+			inserir(produto);
+		}	
 	}
 
 	/**
@@ -196,7 +213,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 	 * Gerencia a interação com o usuário.
 	 */
 	
-	public void menu()
+	public void menu() throws IOException
 	{
 		int selecao;
 		
