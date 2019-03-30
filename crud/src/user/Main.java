@@ -22,6 +22,9 @@ public class Main {
 	public static final int COMPOSITE_TREE_ORDER = 21;
 	public static final String COMPOSITE_INDEXES_FILE_NAME = "indice_composto.idx";
 	
+	public static CrudCategoria crudCategoria;
+	public static CrudProduto crudProduto;
+	
 	public static void startFiles()
 	{
 		File databaseFileProdutos = new File(DATABASE_FILE_NAME_PRODUTOS);

@@ -206,20 +206,20 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 				listar();
 				break;
 			case 2:
-				IO.readint("Entre com a categoria desejada: ");
+				idCategoria = IO.readint("Entre com a categoria desejada: ");
 				//listarProdutos(idCategoria);
 				break;
 			default:
-				IO.println("Opção inválida.");
-		
-		}	
+				IO.println("Opção inválida.");		
+				
+		}//end switch-case
 	}
 		
 	
 	public void menuExclusao() throws IOException
 	{ 
 		int cod = -1; //codigo de selecao
-		int id = IO.readint("Digite o id da categoria a ser alterada: ");
+		int id = IO.readint("Digite o id da categoria a ser removida: ");
 
 		//testar antes se o id existe
 		if (database.idIsValid(id))
