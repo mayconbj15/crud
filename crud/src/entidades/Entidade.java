@@ -26,6 +26,10 @@ public interface Entidade {
 	 * @return Arranjo de bytes com os campos internos da entidade.
 	 */
 	
+	public int getIdCategoria();
+	
+	public int setIdCategoria(int id);
+	
 	public byte[] setByteArray();
 	
 	/**

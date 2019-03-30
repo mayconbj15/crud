@@ -2,9 +2,13 @@ package crud;
 
 import java.io.*;
 import java.util.ArrayList;
+
 import entidades.Entidade;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+
+import user.Main;
 
 /**
  * Classe para gerenciamento de registros de tipos genéricos numa base de dados
@@ -41,7 +45,7 @@ public class Arquivo<T extends Entidade> {
 		
 		try
 		{
-			this.indice = new Indice(TREE_ORDER, indexFileName);
+			this.indice = new Indice(TREE_ORDER, indexFileName); //indice dos produtos
 		}
 		
 		catch (IOException e)
@@ -176,26 +180,40 @@ public class Arquivo<T extends Entidade> {
 		boolean success = false;
 		
 		try {
-			accessFile = openFile();
+			if(entity.getIdCategoria() != -1 && Main.databaseCategoria.indice.buscar(entity.getIdCategoria()) == -1){
+				System.out.println("Categoria do produto não valida");
+			}
+			else{
+				accessFile = openFile();
+				
+				writeLastID( entity.setId( readLastID() + 1 ) );
+				
+				byte[] byteArray = entity.setByteArray();
+				
+				// go to final of file
+				accessFile.seek(accessFile.length());
+				
+				// insere a chave (id) e o dado correspondente (endereço do registro)
+				// no sistema de indexamento
+
+				indice.inserir(entity.getId(), accessFile.getFilePointer());
+
+								
+				//inserir o id de categoria e o id do produto na árvore b+
+				if(entity.getIdCategoria() != -1){
+					Main.indiceComposto.inserir(entity.getIdCategoria(), entity.getId());
+				}
+					
+				
+				accessFile.writeChar(' '); // insere a lapide
+				accessFile.writeInt(byteArray.length); // insere o tamanho da entidade
+				accessFile.write(byteArray); // insere a entidade
+				
+				accessFile.close();
+				
+				success = true;
+			}
 			
-			writeLastID( entity.setId( readLastID() + 1 ) );
-			
-			byte[] byteArray = entity.setByteArray();
-			
-			// go to final of file
-			accessFile.seek(accessFile.length());
-			
-			// insere a chave (id) e o dado correspondente (endereço do registro)
-			// no sistema de indexamento
-			indice.inserir(entity.getId(), accessFile.getFilePointer());
-			
-			accessFile.writeChar(' '); // insere a lapide
-			accessFile.writeInt(byteArray.length); // insere o tamanho da entidade
-			accessFile.write(byteArray); // insere a entidade
-			
-			accessFile.close();
-			
-			success = true;
 		} 
 		catch (FileNotFoundException fnfe) {
 			fnfe.printStackTrace();

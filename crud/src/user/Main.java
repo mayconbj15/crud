@@ -18,6 +18,7 @@ public class Main {
 	public static Arquivo<Produto> databaseProduto;
 	public static Arquivo<Categoria> databaseCategoria;
 	public static ArvoreBMais_ChaveComposta indiceComposto;
+	
 	public static final int COMPOSITE_TREE_ORDER = 21;
 	public static final String COMPOSITE_INDEXES_FILE_NAME = "indice_composto.idx";
 	
@@ -38,13 +39,14 @@ public class Main {
 	public static void startVariables()
 	{
 		try {
-			databaseProduto = new Arquivo<>(
+			databaseProduto = new Arquivo<Produto>(
 				Produto.class.getConstructor(),
 				DATABASE_FILE_NAME_PRODUTOS,
 				INDEXES_FILE_NAME_PRODUTOS
 			);
 			
-			databaseCategoria = new Arquivo<>(
+			
+			databaseCategoria = new Arquivo<Categoria>(
 					Categoria.class.getConstructor(),
 					DATABASE_FILE_NAME_CATEGORIAS,
 					INDEXES_FILE_NAME_CATEGORIAS
@@ -65,12 +67,13 @@ public class Main {
 		}
 	}
 	
-	public static void main(String[] args) throws IOException {
-		
+	public static void main(String[] args) throws IOException {		
 		startFiles();
 		startVariables();
-		
+	
 		Crud crudMaster = new Crud(databaseProduto, databaseCategoria);
 		crudMaster.menu();
+		
+		
 	}
 }

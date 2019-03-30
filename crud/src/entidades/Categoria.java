@@ -9,11 +9,11 @@ import util.IO;
  */
 
 public class Categoria implements Entidade{
-	private int id;
+	private int idCategoria;
 	private String nome;
 
 	public Categoria(int id, int idCategoria, String nome) {
-		this.id = id;
+		this.idCategoria = idCategoria;
 		this.nome = nome;
 	}
 
@@ -26,13 +26,23 @@ public class Categoria implements Entidade{
 	}
 
 	@Override
+	public int getIdCategoria() {
+		return -1;
+	}
+	
+	@Override
+	public int setIdCategoria(int idCategoria) {
+		return this.idCategoria = idCategoria;
+	}
+	
+	@Override
 	public int getId(){
-		return this.id;
+		return this.idCategoria;
 	}
 
 	@Override
-	public int setId(int id){
-		return this.id = id;
+	public int setId(int idCategoria){
+		return this.idCategoria = idCategoria;
 	}
 
 	public String getNome(){
@@ -58,7 +68,7 @@ public class Categoria implements Entidade{
 		DataOutputStream dataStream = new DataOutputStream(array);
 		
 		try{
-			dataStream.writeInt(this.id);
+			dataStream.writeInt(this.idCategoria);
 			dataStream.writeUTF(this.nome);
 			
 			dataStream.close();
@@ -87,7 +97,7 @@ public class Categoria implements Entidade{
 		DataInputStream dataStream = new DataInputStream(byteArrayStream);
 
 		try{
-			this.id = dataStream.readInt();
+			this.idCategoria = dataStream.readInt();
 			this.nome = dataStream.readUTF();
 			
 			byteArrayStream.close();
@@ -128,7 +138,7 @@ public class Categoria implements Entidade{
 
 	public String toString(){
 		return
-			"ID: " + this.id + '\n' +
+			"ID: " + this.idCategoria + '\n' +
 			"Nome: " + this.nome;
 	}
 }
