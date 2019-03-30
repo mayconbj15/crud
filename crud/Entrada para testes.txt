@@ -8,9 +8,11 @@ Moveis
 1
 Higiene
 
-1
-1
 0
+
+1
+1
+1
 Intel Core i7-8700K Coffee Lake
 Processador
 2299.90
@@ -61,7 +63,7 @@ Pichau
 
 2
 0
-5
+6
 4
 
 5
@@ -89,6 +91,7 @@ Placas de vídeo
 Periféricos Gamers
 
 5
+1
 
 4
 2
