@@ -191,6 +191,34 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		listar();
 	}
 	
+	public void menuExclusao()
+	{ 
+		int cod = -1; //codigo de selecao
+		int id = IO.readint("Digite o id da categoria a ser alterada: ");
+
+		//testar antes se o id existe
+		if (database.idIsValid(id))
+		{
+			IO.println("Realmente deseja excluir a categoria ?");
+			IO.println("Digite:");
+			IO.println("1 Sim");
+			IO.println("2 Não");
+			IO.println("");
+			cod = IO.readint("Opção: ");
+			
+			if (cod == 1)
+			{
+				excluir(id);
+			}
+		}
+		
+		else
+		{
+			IO.println("Id inválido!");
+		}
+	}
+
+	
 	public void menu()
 	{
 		int selecao;
