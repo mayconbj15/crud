@@ -1,18 +1,24 @@
 2
 1
-Eletronicos
+Processadores
 
 1
-Moveis
+Placas de vídeo
 
 1
-Higiene
+Periféricos Gamers
+
+5
+1
+
+4
+2
 
 0
 
 1
 1
-1
+0
 Intel Core i7-8700K Coffee Lake
 Processador
 2299.90
@@ -77,24 +83,6 @@ AOC
 1
 
 5
-
-0
-
-2
-1
-Processadores
-
-1
-Placas de vídeo
-
-1
-Periféricos Gamers
-
-5
-1
-
-4
-2
 
 0
 
