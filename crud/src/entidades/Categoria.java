@@ -12,13 +12,13 @@ public class Categoria implements Entidade{
 	private int idCategoria;
 	private String nome;
 
-	public Categoria(int id, int idCategoria, String nome) {
+	public Categoria(int idCategoria, String nome) {
 		this.idCategoria = idCategoria;
 		this.nome = nome;
 	}
 
 	public Categoria(String nome) {
-		this( -1, -1, nome );
+		this( -1, nome );
 	}
 
 	public Categoria(){
