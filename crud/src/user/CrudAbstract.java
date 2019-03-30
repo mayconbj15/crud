@@ -111,8 +111,17 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends Entidade>
 		
 		if (database.idIsValid(id))
 		{
-			IO.println( "\n" + database.readObject(id) );
-			success = true;
+			TIPO_ENTIDADE entity= null;
+			entity= database.readObject(id);
+			
+			if(entity != null){
+				IO.println( "\n" + entity);
+				success = true;
+			}
+			else{
+				IO.println("Categoria vazia");
+			}
+				
 		}
 		
 		else
