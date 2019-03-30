@@ -144,13 +144,16 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 	
 	public void listarProdutos(int id) throws IOException 
 	{				
-		int [] lista = Main.indiceComposto.lista(id);
-		int tamanho = lista.length;
+		if(Main.crudProduto != null){
+			int [] lista = Main.indiceComposto.lista(id);
+			int tamanho = lista.length;
+			
+			for(int y = 0; y < tamanho; y++)
+			{
+				Main.crudProduto.consultar(lista[y]);
+			}//end for
+		}
 		
-		for(int y = 0; y < tamanho; y++)
-		{
-			Main.crudProduto.consultar(lista[y]);
-		}//end for
 		
 	}//end listarProdutos()
 	
@@ -244,7 +247,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 			IO.println("Digite:");
 			IO.println("1 para inclusão");
 			IO.println("2 para alteração");
-			//IO.println("3 para exclusão");
+			IO.println("3 para exclusão");
 			IO.println("4 para consulta de categoria");
 			IO.println("5 para listar todas as categorias");
 			IO.println("0 para sair");
@@ -267,12 +270,12 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 				case 2:
 					menuAlteracao();
 					IO.pause();
-					break;/*
+					break;
 					
 				case 3:
 					menuExclusao();
 					IO.pause();
-					break;*/
+					break;
 					
 				case 4:
 					menuConsulta();
