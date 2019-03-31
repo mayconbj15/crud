@@ -3,9 +3,6 @@ package user;
 import util.*;
 
 import java.io.IOException;
-
-import java.lang.NumberFormatException;
-
 import crud.Arquivo;
 import entidades.Categoria;
 import entidades.Produto;
@@ -15,13 +12,13 @@ import entidades.Produto;
  */
 
 public class Crud {
-	private CrudProduto crudProduto;
-	private CrudCategoria crudCategoria;
+//	private CrudProduto crudProduto;
+//	private CrudCategoria crudCategoria;
 	
 	public Crud(Arquivo<Produto> databaseProduto, Arquivo<Categoria> databaseCategoria) {
 		
-		this.crudProduto = new CrudProduto(databaseProduto);
-		this.crudCategoria = new CrudCategoria(databaseCategoria);
+		Main.crudProduto = new CrudProduto(databaseProduto);
+		Main.crudCategoria = new CrudCategoria(databaseCategoria);
 	}
 
 	/**
@@ -52,12 +49,12 @@ public class Crud {
 					break;
 					
 				case 1:
-					crudProduto.menu();
+					Main.crudProduto.menu();
 					IO.pause();
 					break;
 					
 				case 2:
-					crudCategoria.menu();
+					Main.crudCategoria.menu();
 					IO.pause();
 					break;
 					

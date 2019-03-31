@@ -241,7 +241,7 @@ public class Produto implements Entidade{
 		return
 				"ID: " + this.id + '\n' +
 				"IDCategoria: " + this.idCategoria + '\n' +
-				"Nome da Categoria: " + Main.databaseCategoria.search(this.idCategoria).getNome() + 
+				"Nome da Categoria: " + Main.databaseCategoria.search(this.idCategoria).getNome() + '\n' +
 				"Nome: " + this.nome + '\n' +
 				"Descrição: " + this.descricao + '\n' +
 				"Preço: " + this.preco + '\n' +
