@@ -26,7 +26,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 		
 		ArrayList<Categoria> categorias = Main.databaseCategoria.list();
 		for(int i=0; i<categorias.size(); i++){
-			System.out.println(categorias.get(i));
+			System.out.println("ID:    " + categorias.get(i).getId() + " | " + "Nome: " + categorias.get(i).getNome());
 		}
 		
 		produto.readCategory();
