@@ -174,7 +174,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 	public void menuExclusao()
 	{ 
 		int cod = -1; //codigo de selecao
-		int id = IO.readint("Digite o id do produto a ser alterado: ");
+		int id = IO.readint("Digite o id do produto a ser excluído: ");
 
 		//testar antes se o id existe
 		if (database.idIsValid(id))

@@ -376,6 +376,21 @@ public class Arquivo<T extends Entidade> {
 		return success;
 	}
 	
+	/**
+	 * Método que recebe um array de int com os ids das entidades para serem excluídas
+	 * @param list - array com ids para serem excluídos
+	 * @return booleana indicando o sucesso da operação
+	 */
+	public boolean deleteObjects(int[] list){
+		boolean success = true;
+		
+		for(int i=0; i<list.length && success == true; i++){
+			success = deleteObject(list[i]);
+		}
+		
+		return success;
+	}
+	
 	public T search(int id) throws IOException{
 		T entity = null;
 		long address = indice.buscar(id);

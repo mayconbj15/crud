@@ -4,6 +4,8 @@ import util.*;
 
 import java.io.IOException;
 
+import java.lang.NumberFormatException;
+
 import crud.Arquivo;
 import entidades.Categoria;
 import entidades.Produto;
@@ -28,7 +30,7 @@ public class Crud {
 	
 	public void menu() throws IOException
 	{
-		int selecao;
+		int selecao = -1;
 		
 		IO.println("Olá, meu nobre!\n");
 		
@@ -40,6 +42,7 @@ public class Crud {
 			IO.println("2 para categoria");
 			IO.println("0 para sair");
 			IO.println("");
+
 			selecao = IO.readint("Opção: ");
 			
 			switch (selecao)
