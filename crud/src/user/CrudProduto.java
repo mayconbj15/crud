@@ -3,8 +3,10 @@ package user;
 import util.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import crud.Arquivo;
+import entidades.Categoria;
 import entidades.Produto;
 
 /**
@@ -21,6 +23,11 @@ public class CrudProduto extends CrudAbstract<Produto>
 	public void menuInclusao() throws IOException
 	{
 		Produto produto = new Produto();
+		
+		ArrayList<Categoria> categorias = Main.databaseCategoria.list();
+		for(int i=0; i<categorias.size(); i++){
+			System.out.println(categorias.get(i));
+		}
 		
 		produto.readCategory();
 		
