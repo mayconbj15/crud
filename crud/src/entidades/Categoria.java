@@ -7,7 +7,7 @@ import util.IO;
 /**
  * Classe das entidades categoria.
  */
-
+//
 public class Categoria implements Entidade{
 	private int idCategoria;
 	private String nome;
