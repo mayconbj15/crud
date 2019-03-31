@@ -173,6 +173,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 				listar();
 				break;
 			case 2:
+				listar();
 				idCategoria = IO.readint("Entre com a categoria desejada: ");
 				listarProdutos(idCategoria);
 				break;
