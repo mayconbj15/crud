@@ -220,12 +220,13 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 					
 					if(cod == 1) 
 					{
+						//excluí a categoria do databaseCategoria
 						excluir(id);
 						
 						//excluir os produtos que estão na categoria
 						int[] listOfInvalids = Main.indiceComposto.lista(id);
 						
-						database.deleteObjects(listOfInvalids);
+						Main.databaseProduto.deleteObjects(listOfInvalids);
 					}//end if
 					
 				}//end if
