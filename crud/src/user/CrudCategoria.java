@@ -227,6 +227,29 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 						
 						Main.databaseProduto.deleteObjects(listOfInvalids);
 					}//end if
+					else
+					{
+						IO.println("Qual das seguintes operações deseja realizar ?");
+						IO.println("Digite:");
+						IO.println("0 - Sair ");
+						IO.println("1 - Mover produtos para uma categoria existente ");
+						IO.println("2 - Criar nova categoria ");
+						cod = IO.readint("Opção: ");
+						switch (cod)
+						{
+							case 0:
+								IO.println("Até breve :)");
+								break;
+								
+							case 1:
+								
+								break;
+								
+							case 2:
+								
+								break;
+						}
+					}
 					
 				}//end if
 				
