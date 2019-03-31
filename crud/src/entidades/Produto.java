@@ -2,6 +2,7 @@ package entidades;
 
 import java.io.*;
 
+import user.Main;
 import util.IO;
 
 /**
@@ -234,6 +235,18 @@ public class Produto implements Entidade{
 		return setQuantidade(
 			IO.readLineUntilPositiveInt("\nInforme a quantidade de produtos: ")
 		);
+	}
+	
+	public String print() throws IOException{
+		return
+				"ID: " + this.id + '\n' +
+				"IDCategoria: " + this.idCategoria + '\n' +
+				"Nome da Categoria: " + Main.databaseCategoria.search(this.idCategoria).getNome() + 
+				"Nome: " + this.nome + '\n' +
+				"Descrição: " + this.descricao + '\n' +
+				"Preço: " + this.preco + '\n' +
+				"Fornecedor: " + this.fornecedor + '\n' +
+				"Quantidade: " + this.quantidade;
 	}
 
 	public String toString(){
