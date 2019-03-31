@@ -115,7 +115,7 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends Entidade>
 			entity= database.readObject(id);
 			
 			if(entity != null){
-				IO.println( "\n" + entity);
+				IO.println( "\n" + entity.print());
 				success = true;
 			}
 			else{
@@ -138,6 +138,6 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends Entidade>
 	
 	public void listar()
 	{
-		database.list().forEach( (entidade) -> { IO.println(entidade + "\n"); } );
+		database.list().forEach( (entidade) -> { IO.println(entidade.print() + "\n"); } );
 	}
 }

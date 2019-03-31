@@ -42,4 +42,10 @@ public interface Entidade {
 	 */
 	
 	public void fromByteArray(byte[] b);
+	
+	/**
+	 * Método que mostra a Entidade com o nome da sua categoria
+	 * @return uma representação do objeto
+	 */
+	public String print();
 }
