@@ -177,19 +177,27 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	/**
 	 * Insere uma entidade na base de dados.
 	 * 
+	 * <p>
+	 * <b>IMPORTANTE</b>: esta função não lê o último ID usado do
+	 * cabeçalho da base de dados nem escreve o id recebido no
+	 * cabeçalho da base de dados. Caso for necessário, gerencie
+	 * isso por conta própria.
+	 * </p>
+	 * 
 	 * @param entity Entidade a ser inserida.
+	 * @param id Id da entidade.
 	 * 
 	 * @return {@code true} se tudo der certo;
 	 * {@code false} caso contrário.
 	 */
 	
-	public boolean writeObject(T entity) {
+	private boolean writeObject(T entity, int id) {
 		boolean success = false;
 		
 		try {
 				accessFile = openFile();
 				
-				writeLastID( entity.setId( readLastID() + 1 ) );
+				entity.setId(id);
 				
 				byte[] byteArray = entity.obterBytes();
 				
@@ -223,6 +231,24 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 		}
 		
 		return success;
+	}
+	
+	/**
+	 * Insere uma entidade na base de dados.
+	 * 
+	 * @param entity Entidade a ser inserida.
+	 * 
+	 * @return {@code true} se tudo der certo;
+	 * {@code false} caso contrário.
+	 */
+	
+	public boolean writeObject(T entity) {
+		
+		int newId = readLastID() + 1;
+		
+		writeLastID(newId);
+		
+		return writeObject(entity, newId);
 	}
 	
 	/**
@@ -415,8 +441,7 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 		
 		if (deleteObject(id))
 		{
-			entity.setId(id);
-			success = writeObject(entity);
+			success = writeObject(entity, id);
 		}
 		
 		return success;
