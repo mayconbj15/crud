@@ -176,10 +176,14 @@ public class Produto extends SerializavelAbstract implements Entidade
 	}
 	
 	public String print() throws IOException{
+		
+		Categoria categoria = Main.databaseCategoria.readObject(this.idCategoria);
+		String nomeCategoria = ( categoria != null ? categoria.getNome() : "Desconhecido" );
+		
 		return
 			"ID: " + this.id + '\n' +
 			"IDCategoria: " + this.idCategoria + '\n' +
-			"Nome da Categoria: " + Main.databaseCategoria.readObject(this.idCategoria).getNome() + '\n' +
+			"Nome da Categoria: " + nomeCategoria + '\n' +
 			"Nome: " + this.nome + '\n' +
 			"Descrição: " + this.descricao + '\n' +
 			"Preço: " + this.preco + '\n' +
