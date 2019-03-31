@@ -145,7 +145,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 	public void listarProdutos(int id) throws IOException 
 	{				
 		if(Main.crudProduto != null){
-			int [] lista = Main.indiceComposto.lista(id);
+			int [] lista = Main.indiceComposto.listarDadosComAChave(id);
 			int tamanho = lista.length;
 			
 			for(int y = 0; y < tamanho; y++)
@@ -202,7 +202,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 			
 			if (cod == 1)
 			{
-				if(Main.databaseProduto.indice.vazia())
+				if(Main.databaseProduto.indice.listarDadosComAChave(id).length == 0)
 				{
 					excluir(id);				
 				}
@@ -224,7 +224,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 						excluir(id);
 						
 						//excluir os produtos que estão na categoria
-						int[] listOfInvalids = Main.indiceComposto.lista(id);
+						int[] listOfInvalids = Main.indiceComposto.listarDadosComAChave(id);
 						
 						Main.databaseProduto.deleteObjects(listOfInvalids);
 					}//end if

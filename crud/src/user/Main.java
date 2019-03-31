@@ -3,40 +3,47 @@ package user;
 import java.io.*;
 
 import crud.Arquivo;
-import crud.ArvoreBMais_ChaveComposta;
+import crud.hash_dinamica.implementacoes.HashDinamicaIntInt;
 import entidades.Categoria;
 import entidades.Produto;
 
-
 public class Main {
 	
-	public static final String DATABASE_FILE_NAME_PRODUTOS = "produtos.db";
-	public static final String INDEXES_FILE_NAME_PRODUTOS = "produtos.idx";
-	public static final String DATABASE_FILE_NAME_CATEGORIAS = "categorias.db";
-	public static final String INDEXES_FILE_NAME_CATEGORIAS = "categorias.idx";
+	public static final String PRODUTOS_DATABASE_FILE_NAME = "produtos.db";
+	public static final String PRODUTOS_INDEXES_FILE_NAME = "produtos.idx";
+	public static final String PRODUTOS_INDEXES_DIR_FILE_NAME = "produtos.dir";
+	
+	public static final String CATEGORIAS_DATABASE_FILE_NAME = "categorias.db";
+	public static final String CATEGORIAS_INDEXES_FILE_NAME = "categorias.idx";
+	public static final String CATEGORIAS_INDEXES_DIR_FILE_NAME = "produtos.dir";
 	
 	public static Arquivo<Produto> databaseProduto;
 	public static Arquivo<Categoria> databaseCategoria;
-	public static ArvoreBMais_ChaveComposta indiceComposto;
+	public static HashDinamicaIntInt indiceComposto;
 	
-	public static final int COMPOSITE_TREE_ORDER = 21;
 	public static final String COMPOSITE_INDEXES_FILE_NAME = "indice_composto.idx";
+	public static final String COMPOSITE_INDEXES_DIR_FILE_NAME = "indice_composto.dir";
 	
 	public static CrudCategoria crudCategoria;
 	public static CrudProduto crudProduto;
 	
 	public static void startFiles()
 	{
-		File databaseFileProdutos = new File(DATABASE_FILE_NAME_PRODUTOS);
-		File indexesFileProdutos = new File(INDEXES_FILE_NAME_PRODUTOS);
+		File produtosDatabaseFile = new File(PRODUTOS_DATABASE_FILE_NAME);
+		File produtosIndexesFile = new File(PRODUTOS_INDEXES_FILE_NAME);
+		File produtosIndexesDirFile = new File(PRODUTOS_INDEXES_DIR_FILE_NAME);
 		
-		File databaseFileCategorias = new File(DATABASE_FILE_NAME_CATEGORIAS);
-		File indexesFileCategorias = new File(INDEXES_FILE_NAME_CATEGORIAS);
+		File categoriasDatabaseFile = new File(CATEGORIAS_DATABASE_FILE_NAME);
+		File categoriasIndexesFile = new File(CATEGORIAS_INDEXES_FILE_NAME);
+		File categoriasIndexesDirFile = new File(CATEGORIAS_INDEXES_DIR_FILE_NAME);
 		
-		databaseFileProdutos.delete();
-		indexesFileProdutos.delete();
-		databaseFileCategorias.delete();
-		indexesFileCategorias.delete();
+		produtosDatabaseFile.delete();
+		produtosIndexesFile.delete();
+		produtosIndexesDirFile.delete();
+		
+		categoriasDatabaseFile.delete();
+		categoriasIndexesFile.delete();
+		categoriasIndexesDirFile.delete();
 	}
 	
 	public static void startVariables()
@@ -44,29 +51,26 @@ public class Main {
 		try {
 			databaseProduto = new Arquivo<Produto>(
 				Produto.class.getConstructor(),
-				DATABASE_FILE_NAME_PRODUTOS,
-				INDEXES_FILE_NAME_PRODUTOS
+				PRODUTOS_DATABASE_FILE_NAME,
+				PRODUTOS_INDEXES_DIR_FILE_NAME,
+				PRODUTOS_INDEXES_FILE_NAME
 			);
 			
-			
 			databaseCategoria = new Arquivo<Categoria>(
-					Categoria.class.getConstructor(),
-					DATABASE_FILE_NAME_CATEGORIAS,
-					INDEXES_FILE_NAME_CATEGORIAS
-				);
+				Categoria.class.getConstructor(),
+				CATEGORIAS_DATABASE_FILE_NAME,
+				CATEGORIAS_INDEXES_FILE_NAME,
+				CATEGORIAS_INDEXES_DIR_FILE_NAME
+			);
 			
-			indiceComposto = new ArvoreBMais_ChaveComposta(
-				COMPOSITE_TREE_ORDER,
+			indiceComposto = new HashDinamicaIntInt(
+				COMPOSITE_INDEXES_DIR_FILE_NAME,
 				COMPOSITE_INDEXES_FILE_NAME
 			);
 		}
 		
 		catch(NoSuchMethodException nsme) {
 			nsme.printStackTrace();
-		}
-		
-		catch (IOException ioe) {
-			ioe.printStackTrace();
 		}
 	}
 	
@@ -76,7 +80,5 @@ public class Main {
 	
 		Crud crudMaster = new Crud(databaseProduto, databaseCategoria);
 		crudMaster.menu();
-		
-		
 	}
 }

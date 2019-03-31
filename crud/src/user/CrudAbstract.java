@@ -2,11 +2,12 @@ package user;
 
 import crud.Arquivo;
 import entidades.Entidade;
+import serializaveis.SerializavelAbstract;
 import util.IO;
 
 import java.io.IOException;
 
-public abstract class CrudAbstract<TIPO_ENTIDADE extends Entidade>
+public abstract class CrudAbstract<TIPO_ENTIDADE extends SerializavelAbstract & Entidade>
 {
 	protected Arquivo<TIPO_ENTIDADE> database;
 	

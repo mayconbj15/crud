@@ -3,7 +3,9 @@ package crud;
 import java.io.*;
 import java.util.ArrayList;
 
+import crud.hash_dinamica.implementacoes.HashDinamicaIntLong;
 import entidades.Entidade;
+import serializaveis.SerializavelAbstract;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -14,7 +16,7 @@ import user.Main;
  * Classe para gerenciamento de registros de tipos genéricos numa base de dados
  */
 
-public class Arquivo<T extends Entidade> {
+public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	// deslocamento em relação ao início do arquivo que
 	// deve ser dado para pular o metadados/cabeçalho
 	// da base de dados
@@ -25,9 +27,9 @@ public class Arquivo<T extends Entidade> {
 	RandomAccessFile accessFile;
 	private Constructor<T> constructor;
 	
-	public Indice indice;
-	private final int TREE_ORDER = 21;
-	private String indexFileName;
+	public HashDinamicaIntLong indice;
+	//private final int TREE_ORDER = 21;
+	//private String indexFileName;
 	
 	/**
 	 * Cria um objeto que gerencia uma base de dados de objetos
@@ -37,18 +39,23 @@ public class Arquivo<T extends Entidade> {
 	 * @param nameFile Nome do arquivo da base de dados.
 	 */
 	
-	public Arquivo(Constructor<T> constructor, String databaseFileName, String indexesFileName) {
+	public Arquivo(
+		Constructor<T> constructor,
+		String databaseFileName,
+		String indexesFileName,
+		String indexesDirFileName)
+	{
 		this.name = databaseFileName;
 		this.lastID = -1;
 		this.constructor = constructor;
-		this.indexFileName = indexesFileName;
 		
 		try
 		{
-			this.indice = new Indice(TREE_ORDER, indexFileName); //indice dos produtos
+			//indice dos produtos
+			this.indice = new HashDinamicaIntLong(indexesDirFileName, indexesFileName);
 		}
 		
-		catch (IOException e)
+		catch (NoSuchMethodException | SecurityException e)
 		{
 			e.printStackTrace();
 		}
@@ -184,7 +191,7 @@ public class Arquivo<T extends Entidade> {
 				
 				writeLastID( entity.setId( readLastID() + 1 ) );
 				
-				byte[] byteArray = entity.setByteArray();
+				byte[] byteArray = entity.obterBytes();
 				
 				// go to final of file
 				accessFile.seek(accessFile.length());
@@ -247,18 +254,18 @@ public class Arquivo<T extends Entidade> {
 			
 			if (lapide != '*')
 			{
-				try {
+				try
+				{
 					entity = constructor.newInstance();
-					entity.fromByteArray(byteArray);
+					entity.lerBytes(byteArray);
 				}
-				catch(IllegalAccessException iae) {
-					iae.printStackTrace();
-				}
-				catch(InstantiationException ie) {
-					ie.printStackTrace();
-				}
-				catch(InvocationTargetException ite) {
-					ite.printStackTrace();
+				
+				catch (InstantiationException |
+					IllegalAccessException |
+					IllegalArgumentException |
+					InvocationTargetException e)
+				{
+					e.printStackTrace();
 				}
 			}
 		}
@@ -284,7 +291,7 @@ public class Arquivo<T extends Entidade> {
 		T entity = null;
 		
 		try {
-			long entityAddress = indice.buscar(id);
+			long entityAddress = indice.pesquisarDadoPelaChave(id);
 			
 			if (entityAddress != -1)
 			{
@@ -353,7 +360,7 @@ public class Arquivo<T extends Entidade> {
 		
 		try
 		{
-			long entityAddress = indice.buscar(id);
+			long entityAddress = indice.pesquisarDadoPelaChave(id);
 			
 			if (entityAddress != -1)
 			{
@@ -389,25 +396,6 @@ public class Arquivo<T extends Entidade> {
 		}
 		
 		return success;
-	}
-	
-	public T search(int id) throws IOException{
-		T entity = null;
-		long address = indice.buscar(id);
-			try{
-				if(address != -1){
-					accessFile = openFile();
-					accessFile.seek(address);
-					
-					entity = readObject(accessFile);
-				}
-			}catch(IOException io){
-				io.printStackTrace();
-			}
-		
-		
-		return entity;
-		
 	}
 
 	/**

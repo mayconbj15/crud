@@ -2,6 +2,8 @@ package entidades;
 
 import java.io.*;
 
+import serializaveis.SerializavelAbstract;
+import serializaveis.StringSerializavel;
 import user.Main;
 import util.IO;
 
@@ -9,7 +11,8 @@ import util.IO;
  * Classe das entidades produto.
  */
 
-public class Produto implements Entidade{
+public class Produto extends SerializavelAbstract implements Entidade
+{
 	private int id;
 	private int idCategoria;
 	private String nome;
@@ -93,71 +96,6 @@ public class Produto implements Entidade{
 	public int setQuantidade(int quantidade) {
 		return this.quantidade = quantidade;
 	}
-
-	/**
-	 * <p>
-	 * Obs.: a estrutura do arranjo é a seguinte:
-	 * [ id, idCategoria, nome, descrição, preço, fornecedor, quantidade ]
-	 * </p>
-	 * 
-	 * {@inheritDoc}
-	 */
-
-	@Override
-	public byte[] setByteArray() {
-		ByteArrayOutputStream array = new ByteArrayOutputStream();
-		DataOutputStream dataStream = new DataOutputStream(array);
-		
-		try{
-			dataStream.writeInt(this.id);
-			dataStream.writeInt(this.idCategoria);
-			dataStream.writeUTF(this.nome);
-			dataStream.writeUTF(this.descricao);
-			dataStream.writeFloat(this.preco);
-			dataStream.writeUTF(this.fornecedor);
-			dataStream.writeInt(this.quantidade);
-			
-			dataStream.close();
-			array.close();
-		} 
-		
-		catch(IOException e){
-			e.printStackTrace();
-		}
-
-		return array.toByteArray();
-	}
-
-	/**
-	 * <p>
-	 * Obs.: a estrutura de {@code byteArray} deve ser a seguinte:
-	 * [ id, idCategoria, nome, descrição, preço, fornecedor, quantidade ]
-	 * </p>
-	 * 
-	 * {@inheritDoc}
-	 */
-
-	@Override
-	public void fromByteArray(byte[] byteArray){
-		ByteArrayInputStream byteArrayStream = new ByteArrayInputStream(byteArray);
-		DataInputStream dataStream = new DataInputStream(byteArrayStream);
-
-		try{
-			this.id = dataStream.readInt();
-			this.idCategoria = dataStream.readInt();
-			this.nome = dataStream.readUTF();
-			this.descricao = dataStream.readUTF();
-			this.preco = dataStream.readFloat();
-			this.fornecedor = dataStream.readUTF();
-			this.quantidade = dataStream.readInt();
-			
-			byteArrayStream.close();
-			dataStream.close();
-		} 
-		catch(IOException e){
-			e.printStackTrace();
-		}
-	}
 	
 	/**
 	 * Lê a categoria do produto da entrada padrão e redefine
@@ -239,14 +177,14 @@ public class Produto implements Entidade{
 	
 	public String print() throws IOException{
 		return
-				"ID: " + this.id + '\n' +
-				"IDCategoria: " + this.idCategoria + '\n' +
-				"Nome da Categoria: " + Main.databaseCategoria.search(this.idCategoria).getNome() + '\n' +
-				"Nome: " + this.nome + '\n' +
-				"Descrição: " + this.descricao + '\n' +
-				"Preço: " + this.preco + '\n' +
-				"Fornecedor: " + this.fornecedor + '\n' +
-				"Quantidade: " + this.quantidade + '\n';
+			"ID: " + this.id + '\n' +
+			"IDCategoria: " + this.idCategoria + '\n' +
+			"Nome da Categoria: " + Main.databaseCategoria.readObject(this.idCategoria).getNome() + '\n' +
+			"Nome: " + this.nome + '\n' +
+			"Descrição: " + this.descricao + '\n' +
+			"Preço: " + this.preco + '\n' +
+			"Fornecedor: " + this.fornecedor + '\n' +
+			"Quantidade: " + this.quantidade + '\n';
 	}
 
 	public String toString(){
@@ -258,6 +196,90 @@ public class Produto implements Entidade{
 			"Preço: " + this.preco + '\n' +
 			"Fornecedor: " + this.fornecedor + '\n' +
 			"Quantidade: " + this.quantidade;
+	}
+
+	@Override
+	public int obterTamanhoMaximoEmBytes()
+	{
+		return
+			Integer.BYTES +
+			Integer.BYTES +
+			StringSerializavel.PADRAO_TAMANHO_MAXIMO_EM_BYTES +
+			StringSerializavel.PADRAO_TAMANHO_MAXIMO_EM_BYTES +
+			Float.BYTES +
+			StringSerializavel.PADRAO_TAMANHO_MAXIMO_EM_BYTES +
+			Integer.BYTES;
+	}
+
+	/**
+	 * <p>
+	 * Obs.: a estrutura do arranjo é a seguinte:
+	 * [ id, idCategoria, nome, descrição, preço, fornecedor, quantidade ]
+	 * </p>
+	 * 
+	 * {@inheritDoc}
+	 */
+
+	@Override
+	public byte[] obterBytes()
+	{
+		ByteArrayOutputStream array = new ByteArrayOutputStream();
+		DataOutputStream dataStream = new DataOutputStream(array);
+		
+		try
+		{
+			dataStream.writeInt(this.id);
+			dataStream.writeInt(this.idCategoria);
+			dataStream.writeUTF(this.nome);
+			dataStream.writeUTF(this.descricao);
+			dataStream.writeFloat(this.preco);
+			dataStream.writeUTF(this.fornecedor);
+			dataStream.writeInt(this.quantidade);
+			
+			dataStream.close();
+		} 
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		return array.toByteArray();
+	}
+
+	/**
+	 * <p>
+	 * Obs.: a estrutura de {@code byteArray} deve ser a seguinte:
+	 * [ id, idCategoria, nome, descrição, preço, fornecedor, quantidade ]
+	 * </p>
+	 * 
+	 * {@inheritDoc}
+	 */
+
+	@Override
+	public void lerBytes(byte[] byteArray)
+	{
+		ByteArrayInputStream byteArrayStream = new ByteArrayInputStream(byteArray);
+		DataInputStream dataStream = new DataInputStream(byteArrayStream);
+
+		try
+		{
+			this.id = dataStream.readInt();
+			this.idCategoria = dataStream.readInt();
+			this.nome = dataStream.readUTF();
+			this.descricao = dataStream.readUTF();
+			this.preco = dataStream.readFloat();
+			this.fornecedor = dataStream.readUTF();
+			this.quantidade = dataStream.readInt();
+			
+			byteArrayStream.close();
+			dataStream.close();
+		}
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
 

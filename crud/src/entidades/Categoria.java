@@ -2,13 +2,15 @@ package entidades;
 
 import java.io.*;
 
+import serializaveis.SerializavelAbstract;
 import util.IO;
 
 /**
  * Classe das entidades categoria.
  */
-//
-public class Categoria implements Entidade{
+
+public class Categoria extends SerializavelAbstract implements Entidade
+{
 	private int idCategoria;
 	private String nome;
 
@@ -52,61 +54,6 @@ public class Categoria implements Entidade{
 	public String setNome(String nome){
 		return this.nome = nome;
 	}
-
-	/**
-	 * <p>
-	 * Obs.: a estrutura do arranjo é a seguinte:
-	 * [ id, nome ]
-	 * </p>
-	 * 
-	 * {@inheritDoc}
-	 */
-
-	@Override
-	public byte[] setByteArray() {
-		ByteArrayOutputStream array = new ByteArrayOutputStream();
-		DataOutputStream dataStream = new DataOutputStream(array);
-		
-		try{
-			dataStream.writeInt(this.idCategoria);
-			dataStream.writeUTF(this.nome);
-			
-			dataStream.close();
-			array.close();
-		} 
-		
-		catch(IOException e){
-			e.printStackTrace();
-		}
-
-		return array.toByteArray();
-	}
-
-	/**
-	 * <p>
-	 * Obs.: a estrutura de {@code byteArray} deve ser a seguinte:
-	 * [ id, nome ]
-	 * </p>
-	 * 
-	 * {@inheritDoc}
-	 */
-
-	@Override
-	public void fromByteArray(byte[] byteArray){
-		ByteArrayInputStream byteArrayStream = new ByteArrayInputStream(byteArray);
-		DataInputStream dataStream = new DataInputStream(byteArrayStream);
-
-		try{
-			this.idCategoria = dataStream.readInt();
-			this.nome = dataStream.readUTF();
-			
-			byteArrayStream.close();
-			dataStream.close();
-		} 
-		catch(IOException e){
-			e.printStackTrace();
-		}
-	}
 	
 	/**
 	 * Lê o nome da categoria da entrada padrão e redefine
@@ -120,16 +67,81 @@ public class Categoria implements Entidade{
 		return setNome( IO.readLine("\nInforme o nome da categoria: ") );
 	}
 	
-	public String print(){
-		return
-				"ID: " + this.idCategoria + '\n' +
-				"Nome: " + this.nome;
-	}
-	
 	public String toString(){
 		return
 			"ID: " + this.idCategoria + '\n' +
 			"Nome: " + this.nome;
+	}
+	
+	public String print(){
+		return toString();
+	}
+
+	@Override
+	public int obterTamanhoMaximoEmBytes()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/**
+	 * <p>
+	 * Obs.: a estrutura do arranjo é a seguinte:
+	 * [ id, nome ]
+	 * </p>
+	 * 
+	 * {@inheritDoc}
+	 */
+
+	@Override
+	public byte[] obterBytes()
+	{
+		ByteArrayOutputStream array = new ByteArrayOutputStream();
+		DataOutputStream dataStream = new DataOutputStream(array);
+		
+		try
+		{
+			dataStream.writeInt(this.idCategoria);
+			dataStream.writeUTF(this.nome);
+			
+			dataStream.close();
+		} 
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		return array.toByteArray();
+	}
+
+	/**
+	 * <p>
+	 * Obs.: a estrutura de {@code bytes} deve ser a seguinte:
+	 * [ id, nome ]
+	 * </p>
+	 * 
+	 * {@inheritDoc}
+	 */
+
+	@Override
+	public void lerBytes(byte[] bytes)
+	{
+		ByteArrayInputStream byteArrayStream = new ByteArrayInputStream(bytes);
+		DataInputStream dataStream = new DataInputStream(byteArrayStream);
+
+		try
+		{
+			this.idCategoria = dataStream.readInt();
+			this.nome = dataStream.readUTF();
+			
+			dataStream.close();
+		} 
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
 

@@ -1,12 +1,10 @@
 package user;
 
-import util.*;
+import util.IO;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import crud.Arquivo;
-import entidades.Categoria;
 import entidades.Produto;
 
 /**
@@ -24,18 +22,16 @@ public class CrudProduto extends CrudAbstract<Produto>
 	{
 		Produto produto = new Produto();
 		
-		ArrayList<Categoria> categorias = Main.databaseCategoria.list();
-		for(int i=0; i<categorias.size(); i++){
-			System.out.println("ID:    " + categorias.get(i).getId() + " | " + "Nome: " + categorias.get(i).getNome());
-		}
+		IO.println("Categorias disponíveis:\n");
+		Main.crudCategoria.listar();
 		
 		produto.readCategory();
 		
-		if(Main.databaseCategoria.indice.buscar(produto.getIdCategoria()) == -1){
-			System.out.println("Categoria do produto não valida");
+		if(Main.databaseCategoria.indice.pesquisarDadoPelaChave(produto.getIdCategoria()) == Long.MIN_VALUE){
+			IO.println("Categoria do produto não válida");
 		}
 		else{
-			System.out.println("Categoria " + Main.databaseCategoria.search(produto.getIdCategoria()).getNome());
+			Main.crudCategoria.consultar(produto.getIdCategoria());
 			produto.readName();
 			produto.readDescription();
 			produto.readPrice();
