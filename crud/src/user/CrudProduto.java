@@ -2,8 +2,6 @@ package user;
 
 import util.IO;
 
-import java.io.IOException;
-
 import crud.Arquivo;
 import entidades.Produto;
 
@@ -18,7 +16,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 		super(database);
 	}
 
-	public void menuInclusao() throws IOException
+	public void menuInclusao()
 	{
 		Produto produto = new Produto();
 		
@@ -27,11 +25,8 @@ public class CrudProduto extends CrudAbstract<Produto>
 		
 		produto.readCategory();
 		
-		if(Main.databaseCategoria.indice.pesquisarDadoPelaChave(produto.getIdCategoria()) == Long.MIN_VALUE){
-			IO.println("Categoria do produto não válida");
-		}
-		else{
-			Main.crudCategoria.consultar(produto.getIdCategoria());
+		if( Main.crudCategoria.consultar(produto.getIdCategoria()) ){
+			
 			produto.readName();
 			produto.readDescription();
 			produto.readPrice();
@@ -39,7 +34,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 			produto.readQuantity();
 			
 			inserir(produto);
-		}	
+		}
 	}
 
 	/**
@@ -102,7 +97,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 			switch (cod)
 			{
 				case 1:
-					produto.readCategory();
+					while ( !Main.crudCategoria.consultar(produto.readCategory()) );
 					break;
 
 				case 2:
@@ -201,14 +196,14 @@ public class CrudProduto extends CrudAbstract<Produto>
 		}
 	}
 
-	public void menuConsulta() throws IOException
+	public void menuConsulta()
 	{
 		int id = IO.readint("Digite o id do produto a ser alterado: ");
 		
 		consultar(id);
 	}
 
-	public void menuListar() throws IOException
+	public void menuListar()
 	{
 		listar();
 	}
@@ -217,7 +212,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 	 * Gerencia a interação com o usuário.
 	 */
 	
-	public void menu() throws IOException
+	public void menu()
 	{
 		int selecao;
 		

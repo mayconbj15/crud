@@ -175,7 +175,7 @@ public class Produto extends SerializavelAbstract implements Entidade
 		);
 	}
 	
-	public String print() throws IOException{
+	public String print() {
 		
 		Categoria categoria = Main.databaseCategoria.readObject(this.idCategoria);
 		String nomeCategoria = ( categoria != null ? categoria.getNome() : "Desconhecido" );

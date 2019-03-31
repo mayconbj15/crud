@@ -1,7 +1,5 @@
 package user;
 
-import java.io.IOException;
-
 import crud.Arquivo;
 import entidades.Categoria;
 import util.IO;
@@ -83,7 +81,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		return success;
 	}//end alterar()
 
-	public void menuAlteracao() throws IOException
+	public void menuAlteracao()
 	{ 
 		int cod = -1; //codigo de selecao
 		listar();
@@ -135,14 +133,14 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		}
 	}*/
 
-	public void menuConsulta() throws IOException
+	public void menuConsulta()
 	{
 		int id = IO.readint("Digite o id da categoria a ser consultada: ");
 		
 		consultar(id);
 	}
 	
-	public void listarProdutos(int id) throws IOException 
+	public void listarProdutos(int id) 
 	{				
 		if(Main.crudProduto != null){
 			int [] lista = Main.indiceComposto.listarDadosComAChave(id);
@@ -157,7 +155,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		
 	}//end listarProdutos()
 	
-	public void menuListar() throws IOException
+	public void menuListar()
 	{
 		int cod = -1;
 		int idCategoria = -1;
@@ -185,7 +183,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 	}
 		
 	
-	public void menuExclusao() throws IOException
+	public void menuExclusao()
 	{ 
 		int cod = -1; //codigo de selecao
 		int id = IO.readint("Digite o id da categoria a ser removida: ");
@@ -241,7 +239,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 	}//end menuExclusao
 
 	
-	public void menu() throws IOException
+	public void menu()
 	{
 		int selecao;
 		

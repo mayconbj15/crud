@@ -5,8 +5,6 @@ import entidades.Entidade;
 import serializaveis.SerializavelAbstract;
 import util.IO;
 
-import java.io.IOException;
-
 public abstract class CrudAbstract<TIPO_ENTIDADE extends SerializavelAbstract & Entidade>
 {
 	protected Arquivo<TIPO_ENTIDADE> database;
@@ -108,21 +106,21 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends SerializavelAbstract & 
 	 * {@code false} caso contrário.
 	 */
 	
-	public boolean consultar(int id) throws IOException
+	public boolean consultar(int id)
 	{
 		boolean success = false;
 		
 		if (database.idIsValid(id))
 		{
-			TIPO_ENTIDADE entity= null;
-			entity= database.readObject(id);
+			TIPO_ENTIDADE entity = null;
+			entity = database.readObject(id);
 			
 			if(entity != null){
 				IO.println( "\n" + entity.print());
 				success = true;
 			}
 			else{
-				IO.println("Categoria vazia");
+				IO.println("Entidade inexistente");
 			}
 				
 		}
@@ -139,7 +137,7 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends SerializavelAbstract & 
 	 * Lista todas as entidades ativas da base de dados.
 	 */
 	
-	public void listar() throws IOException
+	public void listar()
 	{
 		database.list().forEach( (entidade) -> { try {
 			IO.println(entidade.print() + "\n");

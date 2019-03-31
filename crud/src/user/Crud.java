@@ -2,7 +2,6 @@ package user;
 
 import util.*;
 
-import java.io.IOException;
 import crud.Arquivo;
 import entidades.Categoria;
 import entidades.Produto;
@@ -25,7 +24,7 @@ public class Crud {
 	 * Gerencia a interação com o usuário.
 	 */
 	
-	public void menu() throws IOException
+	public void menu()
 	{
 		int selecao = -1;
 		
