@@ -119,7 +119,13 @@ public class Categoria implements Entidade{
 	{
 		return setNome( IO.readLine("\nInforme o nome da categoria: ") );
 	}
-
+	
+	public String print(){
+		return
+				"ID: " + this.idCategoria + '\n' +
+				"Nome: " + this.nome;
+	}
+	
 	public String toString(){
 		return
 			"ID: " + this.idCategoria + '\n' +

@@ -4,6 +4,8 @@ import crud.Arquivo;
 import entidades.Entidade;
 import util.IO;
 
+import java.io.IOException;
+
 public abstract class CrudAbstract<TIPO_ENTIDADE extends Entidade>
 {
 	protected Arquivo<TIPO_ENTIDADE> database;
@@ -105,7 +107,7 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends Entidade>
 	 * {@code false} caso contrário.
 	 */
 	
-	public boolean consultar(int id)
+	public boolean consultar(int id) throws IOException
 	{
 		boolean success = false;
 		
@@ -136,8 +138,12 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends Entidade>
 	 * Lista todas as entidades ativas da base de dados.
 	 */
 	
-	public void listar()
+	public void listar() throws IOException
 	{
-		database.list().forEach( (entidade) -> { IO.println(entidade.print() + "\n"); } );
+		database.list().forEach( (entidade) -> { try {
+			IO.println(entidade.print() + "\n");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} } );
 	}
 }

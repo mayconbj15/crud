@@ -83,7 +83,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		return success;
 	}//end alterar()
 
-	public void menuAlteracao()
+	public void menuAlteracao() throws IOException
 	{ 
 		int cod = -1; //codigo de selecao
 		listar();
@@ -135,7 +135,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		}
 	}*/
 
-	public void menuConsulta()
+	public void menuConsulta() throws IOException
 	{
 		int id = IO.readint("Digite o id da categoria a ser consultada: ");
 		

@@ -1,5 +1,7 @@
 package entidades;
 
+import java.io.IOException;
+
 public interface Entidade {
 	
 	/**
@@ -47,5 +49,5 @@ public interface Entidade {
 	 * Método que mostra a Entidade com o nome da sua categoria
 	 * @return uma representação do objeto
 	 */
-	public String print();
+	public String print() throws IOException;
 }

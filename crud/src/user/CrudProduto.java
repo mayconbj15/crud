@@ -205,14 +205,14 @@ public class CrudProduto extends CrudAbstract<Produto>
 		}
 	}
 
-	public void menuConsulta()
+	public void menuConsulta() throws IOException
 	{
 		int id = IO.readint("Digite o id do produto a ser alterado: ");
 		
 		consultar(id);
 	}
 
-	public void menuListar()
+	public void menuListar() throws IOException
 	{
 		listar();
 	}

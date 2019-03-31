@@ -246,7 +246,7 @@ public class Produto implements Entidade{
 				"Descrição: " + this.descricao + '\n' +
 				"Preço: " + this.preco + '\n' +
 				"Fornecedor: " + this.fornecedor + '\n' +
-				"Quantidade: " + this.quantidade;
+				"Quantidade: " + this.quantidade + '\n';
 	}
 
 	public String toString(){
