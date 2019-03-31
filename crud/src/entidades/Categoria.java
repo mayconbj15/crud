@@ -119,22 +119,6 @@ public class Categoria implements Entidade{
 	{
 		return setNome( IO.readLine("\nInforme o nome da categoria: ") );
 	}
-	
-	/**
-	* Le os campos de uma categoria da entrada padrão e
-	* cria o objeto equivalente.
-	* 
-	* @return Categoria com os campos lidos.
-	*/
-	
-	public static Categoria readCategoria()
-	{
-		Categoria category = new Categoria();
-		
-		category.readName();
-		
-		return category; 
-	}
 
 	public String toString(){
 		return

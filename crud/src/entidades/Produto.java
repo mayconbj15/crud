@@ -235,30 +235,6 @@ public class Produto implements Entidade{
 			IO.readLineUntilPositiveInt("\nInforme a quantidade de produtos: ")
 		);
 	}
-	
-	/**
-	* Le os campos de um produto da entrada padrão e
-	* cria o objeto equivalente.
-	* 
-	* Obs.: caso o usuário informe valores não numéricos
-	* para campos numéricos, estes são definidos como -1.
-	* 
-	* @return Produto com os campos lidos.
-	*/
-	
-	public static Produto readProduct()
-	{
-		Produto produto = new Produto();
-
-		produto.readCategory();
-		produto.readName();
-		produto.readDescription();
-		produto.readPrice();
-		produto.readProvider();
-		produto.readQuantity();
-		
-		return produto; 
-	}
 
 	public String toString(){
 		return
