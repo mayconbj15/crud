@@ -347,7 +347,10 @@ public class Diretorio<TIPO_DAS_CHAVES extends SerializavelAbstract>
 	 * 
 	 * @param chave Chave de referência.
 	 * 
-	 * @return o ponteiro para o bucket onde a chave deve ficar.
+	 * @return -1 se a {@code chave} ou a função hash recebida
+	 * no construtor deste objeto forem {@code null}. Caso
+	 * contrário, retorna o ponteiro para o bucket onde a chave
+	 * deve ficar.
 	 */
 	
 	public long obterEndereçoDoBucket(TIPO_DAS_CHAVES chave)

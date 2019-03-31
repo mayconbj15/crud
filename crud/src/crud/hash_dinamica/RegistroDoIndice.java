@@ -102,7 +102,7 @@ public class RegistroDoIndice<TIPO_DAS_CHAVES extends SerializavelAbstract, TIPO
 		if (quantidadeMaximaDeBytesParaAChave > 0 &&
 			quantidadeMaximaDeBytesParaODado > 0)
 		{
-			tamanho = Character.BYTES + // tamanho da lapide
+			tamanho = Byte.BYTES + // tamanho da lapide
 				quantidadeMaximaDeBytesParaAChave + // tamanho da chave
 				quantidadeMaximaDeBytesParaODado; // tamanho do dado
 		}

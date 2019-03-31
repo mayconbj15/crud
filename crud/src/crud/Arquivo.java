@@ -195,33 +195,32 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 		boolean success = false;
 		
 		try {
-				accessFile = openFile();
-				
-				entity.setId(id);
-				
-				byte[] byteArray = entity.obterBytes();
-				
-				// go to final of file
-				accessFile.seek(accessFile.length());
-				
-				// insere a chave (id) e o dado correspondente (endereço do registro)
-				// no sistema de indexamento
+			accessFile = openFile();
 
-				indice.inserir(entity.getId(), accessFile.getFilePointer());
+			entity.setId(id);
+
+			byte[] byteArray = entity.obterBytes();
+
+			// go to final of file
+			accessFile.seek(accessFile.length());
+
+			// insere a chave (id) e o dado correspondente (endereço do registro)
+			// no sistema de indexamento
+
+			indice.inserir(entity.getId(), accessFile.getFilePointer());
+
+			//inserir o id de categoria e o id do produto no sistema de indexamento
+			if(entity.getIdCategoria() != -1){
+				Main.indiceComposto.inserir(entity.getIdCategoria(), entity.getId());
+			}
+
+			accessFile.writeByte(' '); // insere a lapide
+			accessFile.writeInt(byteArray.length); // insere o tamanho da entidade
+			accessFile.write(byteArray); // insere a entidade
 			
-				//inserir o id de categoria e o id do produto na árvore b+
-				if(entity.getIdCategoria() != -1){
-					Main.indiceComposto.inserir(entity.getIdCategoria(), entity.getId());
-				}
-					
-				
-				accessFile.writeChar(' '); // insere a lapide
-				accessFile.writeInt(byteArray.length); // insere o tamanho da entidade
-				accessFile.write(byteArray); // insere a entidade
-				
-				accessFile.close();
-				
-				success = true;
+			accessFile.close();
+			
+			success = true;
 		} 
 		catch (FileNotFoundException fnfe) {
 			fnfe.printStackTrace();
@@ -271,7 +270,7 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 		
 		try
 		{
-			char lapide = file.readChar();
+			char lapide = (char) file.readByte();
 			int entitySize = file.readInt();
 			
 			byte[] byteArray = new byte[entitySize];
@@ -319,7 +318,7 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 		try {
 			long entityAddress = indice.pesquisarDadoPelaChave(id);
 			
-			if (entityAddress != -1)
+			if (entityAddress != Long.MIN_VALUE)
 			{
 				accessFile = openFile();
 				accessFile.seek(entityAddress);
@@ -393,17 +392,30 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 				RandomAccessFile file = openFile();
 				
 				file.seek(entityAddress);
-				file.writeChar('*');
+				file.writeByte('*');
 				
+				// pula o número que diz o tamanho da entidade
+				file.skipBytes(Integer.BYTES);
+				
+				T entity = constructor.newInstance();
+				entity.lerObjeto(file);
+				
+				// deixo separado em duas linhas para que mesmo que
+				// a primeira exclusão falhe, tente-se a segunda.
 				success = indice.excluir(id);
+				success = Main.indiceComposto.excluir(entity.getIdCategoria(), id) && success;
 				
 				file.close();
 			}
 		}
 		
-		catch (IOException ioex)
+		catch (InstantiationException |
+				IllegalAccessException |
+				IllegalArgumentException |
+				InvocationTargetException |
+				IOException e)
 		{
-			ioex.printStackTrace();
+			e.printStackTrace();
 		}
 		
 		return success;

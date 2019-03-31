@@ -3,6 +3,7 @@ package entidades;
 import java.io.*;
 
 import serializaveis.SerializavelAbstract;
+import serializaveis.StringSerializavel;
 import util.IO;
 
 /**
@@ -80,8 +81,7 @@ public class Categoria extends SerializavelAbstract implements Entidade
 	@Override
 	public int obterTamanhoMaximoEmBytes()
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return Integer.BYTES + StringSerializavel.PADRAO_TAMANHO_MAXIMO_EM_BYTES;
 	}
 
 	/**

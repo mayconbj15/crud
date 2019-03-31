@@ -276,7 +276,6 @@ public class Produto extends SerializavelAbstract implements Entidade
 			this.fornecedor = dataStream.readUTF();
 			this.quantidade = dataStream.readInt();
 			
-			byteArrayStream.close();
 			dataStream.close();
 		}
 		
