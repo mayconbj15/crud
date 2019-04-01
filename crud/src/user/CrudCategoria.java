@@ -93,6 +93,84 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 
 		return success;
 	}//end alterar()
+	
+	/**
+	 * Altera a categoria do produto informado pelo id.
+	 * {@code cod} é responsável por indicar qual das operações
+	 * deseja-se realizar.
+	 * 
+	 * <p></p>
+	 * 
+	 * <table style="border: 1px solid black; text-align: center;">
+	 * 
+	 * 	<tr>
+	 * 		<th>{@code cod}</th> <th>campo</th>
+	 * 	</tr>
+	 * 
+	 * 	<tr>
+	 * 		<td>0</td> <td>sair do método</td>
+	 * 	</tr>
+	 * 
+	 * 	<tr>
+	 * 		<td>1</td> <td>mover produtos para uma categoria já existente</td>
+	 * 	</tr>
+	 * 
+	 * 	<tr>
+	 * 		<td>2</td> <td>criar nova categoria antes de mover produtos para esta categoria</td>
+	 * 	</tr>
+	 * 
+	 * </table>
+	 * 
+	 * @param id Id da entidade a ser alterada.
+	 * @param cod Operação a ser realizada
+	 */
+	
+	public void alterarCategoria(int id, int cod)
+	{
+		if(Main.crudProduto != null)
+		{
+			int [] lista = Main.indiceComposto.listarDadosComAChave(id);
+			int tamanho = lista.length;
+			
+			switch (cod)
+			{
+				case 0:
+					IO.println("Até breve :)");
+					break;
+					
+				case 1: // mover produtos para categorias diferentes
+					IO.println("\nMova cada produto para a categoria desejada");
+					
+					for(int y = 0; y < tamanho; y++)
+					{
+						Main.crudProduto.consultar(lista[y]);
+						Main.crudProduto.alterar(lista[y], 1);
+					}
+					
+					excluir(id);
+					break;
+					
+				case 2: // criar nova categoria e inserir elementos nela
+					int newID = menuInclusao();
+					
+					for(int y = 0; y < tamanho; y++)
+					{
+						Main.crudProduto.alterarCategoria(lista[y], newID);
+					}
+					
+					excluir(id);
+					break;
+					
+				default:
+					IO.println("\nOpção inválida !\n");
+					break;
+			}
+		}
+		else
+		{
+			IO.println("\nErro ao alterar categoria !\n");
+		}
+	}//end alterarCategoria()
 
 	public void menuAlteracao()
 	{ 
@@ -139,38 +217,6 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		}
 		
 	}//end listarProdutos()
-	
-	public void alterarCategoria(int id, int cod)
-	{
-		if(Main.crudProduto != null){
-			int [] lista = Main.indiceComposto.listarDadosComAChave(id);
-			int tamanho = lista.length;
-			
-			switch (cod)
-			{
-				case 1: // mover produtos para categorias diferentes
-					IO.println("\nMova cada produto para a categoria desejada\n");
-					
-					for(int y = 0; y < tamanho; y++)
-					{
-						Main.crudProduto.consultar(lista[y]);
-						Main.crudProduto.alterar(lista[y], 1);
-					}//end for
-					
-					break;
-					
-				case 2: // criar nova categoria e inserir elementos nela
-					int newID = menuInclusao();
-					
-					for(int y = 0; y < tamanho; y++)
-					{
-						Main.crudProduto.alterarCategoria(lista[y], newID);
-					}//end for
-					
-					break;
-			}
-		}// end if
-	}//end alterarCategoria()
 	
 	public void menuListar()
 	{
@@ -255,24 +301,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 						IO.println("2 - Criar nova categoria ");
 						cod = IO.readint("Opção: ");
 						
-						switch (cod)
-						{
-							case 0:
-								IO.println("Até breve :)");
-								break;
-								
-							case 1:
-								alterarCategoria(id, cod);
-								excluir(id);
-								break;
-								
-							case 2:
-								menuInclusao();
-								alterarCategoria(id, cod);
-								excluir(id);
-								break;
-								
-						}
+						alterarCategoria(id, cod);
 					}
 					
 				}//end if
