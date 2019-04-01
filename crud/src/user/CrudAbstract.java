@@ -19,7 +19,7 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends SerializavelAbstract & 
 	 * 
 	 * @param entidade Entidade a ser inserida.
 	 * 
-	 * @return novo id se tudo der certo;
+	 * @return Novo id se tudo der certo;
 	 *  caso contrário -1.
 	 */
 	
