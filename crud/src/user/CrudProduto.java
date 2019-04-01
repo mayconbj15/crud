@@ -139,6 +139,14 @@ public class CrudProduto extends CrudAbstract<Produto>
 		return success;
 	}//end alterar()
 	
+	
+	/**
+	 * Altera a categoria do produto informado pelo id.
+	 * 
+	 * @param idProduto Id do produto para alterar a categoria.
+	 * @param newIdCategoria Id da nova categoria.
+	 */
+	
 	public void alterarCategoria(int idProduto, int newIdCategoria)
 	{
 		Produto produto = database.readObject(idProduto);
