@@ -124,6 +124,10 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 		
 		return ( lastID == -1 ? this.lastID : (this.lastID = lastID) );
 	}
+	
+	public int lastID() {
+		return readLastID();
+	}
 
 	/**
 	 * Escreve {@code lastID} no cabecalho da base de dados.

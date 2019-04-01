@@ -140,18 +140,29 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		
 	}//end listarProdutos()
 	
-	public void alterarCategoria(int id)
+	public void alterarCategoria(int id, int cod)
 	{
 		if(Main.crudProduto != null){
 			int [] lista = Main.indiceComposto.listarDadosComAChave(id);
 			int tamanho = lista.length;
 			
-			for(int y = 0; y < tamanho; y++)
+			switch (cod)
 			{
-				Main.crudProduto.consultar(lista[y]);
-				Main.crudProduto.alterar(lista[y], 1);
-			}//end for
-		}
+				case 1:
+					for(int y = 0; y < tamanho; y++)
+					{
+						Main.crudProduto.consultar(lista[y]);
+						Main.crudProduto.alterar(lista[y], 1);
+					}//end for
+					break;
+				case 2:
+					for(int y = 0; y < tamanho; y++)
+					{
+						Main.crudProduto.alterar(lista[y], 0);
+					}//end for
+					break;
+			}
+		}// end if
 	}//end alterarCategoria()
 	
 	public void menuListar()
@@ -244,13 +255,16 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 								break;
 								
 							case 1:
-								alterarCategoria(id);
+								alterarCategoria(id, cod);
 								excluir(id);
 								break;
 								
 							case 2:
-								
+								menuInclusao();
+								alterarCategoria(id, cod);
+								excluir(id);
 								break;
+								
 						}
 					}
 					

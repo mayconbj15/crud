@@ -95,6 +95,11 @@ public class CrudProduto extends CrudAbstract<Produto>
 			
 			switch (cod)
 			{
+				case 0:
+					int lastID = Main.crudCategoria.database.lastID();
+					while ( !Main.crudCategoria.consultar(produto.setIdCategoria(lastID)) );
+					break;
+
 				case 1:
 					while ( !Main.crudCategoria.consultar(produto.readCategory()) );
 					break;
