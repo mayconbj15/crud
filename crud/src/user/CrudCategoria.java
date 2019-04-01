@@ -148,19 +148,25 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 			
 			switch (cod)
 			{
-				case 1:
+				case 1: // mover produtos para categorias diferentes
+					IO.println("\nMova cada produto para a categoria desejada\n");
+					
 					for(int y = 0; y < tamanho; y++)
 					{
 						Main.crudProduto.consultar(lista[y]);
 						Main.crudProduto.alterar(lista[y], 1);
 					}//end for
+					
 					break;
-				case 2:
+					
+				case 2: // criar nova categoria e inserir elementos nela
 					int newID = menuInclusao();
+					
 					for(int y = 0; y < tamanho; y++)
 					{
 						Main.crudProduto.alterarCategoria(lista[y], newID);
 					}//end for
+					
 					break;
 			}
 		}// end if

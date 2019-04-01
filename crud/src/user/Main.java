@@ -37,6 +37,9 @@ public class Main {
 		File categoriasIndexesFile = new File(CATEGORIAS_INDEXES_FILE_NAME);
 		File categoriasIndexesDirFile = new File(CATEGORIAS_INDEXES_DIR_FILE_NAME);
 		
+		File compositeIndexesFileName = new File(COMPOSITE_INDEXES_FILE_NAME);
+		File compositeIndexesDirFileName = new File(COMPOSITE_INDEXES_DIR_FILE_NAME);
+		
 		produtosDatabaseFile.delete();
 		produtosIndexesFile.delete();
 		produtosIndexesDirFile.delete();
@@ -44,6 +47,9 @@ public class Main {
 		categoriasDatabaseFile.delete();
 		categoriasIndexesFile.delete();
 		categoriasIndexesDirFile.delete();
+		
+		compositeIndexesFileName.delete();
+		compositeIndexesDirFileName.delete();
 	}
 	
 	public static void startVariables()
