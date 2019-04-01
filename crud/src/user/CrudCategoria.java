@@ -155,6 +155,20 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		
 	}//end listarProdutos()
 	
+	public void alterarCategoria(int id)
+	{
+		if(Main.crudProduto != null){
+			int [] lista = Main.indiceComposto.listarDadosComAChave(id);
+			int tamanho = lista.length;
+			
+			for(int y = 0; y < tamanho; y++)
+			{
+				Main.crudProduto.consultar(lista[y]);
+				Main.crudProduto.alterar(lista[y], 1);
+			}//end for
+		}
+	}//end listarProdutos()
+	
 	public void menuListar()
 	{
 		int cod = -1;
@@ -242,7 +256,8 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 								break;
 								
 							case 1:
-								
+								alterarCategoria(id);
+								excluir(id);
 								break;
 								
 							case 2:
