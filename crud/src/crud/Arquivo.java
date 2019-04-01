@@ -403,7 +403,11 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 				// deixo separado em duas linhas para que mesmo que
 				// a primeira exclusão falhe, tente-se a segunda.
 				success = indice.excluir(id);
-				success = Main.indiceComposto.excluir(entity.getIdCategoria(), id) && success;
+				
+				if (entity.getIdCategoria() != -1)
+				{
+					success = Main.indiceComposto.excluir(entity.getIdCategoria(), id) && success;
+				}
 				
 				file.close();
 			}

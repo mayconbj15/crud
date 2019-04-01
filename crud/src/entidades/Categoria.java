@@ -45,7 +45,7 @@ public class Categoria extends SerializavelAbstract implements Entidade
 
 	@Override
 	public int setId(int idCategoria){
-		return this.idCategoria = idCategoria;
+		return setIdCategoria(idCategoria);
 	}
 
 	public String getNome(){

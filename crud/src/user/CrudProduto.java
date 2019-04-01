@@ -20,8 +20,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 	{
 		Produto produto = new Produto();
 		
-		IO.println("Categorias disponíveis:\n");
-		Main.crudCategoria.listar();
+		Main.crudCategoria.listarCategorias();
 		
 		produto.readCategory();
 		

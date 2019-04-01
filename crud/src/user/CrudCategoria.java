@@ -11,6 +11,12 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		super(database);
 	}
 
+	public void listarCategorias()
+	{
+		IO.println("Categorias disponíveis:\n");
+		listar();
+	}
+	
 	public void menuInclusao()
 	{
 		Categoria categoria = new Categoria();
@@ -34,7 +40,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 	 * 	</tr>
 	 * 
 	 * 	<tr>
-	 * 		<td>2</td> <td>nome</td>
+	 * 		<td>1</td> <td>nome</td>
 	 * 	</tr>
 	 * 
 	 * </table>
@@ -45,6 +51,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 	 * @return {@code false} se alguma coisa falhar na alteração.
 	 * Caso contrário, retorna {@code true}.
 	 */
+	
 	public boolean alterar(int id, int cod)
 	{
 		boolean success = false;
@@ -58,9 +65,15 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 			
 			switch (cod)
 			{
+				case 0:
+					success = false;
+					IO.println("Operação cancelada\n");
+					break;
+
 				case 1:
 					categoria.readName();
 					break;
+					
 				default:
 					success = false;
 					IO.println("\nOpção inválida !\n");
@@ -75,7 +88,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		
 		else
 		{
-			IO.println("\nProduto não encontrado.\n");
+			IO.println("\nCategoria não encontrada.\n");
 		}
 
 		return success;
@@ -83,8 +96,8 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 
 	public void menuAlteracao()
 	{ 
+		listarCategorias();
 		int cod = -1; //codigo de selecao
-		listar();
 		int id = IO.readint("Digite o id da categoria a ser alterada: ");
 
 		//testar antes se o id existe
@@ -104,34 +117,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		{
 			IO.println("Id inválido!");
 		}
-	}/*
-
-	public void menuExclusao()
-	{ 
-		int cod = -1; //codigo de selecao
-		int id = IO.readint("Digite o id do produto a ser alterado: ");
-
-		//testar antes se o id existe
-		if (database.idIsValid(id))
-		{
-			IO.println("Realmente deseja excluir o produto ?");
-			IO.println("Digite:");
-			IO.println("1 Sim");
-			IO.println("2 Não");
-			IO.println("");
-			cod = IO.readint("Opção: ");
-			
-			if (cod == 1)
-			{
-				excluir(id);
-			}
-		}
-		
-		else
-		{
-			IO.println("Id inválido!");
-		}
-	}*/
+	}
 
 	public void menuConsulta()
 	{
@@ -152,7 +138,6 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 			}//end for
 		}
 		
-		
 	}//end listarProdutos()
 	
 	public void alterarCategoria(int id)
@@ -167,7 +152,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 				Main.crudProduto.alterar(lista[y], 1);
 			}//end for
 		}
-	}//end listarProdutos()
+	}//end alterarCategoria()
 	
 	public void menuListar()
 	{
@@ -181,25 +166,27 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		IO.println("");
 		cod = IO.readint("Opção: ");
 		
+		listarCategorias();
+		
 		switch(cod) 
 		{
 			case 1:
-				listar();
 				break;
+				
 			case 2:
-				listar();
 				idCategoria = IO.readint("Entre com a categoria desejada: ");
 				listarProdutos(idCategoria);
 				break;
+				
 			default:
 				IO.println("Opção inválida.");		
 				
 		}//end switch-case
 	}
-		
-	
+
 	public void menuExclusao()
-	{ 
+	{
+		listarCategorias();
 		int cod = -1; //codigo de selecao
 		int id = IO.readint("Digite o id da categoria a ser removida: ");
 
@@ -249,6 +236,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 						IO.println("1 - Mover produtos para uma categoria existente ");
 						IO.println("2 - Criar nova categoria ");
 						cod = IO.readint("Opção: ");
+						
 						switch (cod)
 						{
 							case 0:

@@ -139,10 +139,8 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends SerializavelAbstract & 
 	
 	public void listar()
 	{
-		database.list().forEach( (entidade) -> { try {
-			IO.println(entidade.print() + "\n");
-		} catch (Exception e) {
-			e.printStackTrace();
-		} } );
+		database.list().forEach(
+			(entidade) -> { IO.println(entidade.print() + "\n"); }
+		);
 	}
 }
