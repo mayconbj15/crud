@@ -19,18 +19,17 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends SerializavelAbstract & 
 	 * 
 	 * @param entidade Entidade a ser inserida.
 	 * 
-	 * @return {@code true} se tudo der certo;
-	 * {@code false} caso contrário.
+	 * @return novo id se tudo der certo;
+	 *  caso contrário -1.
 	 */
 	
-	public boolean inserir(TIPO_ENTIDADE entidade)
+	public int inserir(TIPO_ENTIDADE entidade)
 	{
-		boolean success = false;
+		int newID = database.writeObject(entidade);
 		
-		if ( database.writeObject(entidade) )
+		if ( newID > -1 )
 		{
 			IO.println("\nEntidade cadastrada com sucesso! :D\n");
-			success = true;
 		}
 		
 		else
@@ -38,7 +37,7 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends SerializavelAbstract & 
 			IO.println("\nFalha no cadastramento da entidade.\n");
 		}
 		
-		return success;
+		return newID;
 	}
 	
 	/**

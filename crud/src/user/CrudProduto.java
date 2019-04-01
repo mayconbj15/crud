@@ -95,11 +95,6 @@ public class CrudProduto extends CrudAbstract<Produto>
 			
 			switch (cod)
 			{
-				case 0:
-					int lastID = Main.crudCategoria.database.lastID();
-					while ( !Main.crudCategoria.consultar(produto.setIdCategoria(lastID)) );
-					break;
-
 				case 1:
 					while ( !Main.crudCategoria.consultar(produto.readCategory()) );
 					break;
@@ -143,6 +138,18 @@ public class CrudProduto extends CrudAbstract<Produto>
 
 		return success;
 	}//end alterar()
+	
+	public void alterarCategoria(int idProduto, int newIdCategoria)
+	{
+		Produto produto = database.readObject(idProduto);
+		
+		if( produto != null )
+		{
+			produto.setIdCategoria(newIdCategoria);
+			alterar(idProduto, produto);
+		}
+		
+	}
 
 	public void menuAlteracao()
 	{ 

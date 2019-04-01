@@ -124,10 +124,6 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 		
 		return ( lastID == -1 ? this.lastID : (this.lastID = lastID) );
 	}
-	
-	public int lastID() {
-		return readLastID();
-	}
 
 	/**
 	 * Escreve {@code lastID} no cabecalho da base de dados.
@@ -241,17 +237,17 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	 * 
 	 * @param entity Entidade a ser inserida.
 	 * 
-	 * @return {@code true} se tudo der certo;
-	 * {@code false} caso contrário.
+	 * @return id da entidade se tudo der certo;
+	 * caso contrário -1.
 	 */
 	
-	public boolean writeObject(T entity) {
+	public int writeObject(T entity) {
 		
 		int newId = readLastID() + 1;
 		
 		writeLastID(newId);
 		
-		return writeObject(entity, newId);
+		return ( writeObject(entity, newId) ? newId : -1 );
 	}
 	
 	/**

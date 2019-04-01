@@ -17,13 +17,13 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		listar();
 	}
 	
-	public void menuInclusao()
+	public int menuInclusao()
 	{
 		Categoria categoria = new Categoria();
 		
 		categoria.setNome(categoria.readName());
 		
-		inserir(categoria);
+		return inserir(categoria);
 	}
 
 	/**
@@ -156,9 +156,10 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 					}//end for
 					break;
 				case 2:
+					int newID = menuInclusao();
 					for(int y = 0; y < tamanho; y++)
 					{
-						Main.crudProduto.alterar(lista[y], 0);
+						Main.crudProduto.alterarCategoria(lista[y], newID);
 					}//end for
 					break;
 			}
