@@ -156,7 +156,6 @@ public class CrudProduto extends CrudAbstract<Produto>
 			produto.setIdCategoria(newIdCategoria);
 			alterar(idProduto, produto);
 		}
-		
 	}
 
 	public void menuAlteracao()

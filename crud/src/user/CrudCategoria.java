@@ -121,7 +121,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 	 * 
 	 * </table>
 	 * 
-	 * @param id Id da entidade a ser alterada.
+	 * @param id Id da categoria a ser alterada.
 	 * @param cod Operação a ser realizada
 	 */
 	
@@ -131,6 +131,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		{
 			int [] lista = Main.indiceComposto.listarDadosComAChave(id);
 			int tamanho = lista.length;
+			int newIdCategoria;
 			
 			switch (cod)
 			{
@@ -138,24 +139,28 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 					IO.println("Até breve :)");
 					break;
 					
-				case 1: // mover produtos para categorias diferentes
-					IO.println("\nMova cada produto para a categoria desejada");
+				case 1: // mover produtos para uma categoria diferente
+					newIdCategoria =
+					IO.readLineUntilPositiveInt("\nInforme a nova categoria dos produtos: ");
 					
-					for(int y = 0; y < tamanho; y++)
+					IO.println("\nMovendo todos os produtos...");
+					
+					for (int idProduto : lista)
 					{
-						Main.crudProduto.consultar(lista[y]);
-						Main.crudProduto.alterar(lista[y], 1);
+						Main.crudProduto.alterarCategoria(idProduto, newIdCategoria);
 					}
 					
 					excluir(id);
 					break;
 					
 				case 2: // criar nova categoria e inserir elementos nela
-					int newID = menuInclusao();
+					newIdCategoria = menuInclusao();
+					
+					IO.println("\nMovendo todos os produtos...");
 					
 					for(int y = 0; y < tamanho; y++)
 					{
-						Main.crudProduto.alterarCategoria(lista[y], newID);
+						Main.crudProduto.alterarCategoria(lista[y], newIdCategoria);
 					}
 					
 					excluir(id);
@@ -203,6 +208,12 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		
 		consultar(id);
 	}
+	
+	/**
+	 * Lista todos os produtos que estão na categoria com o id informado.
+	 * 
+	 * @param id Id da categoria a se listar os produtos.
+	 */
 	
 	public void listarProdutos(int id) 
 	{				
