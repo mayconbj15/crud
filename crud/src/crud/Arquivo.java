@@ -427,9 +427,12 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	
 	/**
 	 * Método que recebe um array de int com os ids das entidades para serem excluídas
+	 * 
 	 * @param list - array com ids para serem excluídos
+	 * 
 	 * @return booleana indicando o sucesso da operação
 	 */
+	
 	public boolean deleteObjects(int[] list){
 		boolean success = true;
 		
