@@ -1,7 +1,7 @@
 package entidades;
 
-public interface Entidade {
-	
+public interface Entidade
+{
 	/**
 	 * Obtem o ID da entidade.
 	 * 
@@ -21,18 +21,18 @@ public interface Entidade {
 	public int setId(int id);
 	
 	/**
-	 * Gera um arranjo de bytes com os campos internos da entidade.
+	 * Obtem o ID de outra entidade que está relacionada com esta.
 	 * 
-	 * @return Arranjo de bytes com os campos internos da entidade.
+	 * @return o ID de outra entidade que está relacionada com esta.
 	 */
 	
-	public int getIdCategoria();
-	
-	public int setIdCategoria(int id);
+	public int getIdSecundario();
 	
 	/**
 	 * Método que mostra a Entidade com o nome da sua categoria
+	 * 
 	 * @return uma representação do objeto
 	 */
+	
 	public String print();
 }

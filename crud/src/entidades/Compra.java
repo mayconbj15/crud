@@ -3,29 +3,31 @@ package entidades;
 import java.io.*;
 
 import serializaveis.SerializavelAbstract;
-import serializaveis.StringSerializavel;
-import util.IO;
 
 /**
- * Classe das entidades categoria.
+ * Classe das entidades compra.
  */
 
-public class Categoria extends SerializavelAbstract implements Entidade
+public class Compra extends SerializavelAbstract implements Entidade
 {
 	private int id;
-	private String nome;
+	private int idCliente;
+	private long data;
+	private float valorTotal;
 
-	public Categoria(int id, String nome) {
+	public Compra(int id, int idCliente, long data, float valorTotal) {
 		this.id = id;
-		this.nome = nome;
+		this.idCliente = idCliente;
+		this.data = data;
+		this.valorTotal = valorTotal;
 	}
 
-	public Categoria(String nome) {
-		this( -1, nome );
+	public Compra(long data, float valorTotal) {
+		this( -1, -1, data, valorTotal );
 	}
 
-	public Categoria(){
-		this( "" );
+	public Compra(){
+		this( -1, -1 );
 	}
 	
 	@Override
@@ -40,35 +42,39 @@ public class Categoria extends SerializavelAbstract implements Entidade
 
 	@Override
 	public int getIdSecundario() {
-		return -1;
+		return idCliente;
+	}
+	
+	public long getData()
+	{
+		return data;
 	}
 
-	public String getNome(){
-		return this.nome;
-	}
-	
-	public String setNome(String nome){
-		return this.nome = nome;
-	}
-	
-	/**
-	 * Lê o nome da categoria da entrada padrão e redefine
-	 * interiormente o campo {@link #nome} desta entidade.
-	 *  
-	 * @return O nome lido.
-	 */
-	
-	public String readName()
+	public long setData(long data)
 	{
-		return setNome( IO.readLine("\nInforme o nome da categoria: ") );
+		return this.data = data;
+	}
+
+	public float getValorTotal()
+	{
+		return valorTotal;
+	}
+
+	public float setValorTotal(float valorTotal)
+	{
+		return this.valorTotal = valorTotal;
 	}
 	
+	@Override
 	public String toString(){
 		return
 			"ID: " + this.id + '\n' +
-			"Nome: " + this.nome;
+			"IDCliente: " + this.idCliente +
+			"Data: " + this.data +
+			"Valor Total: " + this.valorTotal;
 	}
 	
+	@Override
 	public String print(){
 		return toString();
 	}
@@ -76,13 +82,17 @@ public class Categoria extends SerializavelAbstract implements Entidade
 	@Override
 	public int obterTamanhoMaximoEmBytes()
 	{
-		return Integer.BYTES + StringSerializavel.PADRAO_TAMANHO_MAXIMO_EM_BYTES;
+		return
+			Integer.BYTES +
+			Integer.BYTES +
+			Long.BYTES +
+			Float.BYTES;
 	}
 
 	/**
 	 * <p>
 	 * Obs.: a estrutura do arranjo é a seguinte:
-	 * [ id, nome ]
+	 * [ id, idCliente, data, valorTotal ]
 	 * </p>
 	 * 
 	 * {@inheritDoc}
@@ -97,7 +107,9 @@ public class Categoria extends SerializavelAbstract implements Entidade
 		try
 		{
 			dataStream.writeInt(this.id);
-			dataStream.writeUTF(this.nome);
+			dataStream.writeInt(this.idCliente);
+			dataStream.writeLong(this.data);
+			dataStream.writeFloat(this.valorTotal);
 			
 			dataStream.close();
 		} 
@@ -113,7 +125,7 @@ public class Categoria extends SerializavelAbstract implements Entidade
 	/**
 	 * <p>
 	 * Obs.: a estrutura de {@code bytes} deve ser a seguinte:
-	 * [ id, nome ]
+	 * [ id, idCliente, data, valorTotal ]
 	 * </p>
 	 * 
 	 * {@inheritDoc}
@@ -128,7 +140,9 @@ public class Categoria extends SerializavelAbstract implements Entidade
 		try
 		{
 			this.id = dataStream.readInt();
-			this.nome = dataStream.readUTF();
+			this.idCliente = dataStream.readInt();
+			this.data = dataStream.readLong();
+			this.valorTotal = dataStream.readFloat();
 			
 			dataStream.close();
 		} 

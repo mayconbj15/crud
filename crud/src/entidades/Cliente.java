@@ -7,25 +7,27 @@ import serializaveis.StringSerializavel;
 import util.IO;
 
 /**
- * Classe das entidades categoria.
+ * Classe das entidades cliente.
  */
 
-public class Categoria extends SerializavelAbstract implements Entidade
+public class Cliente extends SerializavelAbstract implements Entidade
 {
 	private int id;
 	private String nome;
+	private String email;
 
-	public Categoria(int id, String nome) {
+	public Cliente(int id, String nome, String email) {
 		this.id = id;
 		this.nome = nome;
+		this.email = email;
 	}
 
-	public Categoria(String nome) {
-		this( -1, nome );
+	public Cliente(String nome, String email) {
+		this( -1, nome, email );
 	}
 
-	public Categoria(){
-		this( "" );
+	public Cliente(){
+		this( "", "" );
 	}
 	
 	@Override
@@ -50,9 +52,17 @@ public class Categoria extends SerializavelAbstract implements Entidade
 	public String setNome(String nome){
 		return this.nome = nome;
 	}
+
+	public String getEmail(){
+		return this.email;
+	}
+	
+	public String setEmail(String email){
+		return this.email = email;
+	}
 	
 	/**
-	 * Lê o nome da categoria da entrada padrão e redefine
+	 * Lê o nome do cliente da entrada padrão e redefine
 	 * interiormente o campo {@link #nome} desta entidade.
 	 *  
 	 * @return O nome lido.
@@ -60,15 +70,30 @@ public class Categoria extends SerializavelAbstract implements Entidade
 	
 	public String readName()
 	{
-		return setNome( IO.readLine("\nInforme o nome da categoria: ") );
+		return setNome( IO.readLine("\nInforme o nome do cliente: ") );
 	}
 	
+	/**
+	 * Lê o email do cliente e redefine interiormente o campo
+	 * {@link #email} desta entidade.
+	 *  
+	 * @return O email lido.
+	 */
+	
+	public String readEmail()
+	{
+		return setEmail( IO.readLineUntilEmail("\nInforme o email do cliente: ") );
+	}
+	
+	@Override
 	public String toString(){
 		return
 			"ID: " + this.id + '\n' +
-			"Nome: " + this.nome;
+			"Nome: " + this.nome + '\n' +
+			"Email: " + this.email;
 	}
 	
+	@Override
 	public String print(){
 		return toString();
 	}
@@ -76,7 +101,10 @@ public class Categoria extends SerializavelAbstract implements Entidade
 	@Override
 	public int obterTamanhoMaximoEmBytes()
 	{
-		return Integer.BYTES + StringSerializavel.PADRAO_TAMANHO_MAXIMO_EM_BYTES;
+		return
+			Integer.BYTES +
+			StringSerializavel.PADRAO_TAMANHO_MAXIMO_EM_BYTES +
+			StringSerializavel.PADRAO_TAMANHO_MAXIMO_EM_BYTES;
 	}
 
 	/**
@@ -98,6 +126,7 @@ public class Categoria extends SerializavelAbstract implements Entidade
 		{
 			dataStream.writeInt(this.id);
 			dataStream.writeUTF(this.nome);
+			dataStream.writeUTF(this.email);
 			
 			dataStream.close();
 		} 
@@ -129,6 +158,7 @@ public class Categoria extends SerializavelAbstract implements Entidade
 		{
 			this.id = dataStream.readInt();
 			this.nome = dataStream.readUTF();
+			this.email = dataStream.readUTF();
 			
 			dataStream.close();
 		} 

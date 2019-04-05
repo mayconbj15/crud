@@ -14,6 +14,15 @@ public class IO
 	public static final String REGEX_FLOAT = REGEX_INT + "(\\." + REGEX_DIGITS + ")?";
 	public static final String REGEX_FLOAT_POSITIVE = REGEX_INT_POSITIVE + "(\\." + REGEX_DIGITS + ")?";
 	
+	/**
+	 * Regex extraída de
+	 * <a href="https://pt.stackoverflow.com/questions/1386/express%C3%A3o-regular-para-valida%C3%A7%C3%A3o-de-e-mail">
+	 * Regex Email
+	 * </a>
+	 */
+	
+	public static final String REGEX_EMAIL = "/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/";
+	
 	private static BufferedReader reader = new BufferedReader( new InputStreamReader( System.in ) );
 
 	public static void print(Object msg)
@@ -100,6 +109,11 @@ public class IO
 	public static float readLineUntilPositiveFloat(String msg)
 	{
 		return Float.parseFloat(readLineUntilItMatch(msg, REGEX_FLOAT_POSITIVE));
+	}
+	
+	public static String readLineUntilEmail(String msg)
+	{
+		return readLineUntilItMatch(msg, REGEX_EMAIL);
 	}
 	
 	public static short readshort()

@@ -210,8 +210,8 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 			indice.inserir(entity.getId(), accessFile.getFilePointer());
 
 			//inserir o id de categoria e o id do produto no sistema de indexamento
-			if(entity.getIdCategoria() != -1){
-				Main.indiceComposto.inserir(entity.getIdCategoria(), entity.getId());
+			if(entity.getIdSecundario() != -1){
+				Main.indiceComposto.inserir(entity.getIdSecundario(), entity.getId());
 			}
 
 			accessFile.writeByte(' '); // insere a lapide
@@ -404,9 +404,9 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 				// a primeira exclusão falhe, tente-se a segunda.
 				success = indice.excluir(id);
 				
-				if (entity.getIdCategoria() != -1)
+				if (entity.getIdSecundario() != -1)
 				{
-					success = Main.indiceComposto.excluir(entity.getIdCategoria(), id) && success;
+					success = Main.indiceComposto.excluir(entity.getIdSecundario(), id) && success;
 				}
 				
 				file.close();

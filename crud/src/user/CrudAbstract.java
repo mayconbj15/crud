@@ -111,8 +111,7 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends SerializavelAbstract & 
 		
 		if (database.idIsValid(id))
 		{
-			TIPO_ENTIDADE entity = null;
-			entity = database.readObject(id);
+			TIPO_ENTIDADE entity = database.readObject(id);
 			
 			if(entity != null){
 				IO.println( "\n" + entity.print());

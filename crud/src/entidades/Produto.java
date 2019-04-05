@@ -48,9 +48,15 @@ public class Produto extends SerializavelAbstract implements Entidade
 	public int setId(int id){
 		return this.id = id;
 	}
-	
-	public int getIdCategoria() {
+
+	public int getIdCategoria()
+	{
 		return idCategoria;
+	}
+	
+	@Override
+	public int getIdSecundario() {
+		return getIdCategoria();
 	}
 
 	public int setIdCategoria(int idCategoria) {
@@ -175,6 +181,7 @@ public class Produto extends SerializavelAbstract implements Entidade
 		);
 	}
 	
+	@Override
 	public String print() {
 		
 		Categoria categoria = Main.databaseCategoria.readObject(this.idCategoria);
@@ -191,6 +198,7 @@ public class Produto extends SerializavelAbstract implements Entidade
 			"Quantidade: " + this.quantidade + '\n';
 	}
 
+	@Override
 	public String toString(){
 		return
 			"ID: " + this.id + '\n' +
