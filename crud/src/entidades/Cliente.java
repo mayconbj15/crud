@@ -110,7 +110,7 @@ public class Cliente extends SerializavelAbstract implements Entidade
 	/**
 	 * <p>
 	 * Obs.: a estrutura do arranjo é a seguinte:
-	 * [ id, nome ]
+	 * [ id, nome, email ]
 	 * </p>
 	 * 
 	 * {@inheritDoc}
@@ -142,7 +142,7 @@ public class Cliente extends SerializavelAbstract implements Entidade
 	/**
 	 * <p>
 	 * Obs.: a estrutura de {@code bytes} deve ser a seguinte:
-	 * [ id, nome ]
+	 * [ id, nome, email ]
 	 * </p>
 	 * 
 	 * {@inheritDoc}
