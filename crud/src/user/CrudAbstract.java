@@ -51,11 +51,11 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends SerializavelAbstract & 
 	 * {@code false} caso contrário.
 	 */
 	
-	public boolean alterar(int id, TIPO_ENTIDADE entity)
+	public TIPO_ENTIDADE alterar(int id, TIPO_ENTIDADE entity)
 	{
-		boolean success = false;
+		TIPO_ENTIDADE deletedEntity = database.changeObject(id, entity);
 		
-		if (database.changeObject(id, entity))
+		if (deletedEntity != null)
 		{
 			IO.println("\nEntidade alterada com sucesso! :D\n");
 			success = true;

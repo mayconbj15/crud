@@ -194,33 +194,37 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	private boolean writeObject(T entity, int id) {
 		boolean success = false;
 		
-		try {
-			accessFile = openFile();
+		if (entity != null)
+		{
+			try
+			{
+				accessFile = openFile();
 
-			entity.setId(id);
+				entity.setId(id);
 
-			byte[] byteArray = entity.obterBytes();
+				byte[] byteArray = entity.obterBytes();
 
-			// go to final of file
-			accessFile.seek(accessFile.length());
+				// go to final of file
+				accessFile.seek(accessFile.length());
 
-			// insere a chave (id) e o dado correspondente (endereço do registro)
-			// no sistema de indexamento
-			indice.inserir(entity.getId(), accessFile.getFilePointer());
+				// insere a chave (id) e o dado correspondente (endereço do registro)
+				// no sistema de indexamento
+				indice.inserir(entity.getId(), accessFile.getFilePointer());
 
-			accessFile.writeByte(' '); // insere a lapide
-			accessFile.writeInt(byteArray.length); // insere o tamanho da entidade
-			accessFile.write(byteArray); // insere a entidade
-			
-			accessFile.close();
-			
-			success = true;
-		} 
-		catch (FileNotFoundException fnfe) {
-			fnfe.printStackTrace();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
+				accessFile.writeByte(' '); // insere a lapide
+				accessFile.writeInt(byteArray.length); // insere o tamanho da entidade
+				accessFile.write(byteArray); // insere a entidade
+				
+				accessFile.close();
+				
+				success = true;
+			} 
+			catch (FileNotFoundException fnfe) {
+				fnfe.printStackTrace();
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		return success;
@@ -369,8 +373,8 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	 * 
 	 * @param id Id da entidade a ser procurada.
 	 * 
-	 * @return {@code true} se tudo der certo;
-	 * {@code false} caso contrário.
+	 * @return a entidade excluída se tudo der certo;
+	 * {@code null} caso contrário.
 	 */
 	
 	public T deleteObject(int id) {
@@ -417,7 +421,8 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	 * 
 	 * @param list - array com ids para serem excluídos
 	 * 
-	 * @return booleana indicando o sucesso da operação
+	 * @return a última entidade excluída se tudo der certo;
+	 * {@code null} caso contrário.
 	 */
 	
 	public T deleteObjects(int[] list){
@@ -437,17 +442,17 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	 * @param id Id da entidade a ser alterada.
 	 * @param entity Nova entidade a ser posta no lugar.
 	 * 
-	 * @return {@code true} se tudo der certo;
-	 * {@code false} caso contrário.
+	 * @return se tudo der certo, a entidade antes de ser
+	 * alterada; {@code null} caso contrário.
 	 */
 	
 	public T changeObject(int id, T entity) {
 		
 		T deletedEntity = deleteObject(id);
 		
-		if (deletedEntity != null)
+		if (!writeObject(entity, id))
 		{
-			writeObject(entity, id);
+			deletedEntity = null;
 		}
 		
 		return deletedEntity;
