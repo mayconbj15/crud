@@ -1,7 +1,5 @@
 package user;
 
-import java.io.*;
-
 import crud.Arquivo;
 import crud.hash_dinamica.implementacoes.HashDinamicaIntInt;
 import entidades.*;
@@ -56,8 +54,8 @@ public class Main {
 	
 	private static void deleteDatabaseFiles()
 	{
-		deleteDatabaseFile(PRODUTOS_FILE_NAME);
 		deleteDatabaseFile(COMPRAS_FILE_NAME);
+		deleteDatabaseFile(PRODUTOS_FILE_NAME);
 		deleteDatabaseFile(CLIENTES_FILE_NAME);
 		deleteDatabaseFile(CATEGORIAS_FILE_NAME);
 		deleteDatabaseFile(ITENS_COMPRADOS_FILE_NAME);
@@ -74,8 +72,8 @@ public class Main {
 	private static void deleteIndexFiles()
 	{
 		// índices simples
-		deleteIndexFiles(PRODUTOS_FILE_NAME);
 		deleteIndexFiles(COMPRAS_FILE_NAME);
+		deleteIndexFiles(PRODUTOS_FILE_NAME);
 		deleteIndexFiles(CLIENTES_FILE_NAME);
 		deleteIndexFiles(CATEGORIAS_FILE_NAME);
 		deleteIndexFiles(ITENS_COMPRADOS_FILE_NAME);
@@ -118,10 +116,10 @@ public class Main {
 	
 	private static void startDatabases()
 	{
-		databaseProduto		= startDatabase(Produto.class		, PRODUTOS_FILE_NAME);
-		databaseCategoria	= startDatabase(Categoria.class		, CATEGORIAS_FILE_NAME);
 		databaseCompra		= startDatabase(Compra.class		, COMPRAS_FILE_NAME);
+		databaseProduto		= startDatabase(Produto.class		, PRODUTOS_FILE_NAME);
 		databaseCliente		= startDatabase(Cliente.class		, CLIENTES_FILE_NAME);
+		databaseCategoria	= startDatabase(Categoria.class		, CATEGORIAS_FILE_NAME);
 		databaseItemComprado = startDatabase(ItemComprado.class	, ITENS_COMPRADOS_FILE_NAME);
 	}
 	
@@ -164,7 +162,14 @@ public class Main {
 		deleteFiles();
 		startVariables();
 	
-		Crud crudMaster = new Crud(databaseProduto, databaseCategoria);
+		Crud crudMaster = new Crud(
+			databaseCompra,
+			databaseProduto,
+			databaseCliente,
+			databaseCategoria,
+			databaseItemComprado
+		);
+		
 		crudMaster.menu();
 	}
 }

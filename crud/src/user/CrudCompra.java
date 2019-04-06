@@ -1,12 +1,12 @@
 package user;
 
 import crud.Arquivo;
-import entidades.Categoria;
+import entidades.Compra;
 import util.IO;
 
-public class CrudCompra extends CrudAbstract<Categoria>
+public class CrudCompra extends CrudAbstract<Compra>
 {
-	public CrudCompra(Arquivo<Categoria> database)
+	public CrudCompra(Arquivo<Compra> database)
 	{
 		super(database);
 	}

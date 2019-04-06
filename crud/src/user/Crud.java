@@ -3,21 +3,27 @@ package user;
 import util.*;
 
 import crud.Arquivo;
-import entidades.Categoria;
-import entidades.Produto;
+import entidades.*;
 
 /**
  * Classe que gerencia a interação com o usuário.
  */
 
 public class Crud {
-//	private CrudProduto crudProduto;
-//	private CrudCategoria crudCategoria;
 	
-	public Crud(Arquivo<Produto> databaseProduto, Arquivo<Categoria> databaseCategoria) {
-		
+	public Crud(
+		Arquivo<Compra> databaseCompra,
+		Arquivo<Produto> databaseProduto,
+		Arquivo<Cliente> databaseCliente,
+		Arquivo<Categoria> databaseCategoria,
+		Arquivo<ItemComprado> databaseItemComprado)
+	{
+
+		Main.crudCompra = new CrudCompra(databaseCompra);
+		Main.crudCliente = new CrudCliente(databaseCliente);
 		Main.crudProduto = new CrudProduto(databaseProduto);
 		Main.crudCategoria = new CrudCategoria(databaseCategoria);
+		Main.crudItemComprado = new CrudItemComprado(databaseItemComprado);
 	}
 
 	/**
