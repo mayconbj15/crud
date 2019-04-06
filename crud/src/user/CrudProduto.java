@@ -102,7 +102,18 @@ public class CrudProduto extends CrudAbstract<Produto>
 			switch (cod)
 			{
 				case 1:
+					Main.indiceCategoriaProduto.excluir(
+						produto.getIdCategoria(),
+						produto.getId()
+					);
+					
 					while ( !Main.crudCategoria.consultar(produto.readCategory()) );
+					
+					Main.indiceCategoriaProduto.inserir(
+						produto.getIdCategoria(),
+						produto.getId()
+					);
+					
 					break;
 
 				case 2:
@@ -133,7 +144,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 			
 			if (success)
 			{
-				success = alterar(id, produto);
+				success = alterar(id, produto) != null;
 			}
 		}
 		
@@ -144,7 +155,6 @@ public class CrudProduto extends CrudAbstract<Produto>
 
 		return success;
 	}//end alterar()
-	
 	
 	/**
 	 * Altera a categoria do produto informado pelo id.
@@ -210,9 +220,12 @@ public class CrudProduto extends CrudAbstract<Produto>
 			
 			if (cod == 1)
 			{
-				excluir(id);
+				Produto produtoExcluido = excluir(id);
 				
-				Main.indiceCategoriaProduto.excluir(chave)
+				Main.indiceCategoriaProduto.excluir(
+					produtoExcluido.getIdCategoria(),
+					produtoExcluido.getId()
+				);
 			}
 		}
 		

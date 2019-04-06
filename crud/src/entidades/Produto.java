@@ -179,13 +179,13 @@ public class Produto extends SerializavelAbstract implements Entidade
 	@Override
 	public String print() {
 		
-		Categoria categoria = Main.databaseCategoria.readObject(this.idCategoria);
-		String nomeCategoria = ( categoria != null ? categoria.getNome() : "Desconhecido" );
+		String categoryName = Main.crudCategoria.getCategoryName(idCategoria);
+		categoryName = ( categoryName == null ? "Desconhecido" : categoryName );
 		
 		return
 			"ID: " + this.id + '\n' +
 			"IDCategoria: " + this.idCategoria + '\n' +
-			"Nome da Categoria: " + nomeCategoria + '\n' +
+			"Nome da Categoria: " + categoryName + '\n' +
 			"Nome: " + this.nome + '\n' +
 			"Descrição: " + this.descricao + '\n' +
 			"Preço: " + this.preco + '\n' +

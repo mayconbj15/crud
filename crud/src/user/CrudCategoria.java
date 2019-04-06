@@ -11,6 +11,28 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		super(database);
 	}
 
+	/**
+	 * Tenta obter o nome da categoria com o id informado.
+	 * 
+	 * @param idCategoria Id da categoria a ser procurada.
+	 * 
+	 * @return {@code null} se a categoria não existir;
+	 * o nome da categoria caso contrário.
+	 */
+	
+	public String getCategoryName(int idCategoria)
+	{
+		Categoria category = database.readObject(idCategoria);
+		String name = null;
+		
+		if (category != null)
+		{
+			name = category.getNome();
+		}
+		
+		return name;
+	}
+	
 	public void listarCategorias()
 	{
 		IO.println("Categorias disponíveis:\n");
@@ -82,7 +104,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 			
 			if (success)
 			{
-				success = alterar(id, categoria);
+				success = alterar(id, categoria) != null;
 			}
 		}
 		
@@ -129,7 +151,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 	{
 		if(Main.crudProduto != null)
 		{
-			int [] lista = Main.indiceComposto.listarDadosComAChave(id);
+			int [] lista = Main.indiceCategoriaProduto.listarDadosComAChave(id);
 			int tamanho = lista.length;
 			int newIdCategoria;
 			
@@ -218,7 +240,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 	public void listarProdutos(int id) 
 	{				
 		if(Main.crudProduto != null){
-			int [] lista = Main.indiceComposto.listarDadosComAChave(id);
+			int [] lista = Main.indiceCategoriaProduto.listarDadosComAChave(id);
 			int tamanho = lista.length;
 			
 			for(int y = 0; y < tamanho; y++)
@@ -299,9 +321,10 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 						excluir(id);
 						
 						//excluir os produtos que estão na categoria
-						int[] listOfInvalids = Main.indiceComposto.listarDadosComAChave(id);
+						int[] listOfProducts =
+							Main.indiceCategoriaProduto.listarDadosComAChave(id);
 						
-						Main.databaseProduto.deleteObjects(listOfInvalids);
+						Main.databaseProduto.deleteObjects(listOfProducts);
 					}//end if
 					else
 					{
