@@ -36,14 +36,18 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	 * do tipo {@code T}.
 	 *  
 	 * @param constructor Construtor do tipo {@code T}.
-	 * @param nameFile Nome do arquivo da base de dados.
+	 * @param databaseFileName Nome do arquivo da base de dados.
+	 * @param indexesDirFileName Nome do arquivo do diretório da
+	 * hash dinâmica.
+	 * @param indexesFileName Nome do arquivo dos buckets da hash
+	 * dinâmica.
 	 */
 	
 	public Arquivo(
 		Constructor<T> constructor,
 		String databaseFileName,
-		String indexesFileName,
-		String indexesDirFileName)
+		String indexesDirFileName,
+		String indexesFileName)
 	{
 		this.name = databaseFileName;
 		this.lastID = -1;
@@ -51,7 +55,6 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 		
 		try
 		{
-			//indice dos produtos
 			this.indice = new HashDinamicaIntLong(indexesDirFileName, indexesFileName);
 		}
 		
@@ -462,5 +465,5 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	// [ ultimo_id_usado (int), registros... ]
 	//
 	// estrutura dos registros
-	// [ lápide (char), tamanho_da_entidade (int), entidade ]
+	// [ lápide (byte), tamanho_da_entidade (int), entidade ]
 }
