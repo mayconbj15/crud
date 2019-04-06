@@ -12,6 +12,8 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * Classe para gerenciamento de registros de tipos genéricos numa base de dados
+ * 
+ * @param T Tipo da entidade.
  */
 
 public class Arquivo<T extends SerializavelAbstract & Entidade> {
@@ -371,9 +373,9 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	 * {@code false} caso contrário.
 	 */
 	
-	public boolean deleteObject(int id) {
+	public T deleteObject(int id) {
 
-		boolean success = false;
+		T deletedObject = null;
 		
 		try
 		{
@@ -389,10 +391,10 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 				// pula o número que diz o tamanho da entidade
 				file.skipBytes(Integer.BYTES);
 				
-				T entity = constructor.newInstance();
-				entity.lerObjeto(file);
+				deletedObject = constructor.newInstance();
+				deletedObject.lerObjeto(file);
 				
-				success = indice.excluir(id);
+				indice.excluir(id);
 				
 				file.close();
 			}
@@ -407,7 +409,7 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 			e.printStackTrace();
 		}
 		
-		return success;
+		return deletedObject;
 	}
 	
 	/**
@@ -418,14 +420,14 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	 * @return booleana indicando o sucesso da operação
 	 */
 	
-	public boolean deleteObjects(int[] list){
-		boolean success = true;
+	public T deleteObjects(int[] list){
+		T lastDeletedEntity = null;
 		
-		for(int i=0; i<list.length && success == true; i++){
-			success = deleteObject(list[i]);
+		for(int i=0; i<list.length && lastDeletedEntity != null; i++){
+			lastDeletedEntity = deleteObject(list[i]);
 		}
 		
-		return success;
+		return lastDeletedEntity;
 	}
 
 	/**
@@ -439,16 +441,16 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	 * {@code false} caso contrário.
 	 */
 	
-	public boolean changeObject(int id, T entity) {
+	public T changeObject(int id, T entity) {
 		
-		boolean success = false;
+		T deletedEntity = deleteObject(id);
 		
-		if (deleteObject(id))
+		if (deletedEntity != null)
 		{
-			success = writeObject(entity, id);
+			writeObject(entity, id);
 		}
 		
-		return success;
+		return deletedEntity;
 	}
 	
 	// estrutura da base de dados

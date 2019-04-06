@@ -35,6 +35,10 @@ public class CrudProduto extends CrudAbstract<Produto>
 			
 			inserir(produto);
 			
+			Main.indiceCategoriaProduto.inserir(
+				produto.getIdCategoria(),
+				produto.getId()
+			);
 		}
 	}
 
@@ -207,6 +211,8 @@ public class CrudProduto extends CrudAbstract<Produto>
 			if (cod == 1)
 			{
 				excluir(id);
+				
+				Main.indiceCategoriaProduto.excluir(chave)
 			}
 		}
 		
