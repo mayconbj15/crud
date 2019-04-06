@@ -19,10 +19,19 @@ public class Main {
 	
 	public static Arquivo<Produto> databaseProduto;
 	public static Arquivo<Categoria> databaseCategoria;
-	public static HashDinamicaIntInt indiceComposto;
+	public static HashDinamicaIntInt indiceCategoriaProduto;
+	public static HashDinamicaIntInt indiceProdutoItemVendido;
+	public static HashDinamicaIntInt indiceCompraItemVendido;
+	public static HashDinamicaIntInt indiceClienteCompra;
 	
-	public static final String COMPOSITE_INDEXES_FILE_NAME = "indice_composto.idx";
-	public static final String COMPOSITE_INDEXES_DIR_FILE_NAME = "indice_composto.dir";
+	public static final String CATEGORIA_PRODUTO_INDEX_FILE_NAME = "indiceCategoriaProduto.idx";
+	public static final String CATEGORIA_PRODUTO_INDEX_DIR_FILE_NAME = "indiceCategoriaProduto.dir";
+	public static final String PRODUTO_ITEM_VENDIDO_INDEX_FILE_NAME = "indiceCategoriaProduto.idx";
+	public static final String PRODUTO_ITEM_VENDIDO_INDEX_DIR_FILE_NAME = "indiceCategoriaProduto.dir";
+	public static final String COMPRA_ITEM_VENDIDO_INDEX_FILE_NAME = "indiceCategoriaProduto.idx";
+	public static final String COMPRA_ITEM_VENDIDO_INDEX_DIR_FILE_NAME = "indiceCategoriaProduto.dir";
+	public static final String CLIENTE_COMPRA_INDEX_FILE_NAME = "indiceCategoriaProduto.idx";
+	public static final String CLIENTE_COMPRA_INDEX_DIR_FILE_NAME = "indiceCategoriaProduto.dir";
 	
 	public static CrudCategoria crudCategoria;
 	public static CrudProduto crudProduto;
