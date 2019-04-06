@@ -53,11 +53,6 @@ public class Produto extends SerializavelAbstract implements Entidade
 	{
 		return idCategoria;
 	}
-	
-	@Override
-	public int getIdSecundario() {
-		return getIdCategoria();
-	}
 
 	public int setIdCategoria(int idCategoria) {
 		return this.idCategoria = idCategoria;

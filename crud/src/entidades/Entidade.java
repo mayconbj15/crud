@@ -21,14 +21,6 @@ public interface Entidade
 	public int setId(int id);
 	
 	/**
-	 * Obtem o ID de outra entidade que está relacionada com esta.
-	 * 
-	 * @return o ID de outra entidade que está relacionada com esta.
-	 */
-	
-	public int getIdSecundario();
-	
-	/**
 	 * Método que mostra a Entidade com o nome da sua categoria
 	 * 
 	 * @return uma representação do objeto

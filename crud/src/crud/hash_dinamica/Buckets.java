@@ -30,7 +30,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
 import serializaveis.SerializavelAbstract;
-import util.IO;
+import util.Files;
 
 /**
  * Classe que gerencia os buckets de uma hash dinâmica.
@@ -76,7 +76,7 @@ public class Buckets<TIPO_DAS_CHAVES extends SerializavelAbstract, TIPO_DOS_DADO
 		if (quantidadeMaximaDeBytesParaAChave > 0 &&
 			quantidadeMaximaDeBytesParaODado > 0)
 		{
-			arquivoDosBuckets = IO.openFile(nomeDoArquivoDosBuckets, "rw");
+			arquivoDosBuckets = Files.openFile(nomeDoArquivoDosBuckets, "rw");
 			this.numeroDeRegistrosPorBucket = lerNumeroDeRegistrosPorBucket(); // tenta recuperar do arquivo
 			
 			if (this.numeroDeRegistrosPorBucket < 1)

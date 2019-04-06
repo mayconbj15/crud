@@ -38,11 +38,6 @@ public class Categoria extends SerializavelAbstract implements Entidade
 		return this.id;
 	}
 
-	@Override
-	public int getIdSecundario() {
-		return -1;
-	}
-
 	public String getNome(){
 		return this.nome;
 	}

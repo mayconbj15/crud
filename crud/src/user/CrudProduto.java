@@ -24,6 +24,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 		
 		produto.readCategory();
 		
+		// checa se a categoria informada existe
 		if( Main.crudCategoria.consultar(produto.getIdCategoria()) ){
 			
 			produto.readName();
@@ -33,6 +34,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 			produto.readQuantity();
 			
 			inserir(produto);
+			
 		}
 	}
 

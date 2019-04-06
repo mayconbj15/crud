@@ -39,12 +39,17 @@ public class Compra extends SerializavelAbstract implements Entidade
 	public int getId(){
 		return this.id;
 	}
-
-	@Override
-	public int getIdSecundario() {
+	
+	public int getIdCliente()
+	{
 		return idCliente;
 	}
-	
+
+	public int setIdCliente(int idCliente)
+	{
+		return this.idCliente = idCliente;
+	}
+
 	public long getData()
 	{
 		return data;

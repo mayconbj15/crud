@@ -29,7 +29,7 @@ import java.io.RandomAccessFile;
 import java.util.function.Function;
 
 import serializaveis.SerializavelAbstract;
-import util.IO;
+import util.Files;
 
 /**
  * Classe para gerenciamento do diretório de uma hash dinâmica.
@@ -66,7 +66,7 @@ public class Diretorio<TIPO_DAS_CHAVES extends SerializavelAbstract>
 	
 	public Diretorio(String nomeDoArquivoDoDiretorio, Function<TIPO_DAS_CHAVES, Integer> funcaoHash)
 	{
-		arquivoDoDiretorio = IO.openFile(nomeDoArquivoDoDiretorio, "rw");
+		arquivoDoDiretorio = Files.openFile(nomeDoArquivoDoDiretorio, "rw");
 		this.funcaoHash = funcaoHash;
 		lerCabecalho();
 		

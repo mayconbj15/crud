@@ -10,8 +10,6 @@ import serializaveis.SerializavelAbstract;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import user.Main;
-
 /**
  * Classe para gerenciamento de registros de tipos genéricos numa base de dados
  */
@@ -206,13 +204,7 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 
 			// insere a chave (id) e o dado correspondente (endereço do registro)
 			// no sistema de indexamento
-
 			indice.inserir(entity.getId(), accessFile.getFilePointer());
-
-			//inserir o id de categoria e o id do produto no sistema de indexamento
-			if(entity.getIdSecundario() != -1){
-				Main.indiceComposto.inserir(entity.getIdSecundario(), entity.getId());
-			}
 
 			accessFile.writeByte(' '); // insere a lapide
 			accessFile.writeInt(byteArray.length); // insere o tamanho da entidade
@@ -400,14 +392,7 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 				T entity = constructor.newInstance();
 				entity.lerObjeto(file);
 				
-				// deixo separado em duas linhas para que mesmo que
-				// a primeira exclusão falhe, tente-se a segunda.
 				success = indice.excluir(id);
-				
-				if (entity.getIdSecundario() != -1)
-				{
-					success = Main.indiceComposto.excluir(entity.getIdSecundario(), id) && success;
-				}
 				
 				file.close();
 			}

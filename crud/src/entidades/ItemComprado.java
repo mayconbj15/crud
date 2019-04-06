@@ -43,9 +43,24 @@ public class ItemComprado extends SerializavelAbstract implements Entidade
 		return this.id;
 	}
 
-	@Override
-	public int getIdSecundario() {
-		return -1;
+	public int getIdCompra()
+	{
+		return idCompra;
+	}
+
+	public int setIdCompra(int idCompra)
+	{
+		return this.idCompra = idCompra;
+	}
+
+	public int getIdProduto()
+	{
+		return idProduto;
+	}
+
+	public int setIdProduto(int idProduto)
+	{
+		return this.idProduto = idProduto;
 	}
 
 	public float getValorUnitario(){
