@@ -47,8 +47,8 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends SerializavelAbstract & 
 	 * @param id Id da entidade a ser alterada.
 	 * @param entity Nova entidade a ser colocada no lugar.
 	 * 
-	 * @return {@code true} se tudo der certo;
-	 * {@code false} caso contrário.
+	 * @return se tudo der certo, a entidade antes de ser
+	 * alterada; {@code null} caso contrário.
 	 */
 	
 	public TIPO_ENTIDADE alterar(int id, TIPO_ENTIDADE entity)
@@ -58,7 +58,6 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends SerializavelAbstract & 
 		if (deletedEntity != null)
 		{
 			IO.println("\nEntidade alterada com sucesso! :D\n");
-			success = true;
 		}
 		
 		else
@@ -66,7 +65,7 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends SerializavelAbstract & 
 			IO.println("\nFalha na alteração da entidade.\n");
 		}
 		
-		return success;
+		return deletedEntity;
 	}
 	
 	/**
@@ -74,18 +73,17 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends SerializavelAbstract & 
 	 * 
 	 * @param id Id da entidade a ser excluída.
 	 * 
-	 * @return {@code true} se tudo der certo;
-	 * {@code false} caso contrário.
+	 * @return a entidade excluída se tudo der certo;
+	 * {@code null} caso contrário.
 	 */
 	
-	public boolean excluir(int id)
+	public TIPO_ENTIDADE excluir(int id)
 	{
-		boolean success = false;
+		TIPO_ENTIDADE deletedEntity = database.deleteObject(id);
 		
-		if (database.deleteObject(id))
+		if (deletedEntity != null)
 		{
 			IO.println("Entidade excluída com sucesso.");
-			success = true;
 		}
 		
 		else
@@ -93,7 +91,7 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends SerializavelAbstract & 
 			IO.println("Falha na exclusão da entidade.");
 		}
 		
-		return success;
+		return deletedEntity;
 	}
 	
 	/**
