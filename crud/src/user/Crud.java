@@ -38,6 +38,7 @@ public class Crud {
 		
 		do {
 			//Interface de entrada
+			IO.println("[Menu Principal]");
 			IO.println("Qual das seguintes entidades o senhor deseja manusear ?");
 			IO.println("Digite:");
 			IO.println("1 para produto");

@@ -10,12 +10,6 @@ public class CrudCliente extends CrudAbstract<Cliente>
 	{
 		super(database);
 	}
-
-	public void listarCategorias()
-	{
-		IO.println("Categorias disponíveis:\n");
-		listar();
-	}
 	
 	public int menuInclusao()
 	{
@@ -335,13 +329,14 @@ public class CrudCliente extends CrudAbstract<Cliente>
 		
 		do {
 			//Interface de entrada
+			IO.println("[Menu Cliente]");
 			IO.println("Qual das seguintes operações o senhor deseja realizar ?");
 			IO.println("Digite:");
 			IO.println("1 para inclusão");
 			IO.println("2 para alteração");
 			IO.println("3 para exclusão");
-			IO.println("4 para consulta de categoria");
-			IO.println("5 para listar todas as categorias");
+			IO.println("4 para consulta");
+			IO.println("5 para listar");
 			IO.println("0 para sair");
 			IO.println("");
 			selecao = IO.readint("Operação: ");

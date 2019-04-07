@@ -335,6 +335,7 @@ public class CrudCompra extends CrudAbstract<Compra>
 		
 		do {
 			//Interface de entrada
+			IO.println("[Menu Compra]");
 			IO.println("Qual das seguintes operações o senhor deseja realizar ?");
 			IO.println("Digite:");
 			IO.println("1 para inclusão");

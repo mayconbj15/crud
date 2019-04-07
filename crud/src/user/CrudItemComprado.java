@@ -335,6 +335,7 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 		
 		do {
 			//Interface de entrada
+			IO.println("[Menu ItemComprado]");
 			IO.println("Qual das seguintes operações o senhor deseja realizar ?");
 			IO.println("Digite:");
 			IO.println("1 para inclusão");
