@@ -157,6 +157,21 @@ public class Main {
 		startCompositeIndexes();
 	}
 	
+	private static boolean closeFiles()
+	{
+		return
+			databaseCompra.close() &&
+			databaseCliente.close() &&
+			databaseProduto.close() &&
+			databaseCategoria.close() &&
+			databaseItemComprado.close() &&
+			
+			indiceClienteCompra.fechar() &&
+			indiceCategoriaProduto.fechar() &&
+			indiceCompraItemVendido.fechar() &&
+			indiceProdutoItemVendido.fechar();
+	}
+	
 	public static void main(String[] args) {
 		
 		deleteFiles();
@@ -171,5 +186,7 @@ public class Main {
 		);
 		
 		crudMaster.menu();
+		
+		closeFiles();
 	}
 }

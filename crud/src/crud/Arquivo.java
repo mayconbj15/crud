@@ -461,6 +461,33 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 		return deletedEntity;
 	}
 	
+	/**
+	 * Fecha todos os arquivos que este objeto estiver gerenciando.
+	 * 
+	 * @return {@code true} se tudo der certo. Caso contrário, {@code false}.
+	 */
+	
+	public boolean close()
+	{
+		boolean success = false;
+		
+		if (accessFile != null && indice != null)
+		{
+			try
+			{
+				accessFile.close();
+				success = indice.fechar();
+			}
+			
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		return success;
+	}
+	
 	// estrutura da base de dados
 	// [ ultimo_id_usado (int), registros... ]
 	//
