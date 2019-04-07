@@ -43,6 +43,9 @@ public class Crud {
 			IO.println("Digite:");
 			IO.println("1 para produto");
 			IO.println("2 para categoria");
+			IO.println("3 para compra");
+			IO.println("4 para cliente");
+			IO.println("5 para item comprado");
 			IO.println("0 para sair");
 			IO.println("");
 
@@ -61,6 +64,21 @@ public class Crud {
 					
 				case 2:
 					Main.crudCategoria.menu();
+					IO.pause();
+					break;
+					
+				case 3:
+					Main.crudCompra.menu();
+					IO.pause();
+					break;
+					
+				case 4:
+					Main.crudCliente.menu();
+					IO.pause();
+					break;
+					
+				case 5:
+					Main.crudItemComprado.menu();
 					IO.pause();
 					break;
 					
