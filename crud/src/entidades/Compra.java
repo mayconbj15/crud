@@ -83,6 +83,10 @@ public class Compra extends SerializavelAbstract implements Entidade
 		return date;
 	}
 	
+	public float readValorTotal() {
+		return IO.readfloat("Digite o valor total da compra");
+	}
+	
 	
 	@Override
 	public String toString(){

@@ -49,19 +49,15 @@ public class CrudCliente extends CrudAbstract<Cliente>
 	
 	public Cliente alterar(int id, int cod)
 	{
-		Cliente success = null;
-
 		// procurar o cliente desejado na base de dados
 		Cliente cliente =  database.readObject(id);
 		
 		if (cliente != null) // checa se o cliente foi encontrado
-		{
-			success = new Cliente();
-			
+		{			
 			switch (cod)
 			{
 				case 0:
-					success = null;
+					cliente = null;
 					IO.println("Operação cancelada\n");
 					break;
 
@@ -74,14 +70,14 @@ public class CrudCliente extends CrudAbstract<Cliente>
 					break;
 					
 				default:
-					success = null;
+					cliente = null;
 					IO.println("\nOpção inválida !\n");
 					break;
 			}
 			
 			if (cliente != null)
 			{
-				success = alterar(id, cliente);
+				cliente = alterar(id, cliente);
 			}
 		}
 		
@@ -90,7 +86,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 			IO.println("\nCategoria não encontrada.\n");
 		}
 
-		return success;
+		return cliente;
 	}//end alterar()
 	
 	/**

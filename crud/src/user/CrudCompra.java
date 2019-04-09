@@ -56,37 +56,37 @@ public class CrudCompra extends CrudAbstract<Compra>
 	 * Caso contrário, retorna {@code true}.
 	 */
 	
-	public boolean alterar(int id, int cod)
+	public Compra alterar(int id, int cod)
 	{
-		boolean success = false;
-
 		// procurar a categoria desejada na base de dados
-		Categoria categoria =  database.readObject(id);
+		Compra compra=  database.readObject(id);
 		
-		if (categoria != null) // checa se a categoria foi encontrada
-		{
-			success = true;
-			
+		if (compra != null) // checa se a categoria foi encontrada
+		{	
 			switch (cod)
 			{
 				case 0:
-					success = false;
+					compra = null;
 					IO.println("Operação cancelada\n");
 					break;
 
 				case 1:
-					categoria.readName();
+					compra.readData();
+					break;
+					
+				case 2: 
+					compra.readValorTotal(); 
 					break;
 					
 				default:
-					success = false;
+					compra = null;
 					IO.println("\nOpção inválida !\n");
 					break;
 			}
 			
-			if (success)
+			if (compra != null)
 			{
-				success = alterar(id, categoria);
+				compra = alterar(id, compra);
 			}
 		}
 		
@@ -95,7 +95,7 @@ public class CrudCompra extends CrudAbstract<Compra>
 			IO.println("\nCategoria não encontrada.\n");
 		}
 
-		return success;
+		return compra;
 	}//end alterar()
 	
 	/**
