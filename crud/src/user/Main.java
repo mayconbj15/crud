@@ -12,6 +12,12 @@ public class Main {
 	public static final String DATABASE_FILE_SUFFIX		= ".db";
 	public static final String INDEX_FILE_SUFFIX		= ".idx";
 	public static final String INDEX_DIR_FILE_SUFFIX	= ".dir";
+	
+	public static final String ENTITIES_FOLDER			= "entities\\";
+	// prefixos de arquivos de base de dados, índices simples e índices compostos
+	//public static final String DATABASE_FILE_PREFIX		= "Databases\\";
+	//public static final String INDEX_FILE_PREFIX		= "Indexes\\";
+	//public static final String INDEX_DIR_FILE_PREFIX	= ".dir";
 
 	// prefixos de arquivos de entidades
 	public static final String COMPRAS_FILE_NAME			= "compras";
@@ -23,8 +29,8 @@ public class Main {
 	// prefixos de arquivos de índices compostos
 	public static final String CLIENTE_COMPRA_FILE_NAME			= "clienteCompra";
 	public static final String CATEGORIA_PRODUTO_FILE_NAME		= "categoriaProduto";
-	public static final String COMPRA_ITEM_VENDIDO_FILE_NAME	= "compraItemComprado";
-	public static final String PRODUTO_ITEM_VENDIDO_FILE_NAME	= "produtoItemComprado";
+	public static final String COMPRA_ITEM_COMPRADO_FILE_NAME	= "compraItemComprado";
+	public static final String PRODUTO_ITEM_COMPRADO_FILE_NAME	= "produtoItemComprado";
 
 	// objetos para o gerenciamento dos registros de cada entidade
 	public static Arquivo<Compra>		databaseCompra;
@@ -36,8 +42,8 @@ public class Main {
 	// objetos para o gerenciamento dos índices compostos
 	public static HashDinamicaIntInt indiceClienteCompra;
 	public static HashDinamicaIntInt indiceCategoriaProduto;
-	public static HashDinamicaIntInt indiceCompraItemVendido;
-	public static HashDinamicaIntInt indiceProdutoItemVendido;
+	public static HashDinamicaIntInt indiceCompraItemComprado;
+	public static HashDinamicaIntInt indiceProdutoItemComprado;
 
 	// objetos para gerenciamento de menus e interligação com os
 	// objetos que gerenciam os registros de cada entidade
@@ -47,9 +53,20 @@ public class Main {
 	public static CrudCategoria crudCategoria;
 	public static CrudItemComprado crudItemComprado;
 	
+	private static String getEntityFolderPath(String entityName)
+	{
+		return ENTITIES_FOLDER + entityName + "\\";
+	}
+	
 	private static boolean deleteDatabaseFile(String fileName)
 	{
-		return Files.deleteSuffixedFile(fileName, DATABASE_FILE_SUFFIX);
+		return
+			Files.deletePrefixedAndSuffixedFile(
+				fileName, // nome do arquivo
+				ENTITIES_FOLDER, // pasta das entidades
+				fileName + "\\", // pasta da  entidade
+				DATABASE_FILE_SUFFIX // sufixo dos arquivos de database
+			);
 	}
 	
 	private static void deleteDatabaseFiles()
@@ -81,8 +98,8 @@ public class Main {
 		// índices compostos
 		deleteIndexFiles(CLIENTE_COMPRA_FILE_NAME);
 		deleteIndexFiles(CATEGORIA_PRODUTO_FILE_NAME);
-		deleteIndexFiles(COMPRA_ITEM_VENDIDO_FILE_NAME);
-		deleteIndexFiles(PRODUTO_ITEM_VENDIDO_FILE_NAME);
+		deleteIndexFiles(COMPRA_ITEM_COMPRADO_FILE_NAME);
+		deleteIndexFiles(PRODUTO_ITEM_COMPRADO_FILE_NAME);
 	}
 	
 	private static void deleteFiles()
@@ -95,14 +112,15 @@ public class Main {
 	startDatabase(Class<T> dbClass, String fileName)
 	{
 		Arquivo<T> db = null;
+		String folderPath = getEntityFolderPath(fileName);
 		
 		try
 		{
 			db = new Arquivo<T>(
 				dbClass.getConstructor(),
-				fileName + DATABASE_FILE_SUFFIX,
-				fileName + INDEX_DIR_FILE_SUFFIX,
-				fileName + INDEX_FILE_SUFFIX
+				folderPath + fileName + DATABASE_FILE_SUFFIX,
+				folderPath + fileName + INDEX_DIR_FILE_SUFFIX,
+				folderPath + fileName + INDEX_FILE_SUFFIX
 			);
 		}
 		
@@ -126,12 +144,13 @@ public class Main {
 	private static HashDinamicaIntInt startCompositeIndex(String fileName)
 	{
 		HashDinamicaIntInt compositeIndex = null;
+		String folderPath = getEntityFolderPath(fileName);
 		
 		try
 		{
 			compositeIndex = new HashDinamicaIntInt(
-				fileName + INDEX_DIR_FILE_SUFFIX,
-				fileName + INDEX_FILE_SUFFIX
+				folderPath + fileName + INDEX_DIR_FILE_SUFFIX,
+				folderPath + fileName + INDEX_FILE_SUFFIX
 			);
 		}
 		
@@ -147,8 +166,8 @@ public class Main {
 	{
 		indiceClienteCompra = startCompositeIndex(CLIENTE_COMPRA_FILE_NAME);
 		indiceCategoriaProduto = startCompositeIndex(CATEGORIA_PRODUTO_FILE_NAME);
-		indiceCompraItemVendido = startCompositeIndex(COMPRA_ITEM_VENDIDO_FILE_NAME);
-		indiceProdutoItemVendido = startCompositeIndex(PRODUTO_ITEM_VENDIDO_FILE_NAME);
+		indiceCompraItemComprado = startCompositeIndex(COMPRA_ITEM_COMPRADO_FILE_NAME);
+		indiceProdutoItemComprado = startCompositeIndex(PRODUTO_ITEM_COMPRADO_FILE_NAME);
 	}
 	
 	private static void startVariables()
@@ -168,13 +187,26 @@ public class Main {
 			
 			indiceClienteCompra.fechar() &&
 			indiceCategoriaProduto.fechar() &&
-			indiceCompraItemVendido.fechar() &&
-			indiceProdutoItemVendido.fechar();
+			indiceCompraItemComprado.fechar() &&
+			indiceProdutoItemComprado.fechar();
+	}
+	
+	public static void createEntitiesFolders()
+	{
+		Files.createFolders(
+			ENTITIES_FOLDER + COMPRAS_FILE_NAME,
+			ENTITIES_FOLDER + CLIENTES_FILE_NAME,
+			ENTITIES_FOLDER + PRODUTOS_FILE_NAME,
+			ENTITIES_FOLDER + CATEGORIAS_FILE_NAME,
+			ENTITIES_FOLDER + ITENS_COMPRADOS_FILE_NAME
+		);
 	}
 	
 	public static void main(String[] args) {
 		
-		deleteFiles();
+		//deleteFiles();
+		createEntitiesFolders();
+		Files.delete(ENTITIES_FOLDER);
 		startVariables();
 	
 		Crud crudMaster = new Crud(
