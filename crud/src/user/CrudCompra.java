@@ -1,7 +1,10 @@
 package user;
 
 import crud.Arquivo;
+
 import entidades.Compra;
+import entidades.Categoria;
+
 import util.IO;
 
 public class CrudCompra extends CrudAbstract<Compra>
@@ -19,11 +22,12 @@ public class CrudCompra extends CrudAbstract<Compra>
 	
 	public int menuInclusao()
 	{
-		Categoria categoria = new Categoria();
+		Compra compra = new Compra();
 		
-		categoria.setNome(categoria.readName());
+		compra.setData(compra.readData());
+		compra.setValorTotal(compra.readValorTotal());
 		
-		return inserir(categoria);
+		return inserir(compra);
 	}
 
 	/**
