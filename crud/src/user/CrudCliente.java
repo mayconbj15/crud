@@ -204,24 +204,20 @@ public class CrudCliente extends CrudAbstract<Cliente>
 	}
 	
 	/**
-	 * Lista todos os produtos que estão na categoria com o id informado.
-	 * 
-	 * @param id Id da categoria a se listar os produtos.
-	 */
-	
-	public void listarProdutos(int id) 
+	 * Lista todos os clientes cadastrados.	 	
+	 */	
+	public void listarClientes() 
 	{				
-		if(Main.crudProduto != null){
-			int [] lista = Main.indiceComposto.listarDadosComAChave(id);
-			int tamanho = lista.length;
-			
-			for(int y = 0; y < tamanho; y++)
-			{
-				Main.crudProduto.consultar(lista[y]);
-			}//end for
+		if( Main.crudCliente != null )
+		{
+			listar();
 		}
+		else 
+		{			
+			System.out.println("Não há clientes na base de dados.");
+		}//end if
 		
-	}//end listarProdutos()
+	}//end listarClientes()
 	
 	public void menuListar()
 	{
