@@ -2,6 +2,7 @@ package user;
 
 import crud.Arquivo;
 import entidades.Cliente;
+import entidades.Produto;
 import util.IO;
 
 public class CrudCliente extends CrudAbstract<Cliente>
@@ -257,14 +258,14 @@ public class CrudCliente extends CrudAbstract<Cliente>
 	
 	public void menuExclusao()
 	{
-		listarCategorias();
+		listarClientes();
 		int cod = -1; //codigo de selecao
-		int id = IO.readint("Digite o id da categoria a ser removida: ");
+		int id = IO.readint("Digite o id do cliente a ser removido: ");
 
 		//testar antes se o id existe
 		if (database.idIsValid(id))
 		{
-			IO.println("Realmente deseja excluir a categoria ?");
+			IO.println("Realmente deseja excluir o cliente ?");
 			IO.println("Digite:");
 			IO.println("1 Sim");
 			IO.println("2 Não");
@@ -272,48 +273,51 @@ public class CrudCliente extends CrudAbstract<Cliente>
 			cod = IO.readint("Opção: ");
 			
 			if (cod == 1)
+			{															
+				Cliente clienteExcluido = excluir(id);
+					
+				Main.indiceClienteCompra.excluir(
+					clienteExcluido.getId()
+				);
+			}
+			/*
+			else
 			{
-				if(Main.databaseProduto.indice.listarDadosComAChave(id).length == 0)
+				cod = -1;
+					
+				IO.println("AVISO: Ainda há produtos nesta categoria.");
+				IO.println("Deseja excluí-los também? ");
+				IO.println("Digite:");
+				IO.println("1 Sim");
+				IO.println("2 Não");
+				IO.println("");
+				cod = IO.readint("Opção: ");
+				
+				if(cod == 1) 
 				{
-					excluir(id);				
-				}
+					//excluí a categoria do databaseCategoria
+					excluir(id);
+					
+					//excluir os produtos que estão na categoria
+					int[] listOfInvalids = Main.indiceComposto.listarDadosComAChave(id);
+					
+					Main.databaseProduto.deleteObjects(listOfInvalids);
+				}//end if
 				else
 				{
-					cod = -1;
-					
-					IO.println("AVISO: Ainda há produtos nesta categoria.");
-					IO.println("Deseja excluí-los também? ");
+					IO.println("Qual das seguintes operações deseja realizar ?");
 					IO.println("Digite:");
-					IO.println("1 Sim");
-					IO.println("2 Não");
-					IO.println("");
+					IO.println("0 - Sair ");
+					IO.println("1 - Mover produtos para uma categoria existente ");
+					IO.println("2 - Criar nova categoria ");
 					cod = IO.readint("Opção: ");
 					
-					if(cod == 1) 
-					{
-						//excluí a categoria do databaseCategoria
-						excluir(id);
-						
-						//excluir os produtos que estão na categoria
-						int[] listOfInvalids = Main.indiceComposto.listarDadosComAChave(id);
-						
-						Main.databaseProduto.deleteObjects(listOfInvalids);
-					}//end if
-					else
-					{
-						IO.println("Qual das seguintes operações deseja realizar ?");
-						IO.println("Digite:");
-						IO.println("0 - Sair ");
-						IO.println("1 - Mover produtos para uma categoria existente ");
-						IO.println("2 - Criar nova categoria ");
-						cod = IO.readint("Opção: ");
-						
-						alterarCategoria(id, cod);
-					}
+					alterarCategoria(id, cod);
 					
 				}//end if
 				
 			}//end if
+			*/			
 		}		
 		else
 		{
