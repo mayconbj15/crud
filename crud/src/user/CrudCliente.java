@@ -47,9 +47,9 @@ public class CrudCliente extends CrudAbstract<Cliente>
 	 * Caso contrário, retorna {@code true}.
 	 */
 	
-	public boolean alterar(int id, int cod)
+	public Cliente alterar(int id, int cod)
 	{
-		Cliente success;
+		Cliente success = null;
 
 		// procurar o cliente desejado na base de dados
 		Cliente cliente =  database.readObject(id);
@@ -74,12 +74,12 @@ public class CrudCliente extends CrudAbstract<Cliente>
 					break;
 					
 				default:
-					success = false;
+					success = null;
 					IO.println("\nOpção inválida !\n");
 					break;
 			}
 			
-			if (success)
+			if (cliente != null)
 			{
 				success = alterar(id, cliente);
 			}
