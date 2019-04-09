@@ -13,11 +13,11 @@ public class CrudCliente extends CrudAbstract<Cliente>
 	
 	public int menuInclusao()
 	{
-		Categoria categoria = new Categoria();
+		Cliente cliente = new Cliente();
 		
-		categoria.setNome(categoria.readName());
+		cliente.setNome(cliente.readName());
 		
-		return inserir(categoria);
+		return inserir(cliente);
 	}
 
 	/**
