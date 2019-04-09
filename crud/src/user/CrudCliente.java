@@ -21,9 +21,9 @@ public class CrudCliente extends CrudAbstract<Cliente>
 	}
 
 	/**
-	 * Altera um campo específico da categoria com id informado.
-	 * {@code cod} é responsável por indicar qual dos campos da
-	 * categoria deseja-se alterar.
+	 * Altera um campo específico do cliente com id informado.
+	 * {@code cod} é responsável por indicar qual dos campos do
+	 * cliente deseja-se alterar.
 	 * 
 	 * <p></p>
 	 * 
@@ -48,24 +48,28 @@ public class CrudCliente extends CrudAbstract<Cliente>
 	
 	public boolean alterar(int id, int cod)
 	{
-		boolean success = false;
+		Cliente success;
 
-		// procurar a categoria desejada na base de dados
-		Categoria categoria =  database.readObject(id);
+		// procurar o cliente desejado na base de dados
+		Cliente cliente =  database.readObject(id);
 		
-		if (categoria != null) // checa se a categoria foi encontrada
+		if (cliente != null) // checa se o cliente foi encontrado
 		{
-			success = true;
+			success = new Cliente();
 			
 			switch (cod)
 			{
 				case 0:
-					success = false;
+					success = null;
 					IO.println("Operação cancelada\n");
 					break;
 
 				case 1:
-					categoria.readName();
+					cliente.readName();
+					break;
+					
+				case 2:
+					cliente.readEmail();
 					break;
 					
 				default:
@@ -76,7 +80,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 			
 			if (success)
 			{
-				success = alterar(id, categoria);
+				success = alterar(id, cliente);
 			}
 		}
 		
@@ -219,6 +223,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 		
 	}//end listarClientes()
 	
+	/*
 	public void menuListar()
 	{
 		int cod = -1;
@@ -248,7 +253,8 @@ public class CrudCliente extends CrudAbstract<Cliente>
 				
 		}//end switch-case
 	}
-
+	*/
+	
 	public void menuExclusao()
 	{
 		listarCategorias();
