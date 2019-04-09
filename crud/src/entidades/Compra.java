@@ -2,7 +2,11 @@ package entidades;
 
 import java.io.*;
 
+import java.util.Date;
+import java.util.Calendar;
+
 import serializaveis.SerializavelAbstract;
+import util.IO;
 
 /**
  * Classe das entidades compra.
@@ -12,22 +16,22 @@ public class Compra extends SerializavelAbstract implements Entidade
 {
 	private int id;
 	private int idCliente;
-	private long data;
+	private Calendar data;
 	private float valorTotal;
 
-	public Compra(int id, int idCliente, long data, float valorTotal) {
+	public Compra(int id, int idCliente, Calendar data, float valorTotal) {
 		this.id = id;
 		this.idCliente = idCliente;
 		this.data = data;
 		this.valorTotal = valorTotal;
 	}
 
-	public Compra(long data, float valorTotal) {
+	public Compra(Calendar data, float valorTotal) {
 		this( -1, -1, data, valorTotal );
 	}
 
 	public Compra(){
-		this( -1, -1 );
+		this(null, -1 );
 	}
 	
 	@Override
@@ -50,14 +54,14 @@ public class Compra extends SerializavelAbstract implements Entidade
 		return this.idCliente = idCliente;
 	}
 
-	public long getData()
+	public Calendar getData()
 	{
 		return data;
 	}
 
-	public long setData(long data)
+	public void setData(Calendar data)
 	{
-		return this.data = data;
+		this.data = data;
 	}
 
 	public float getValorTotal()
@@ -69,6 +73,16 @@ public class Compra extends SerializavelAbstract implements Entidade
 	{
 		return this.valorTotal = valorTotal;
 	}
+	
+	public Calendar readData() {
+		Calendar date = Calendar.getInstance();
+		
+		this.data.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH), 
+				date.get(Calendar.HOUR_OF_DAY), date.get(Calendar.MINUTE), date.get(Calendar.SECOND));
+		
+		return date;
+	}
+	
 	
 	@Override
 	public String toString(){
@@ -113,7 +127,7 @@ public class Compra extends SerializavelAbstract implements Entidade
 		{
 			dataStream.writeInt(this.id);
 			dataStream.writeInt(this.idCliente);
-			dataStream.writeLong(this.data);
+			dataStream.writeLong(this.data.getTimeInMillis());
 			dataStream.writeFloat(this.valorTotal);
 			
 			dataStream.close();
@@ -141,12 +155,13 @@ public class Compra extends SerializavelAbstract implements Entidade
 	{
 		ByteArrayInputStream byteArrayStream = new ByteArrayInputStream(bytes);
 		DataInputStream dataStream = new DataInputStream(byteArrayStream);
-
+		Date date = new Date();
+		
 		try
 		{
 			this.id = dataStream.readInt();
 			this.idCliente = dataStream.readInt();
-			this.data = dataStream.readLong();
+			this.data.setTimeInMillis(dataStream.readLong());
 			this.valorTotal = dataStream.readFloat();
 			
 			dataStream.close();
