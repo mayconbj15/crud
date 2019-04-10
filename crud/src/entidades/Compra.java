@@ -74,12 +74,13 @@ public class Compra extends SerializavelAbstract implements Entidade
 	}
 	
 	public Calendar readData() {
-		Calendar date = Calendar.getInstance();
+		//Calendar date = Calendar.getInstance();
+		this.data = Calendar.getInstance();
 		
-		this.data.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH), 
-				date.get(Calendar.HOUR_OF_DAY), date.get(Calendar.MINUTE), date.get(Calendar.SECOND));
+		this.data.set(data.get(Calendar.YEAR), data.get(Calendar.MONTH), data.get(Calendar.DAY_OF_MONTH), 
+				data.get(Calendar.HOUR_OF_DAY), data.get(Calendar.MINUTE), data.get(Calendar.SECOND));
 		
-		return date;
+		return data;
 	}
 	
 	public float readValorTotal() {

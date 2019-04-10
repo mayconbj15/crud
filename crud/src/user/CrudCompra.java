@@ -31,7 +31,7 @@ public class CrudCompra extends CrudAbstract<Compra>
 	}
 
 	/**
-	 * Altera um campo específico da categoria com id informado.
+	 * Altera o valor total de uma categoria caso o valor unitário de uma compra seja alterado.
 	 * {@code cod} é responsável por indicar qual dos campos da
 	 * categoria deseja-se alterar.
 	 * 
@@ -56,38 +56,13 @@ public class CrudCompra extends CrudAbstract<Compra>
 	 * Caso contrário, retorna {@code true}.
 	 */
 	
-	public Compra alterar(int id, int cod)
+	public Compra alterarValorTotal(int id)
 	{
 		// procurar a categoria desejada na base de dados
 		Compra compra=  database.readObject(id);
 		
-		if (compra != null) // checa se a categoria foi encontrada
-		{	
-			switch (cod)
-			{
-				case 0:
-					compra = null;
-					IO.println("Operação cancelada\n");
-					break;
-
-				case 1:
-					compra.readData();
-					break;
-					
-				case 2: 
-					compra.readValorTotal(); 
-					break;
-					
-				default:
-					compra = null;
-					IO.println("\nOpção inválida !\n");
-					break;
-			}
-			
-			if (compra != null)
-			{
-				compra = alterar(id, compra);
-			}
+		if (compra != null) { // checa se a categoria foi encontrada	
+			// [EM DESENVOLVIMENTO]
 		}
 		
 		else
@@ -98,117 +73,10 @@ public class CrudCompra extends CrudAbstract<Compra>
 		return compra;
 	}//end alterar()
 	
-	/**
-	 * Altera a categoria do produto informado pelo id.
-	 * {@code cod} é responsável por indicar qual das operações
-	 * deseja-se realizar.
-	 * 
-	 * <p></p>
-	 * 
-	 * <table style="border: 1px solid black; text-align: center;">
-	 * 
-	 * 	<tr>
-	 * 		<th>{@code cod}</th> <th>campo</th>
-	 * 	</tr>
-	 * 
-	 * 	<tr>
-	 * 		<td>0</td> <td>sair do método</td>
-	 * 	</tr>
-	 * 
-	 * 	<tr>
-	 * 		<td>1</td> <td>mover produtos para uma categoria já existente</td>
-	 * 	</tr>
-	 * 
-	 * 	<tr>
-	 * 		<td>2</td> <td>criar nova categoria antes de mover produtos para esta categoria</td>
-	 * 	</tr>
-	 * 
-	 * </table>
-	 * 
-	 * @param id Id da categoria a ser alterada.
-	 * @param cod Operação a ser realizada
-	 */
-	
-	public void alterarCategoria(int id, int cod)
-	{
-		if(Main.crudProduto != null)
-		{
-			int [] lista = Main.indiceComposto.listarDadosComAChave(id);
-			int tamanho = lista.length;
-			int newIdCategoria;
-			
-			switch (cod)
-			{
-				case 0:
-					IO.println("Até breve :)");
-					break;
-					
-				case 1: // mover produtos para uma categoria diferente
-					newIdCategoria =
-					IO.readLineUntilPositiveInt("\nInforme a nova categoria dos produtos: ");
-					
-					IO.println("\nMovendo todos os produtos...");
-					
-					for (int idProduto : lista)
-					{
-						Main.crudProduto.alterarCategoria(idProduto, newIdCategoria);
-					}
-					
-					excluir(id);
-					break;
-					
-				case 2: // criar nova categoria e inserir elementos nela
-					newIdCategoria = menuInclusao();
-					
-					IO.println("\nMovendo todos os produtos...");
-					
-					for(int y = 0; y < tamanho; y++)
-					{
-						Main.crudProduto.alterarCategoria(lista[y], newIdCategoria);
-					}
-					
-					excluir(id);
-					break;
-					
-				default:
-					IO.println("\nOpção inválida !\n");
-					break;
-			}
-		}
-		else
-		{
-			IO.println("\nErro ao alterar categoria !\n");
-		}
-	}//end alterarCategoria()
-
-	public void menuAlteracao()
-	{ 
-		listarCategorias();
-		int cod = -1; //codigo de selecao
-		int id = IO.readint("Digite o id da categoria a ser alterada: ");
-
-		//testar antes se o id existe
-		if(database.idIsValid(id))
-		{
-			IO.println("O que deseja alterar na categoria?");
-			IO.println("Digite:");
-			IO.println("1 para alterar o nome");
-			IO.println("0 para cancelar");
-			IO.println("");
-			cod = IO.readint("Opção: ");
-			
-			alterar(id, cod);
-		}
-		
-		else
-		{
-			IO.println("Id inválido!");
-		}
-	}
 
 	public void menuConsulta()
 	{
-		int id = IO.readint("Digite o id da categoria a ser consultada: ");
+		int id = IO.readint("Digite o id da compra ser consultada: ");
 		
 		consultar(id);
 	}
@@ -219,7 +87,7 @@ public class CrudCompra extends CrudAbstract<Compra>
 	 * @param id Id da categoria a se listar os produtos.
 	 */
 	
-	public void listarProdutos(int id) 
+	/*public void listarProdutos(int id) 
 	{				
 		if(Main.crudProduto != null){
 			int [] lista = Main.indiceComposto.listarDadosComAChave(id);
@@ -231,102 +99,37 @@ public class CrudCompra extends CrudAbstract<Compra>
 			}//end for
 		}
 		
-	}//end listarProdutos()
+	}//end listarProdutos()*/
 	
 	public void menuListar()
 	{
-		int cod = -1;
-		int idCategoria = -1;
-		
-		IO.println("O que deseja listar ?");
-		IO.println("Digite:");
-		IO.println("1 Todas as categorias;");
-		IO.println("2 Produtos de uma categoria.");
-		IO.println("");
-		cod = IO.readint("Opção: ");
-		
-		listarCategorias();
-		
-		switch(cod) 
-		{
-			case 1:
-				break;
-				
-			case 2:
-				idCategoria = IO.readint("Entre com a categoria desejada: ");
-				listarProdutos(idCategoria);
-				break;
-				
-			default:
-				IO.println("Opção inválida.");		
-				
-		}//end switch-case
+		listar();		
 	}
 
-	public void menuExclusao()
-	{
+	public void menuExclusao(){
 		listarCategorias();
 		int cod = -1; //codigo de selecao
-		int id = IO.readint("Digite o id da categoria a ser removida: ");
+		int id = IO.readint("Digite o id da compra a ser removida: ");
 
 		//testar antes se o id existe
-		if (database.idIsValid(id))
-		{
-			IO.println("Realmente deseja excluir a categoria ?");
+		if (database.idIsValid(id)){
+			IO.println("Realmente deseja excluir a compra " + database.readObject(id).getId() + " ?");
 			IO.println("Digite:");
 			IO.println("1 Sim");
 			IO.println("2 Não");
 			IO.println("");
 			cod = IO.readint("Opção: ");
 			
-			if (cod == 1)
-			{
-				if(Main.databaseProduto.indice.listarDadosComAChave(id).length == 0)
-				{
-					excluir(id);				
-				}
-				else
-				{
-					cod = -1;
-					
-					IO.println("AVISO: Ainda há produtos nesta categoria.");
-					IO.println("Deseja excluí-los também? ");
-					IO.println("Digite:");
-					IO.println("1 Sim");
-					IO.println("2 Não");
-					IO.println("");
-					cod = IO.readint("Opção: ");
-					
-					if(cod == 1) 
-					{
-						//excluí a categoria do databaseCategoria
-						excluir(id);
-						
-						//excluir os produtos que estão na categoria
-						int[] listOfInvalids = Main.indiceComposto.listarDadosComAChave(id);
-						
-						Main.databaseProduto.deleteObjects(listOfInvalids);
-					}//end if
-					else
-					{
-						IO.println("Qual das seguintes operações deseja realizar ?");
-						IO.println("Digite:");
-						IO.println("0 - Sair ");
-						IO.println("1 - Mover produtos para uma categoria existente ");
-						IO.println("2 - Criar nova categoria ");
-						cod = IO.readint("Opção: ");
-						
-						alterarCategoria(id, cod);
-					}
-					
-				}//end if
-				
-			}//end if
-		}		
-		else
-		{
+			if (cod == 1){
+				excluir(id);
+			}
+			else if(cod == 2) {
+				IO.println("Operação cancelada");
+			}
+		}
+		else{
 			IO.println("Id inválido!");
-		}//end if
+		}
 		
 	}//end menuExclusao
 
@@ -343,10 +146,9 @@ public class CrudCompra extends CrudAbstract<Compra>
 			IO.println("Qual das seguintes operações o senhor deseja realizar ?");
 			IO.println("Digite:");
 			IO.println("1 para inclusão");
-			IO.println("2 para alteração");
-			IO.println("3 para exclusão");
-			IO.println("4 para consulta de categoria");
-			IO.println("5 para listar todas as categorias");
+			IO.println("2 para exclusão");
+			IO.println("3 para consulta");
+			IO.println("4 para listar todas as compras");
 			IO.println("0 para sair");
 			IO.println("");
 			selecao = IO.readint("Operação: ");
@@ -365,21 +167,16 @@ public class CrudCompra extends CrudAbstract<Compra>
 					break;
 					
 				case 2:
-					menuAlteracao();
+					menuConsulta();
 					IO.pause();
 					break;
-					
+				
 				case 3:
-					menuExclusao();
+					menuListar();
 					IO.pause();
 					break;
 					
 				case 4:
-					menuConsulta();
-					IO.pause();
-					break;
-					
-				case 5:
 					menuListar();
 					IO.pause();
 					break;
