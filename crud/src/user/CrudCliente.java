@@ -16,7 +16,8 @@ public class CrudCliente extends CrudAbstract<Cliente>
 	{
 		Cliente cliente = new Cliente();
 		
-		cliente.setNome(cliente.readName());
+		cliente.setNome(cliente.readName());		
+		cliente.setEmail(cliente.readEmail());
 		
 		return inserir(cliente);
 	}
@@ -89,91 +90,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 
 		return cliente;
 		
-	}//end alterar()
-	
-	/**
-	 * Altera a categoria do produto informado pelo id.
-	 * {@code cod} é responsável por indicar qual das operações
-	 * deseja-se realizar.
-	 * 
-	 * <p></p>
-	 * 
-	 * <table style="border: 1px solid black; text-align: center;">
-	 * 
-	 * 	<tr>
-	 * 		<th>{@code cod}</th> <th>campo</th>
-	 * 	</tr>
-	 * 
-	 * 	<tr>
-	 * 		<td>0</td> <td>sair do método</td>
-	 * 	</tr>
-	 * 
-	 * 	<tr>
-	 * 		<td>1</td> <td>mover produtos para uma categoria já existente</td>
-	 * 	</tr>
-	 * 
-	 * 	<tr>
-	 * 		<td>2</td> <td>criar nova categoria antes de mover produtos para esta categoria</td>
-	 * 	</tr>
-	 * 
-	 * </table>
-	 * 
-	 * @param id Id da categoria a ser alterada.
-	 * @param cod Operação a ser realizada
-	 */
-	/*
-	public void alterarCategoria(int id, int cod)
-	{
-		if(Main.crudProduto != null)
-		{
-			int [] lista = Main.indiceComposto.listarDadosComAChave(id);
-			int tamanho = lista.length;
-			int newIdCategoria;
-			
-			switch (cod)
-			{
-				case 0:
-					IO.println("Até breve :)");
-					break;
-					
-				case 1: // mover produtos para uma categoria diferente
-					newIdCategoria =
-					IO.readLineUntilPositiveInt("\nInforme a nova categoria dos produtos: ");
-					
-					IO.println("\nMovendo todos os produtos...");
-					
-					for (int idProduto : lista)
-					{
-						Main.crudProduto.alterarCategoria(idProduto, newIdCategoria);
-					}
-					
-					excluir(id);
-					break;
-					
-				case 2: // criar nova categoria e inserir elementos nela
-					newIdCategoria = menuInclusao();
-					
-					IO.println("\nMovendo todos os produtos...");
-					
-					for(int y = 0; y < tamanho; y++)
-					{
-						Main.crudProduto.alterarCategoria(lista[y], newIdCategoria);
-					}
-					
-					excluir(id);
-					break;
-					
-				default:
-					IO.println("\nOpção inválida !\n");
-					break;
-			}
-		}
-		else
-		{
-			IO.println("\nErro ao alterar categoria !\n");
-		}
-	}//end alterarCategoria()
-	*/
+	}//end alterar()	
 
 	public void menuAlteracao()
 	{ 
@@ -274,50 +191,48 @@ public class CrudCliente extends CrudAbstract<Cliente>
 			
 			if (cod == 1)
 			{															
-				Cliente clienteExcluido = excluir(id);
-					
-				Main.indiceClienteCompra.excluir(
-					clienteExcluido.getId()
-				);
-			}
-			/*
-			else
-			{
-				cod = -1;
-					
-				IO.println("AVISO: Ainda há produtos nesta categoria.");
-				IO.println("Deseja excluí-los também? ");
-				IO.println("Digite:");
-				IO.println("1 Sim");
-				IO.println("2 Não");
-				IO.println("");
-				cod = IO.readint("Opção: ");
-				
-				if(cod == 1) 
+				if(Main.databaseCliente.indice.listarDadosComAChave(id).length == 0)
 				{
-					//excluí a categoria do databaseCategoria
-					excluir(id);
-					
-					//excluir os produtos que estão na categoria
-					int[] listOfInvalids = Main.indiceComposto.listarDadosComAChave(id);
-					
-					Main.databaseProduto.deleteObjects(listOfInvalids);
-				}//end if
+					excluir(id);	
+				}				
 				else
 				{
-					IO.println("Qual das seguintes operações deseja realizar ?");
+					cod = -1;
+						
+					IO.println("AVISO: Ainda há compras registradas em nome deste cliente.");
+					IO.println("Deseja excluí-las também? ");
 					IO.println("Digite:");
-					IO.println("0 - Sair ");
-					IO.println("1 - Mover produtos para uma categoria existente ");
-					IO.println("2 - Criar nova categoria ");
+					IO.println("1 Sim");
+					IO.println("2 Não");
+					IO.println("");
 					cod = IO.readint("Opção: ");
 					
-					alterarCategoria(id, cod);
+					if(cod == 1) 
+					{
+						//excluí a categoria do databaseCategoria
+						excluir(id);
+						
+						//excluir os produtos que estão na categoria
+						int[] listOfInvalids = Main.indiceComposto.listarDadosComAChave(id);
+						
+						Main.databaseProduto.deleteObjects(listOfInvalids);
+					}
+					else
+					{
+						IO.println("Qual das seguintes operações deseja realizar ?");
+						IO.println("Digite:");
+						IO.println("0 - Sair ");
+						IO.println("1 - Mover produtos para uma categoria existente ");
+						IO.println("2 - Criar nova categoria ");
+						cod = IO.readint("Opção: ");
+						
+						alterarCategoria(id, cod);
+						
+					}//end if
 					
 				}//end if
 				
 			}//end if
-			*/			
 		}		
 		else
 		{
