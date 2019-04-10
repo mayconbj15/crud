@@ -16,7 +16,8 @@ public class CrudCliente extends CrudAbstract<Cliente>
 	{
 		Cliente cliente = new Cliente();
 		
-		cliente.setNome(cliente.readName());
+		cliente.setNome(cliente.readName());		
+		cliente.setEmail(cliente.readEmail());
 		
 		return inserir(cliente);
 	}
