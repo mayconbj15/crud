@@ -22,19 +22,20 @@ public class Compra extends SerializavelAbstract implements Entidade
 	private Calendar data;
 	private float valorTotal;
 
-	public Compra(int id, int idCliente, Calendar data, float valorTotal) {
+	public Compra(int id, int idCliente, float valorTotal) {
 		this.id = id;
 		this.idCliente = idCliente;
-		this.data = data;
 		this.valorTotal = valorTotal;
+		
+		this.data = data.getInstance();
 	}
 
-	public Compra(Calendar data, float valorTotal) {
-		this( -1, -1, data, valorTotal );
+	public Compra(float valorTotal) {
+		this( -1, -1, valorTotal );
 	}
 
 	public Compra(){
-		this(null, -1 );
+		this(-1 );
 	}
 	
 	@Override
