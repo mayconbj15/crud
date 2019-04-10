@@ -263,11 +263,12 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		IO.println("");
 		cod = IO.readint("Opção: ");
 		
-		listarCategorias();
+		
 		
 		switch(cod) 
 		{
 			case 1:
+				listarCategorias();
 				break;
 				
 			case 2:
@@ -279,7 +280,8 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 				IO.println("Opção inválida.");		
 				
 		}//end switch-case
-	}
+		
+	}//end menuListar()
 
 	public void menuExclusao()
 	{

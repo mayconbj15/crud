@@ -120,7 +120,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 
 	public void menuConsulta()
 	{
-		int id = IO.readint("Digite o id da categoria a ser consultada: ");
+		int id = IO.readint("Digite o id do cliente a ser consultado: ");
 		
 		consultar(id);
 	}
@@ -141,29 +141,37 @@ public class CrudCliente extends CrudAbstract<Cliente>
 		
 	}//end listarClientes()
 	
-	/*
+
 	public void menuListar()
 	{
 		int cod = -1;
-		int idCategoria = -1;
+		int idCliente = -1;
 		
 		IO.println("O que deseja listar ?");
 		IO.println("Digite:");
-		IO.println("1 Todas as categorias;");
-		IO.println("2 Produtos de uma categoria.");
+		IO.println("1 Todos os clientes;");
+		IO.println("2 Compras de um cliente.");
 		IO.println("");
 		cod = IO.readint("Opção: ");
 		
-		listarCategorias();
 		
 		switch(cod) 
 		{
 			case 1:
+				listarClientes();
 				break;
 				
 			case 2:
-				idCategoria = IO.readint("Entre com a categoria desejada: ");
-				listarProdutos(idCategoria);
+				idCliente = IO.readint("Entre com o id do cliente desejado: ");
+				
+				if (database.idIsValid(idCliente)) 
+				{
+					listarCompras(idCliente);
+				}
+				else 
+				{
+					IO.println("Id inválido!");
+				}				
 				break;
 				
 			default:
@@ -171,7 +179,6 @@ public class CrudCliente extends CrudAbstract<Cliente>
 				
 		}//end switch-case
 	}
-	*/
 	
 	public void menuExclusao()
 	{
@@ -245,7 +252,8 @@ public class CrudCliente extends CrudAbstract<Cliente>
 			IO.println("1 para inclusão");
 			IO.println("2 para alteração");
 			IO.println("3 para exclusão");
-			IO.println("4 para consulta");			
+			IO.println("4 para consulta");
+			IO.println("5 para listar");
 			IO.println("0 para sair");
 			IO.println("");
 			selecao = IO.readint("Operação: ");
@@ -276,7 +284,12 @@ public class CrudCliente extends CrudAbstract<Cliente>
 				case 4:
 					menuConsulta();
 					IO.pause();
-					break;					
+					break;	
+					
+				case 5:
+					menuListar();
+					IO.pause();
+					break;
 					
 				default:
 					IO.println("Operação inválida\n");
