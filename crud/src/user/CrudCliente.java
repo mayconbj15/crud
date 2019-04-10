@@ -175,7 +175,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 	
 	public void menuExclusao()
 	{
-		listarClientes();
+		listarClientes();		
 		int cod = -1; //codigo de selecao
 		int id = IO.readint("Digite o id do cliente a ser removido: ");
 
@@ -200,7 +200,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 					cod = -1;
 						
 					IO.println("AVISO: Ainda há compras registradas em nome deste cliente.");
-					IO.println("Deseja excluí-las também? ");
+					IO.println("Ainda deseja excluir o cliente? ");
 					IO.println("Digite:");
 					IO.println("1 Sim");
 					IO.println("2 Não");
@@ -213,20 +213,9 @@ public class CrudCliente extends CrudAbstract<Cliente>
 						excluir(id);
 						
 						//excluir os produtos que estão na categoria
-						int[] listOfInvalids = Main.indiceComposto.listarDadosComAChave(id);
+						int[] listOfInvalids = Main.indiceClienteCompra.listarDadosComAChave(id);
 						
-						Main.databaseProduto.deleteObjects(listOfInvalids);
-					}
-					else
-					{
-						IO.println("Qual das seguintes operações deseja realizar ?");
-						IO.println("Digite:");
-						IO.println("0 - Sair ");
-						IO.println("1 - Mover produtos para uma categoria existente ");
-						IO.println("2 - Criar nova categoria ");
-						cod = IO.readint("Opção: ");
-						
-						alterarCategoria(id, cod);
+						Main.databaseCompra.deleteObjects(listOfInvalids);
 						
 					}//end if
 					
