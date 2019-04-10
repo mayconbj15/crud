@@ -75,6 +75,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 					break;
 			}
 			
+			
 			if (cliente != null)
 			{
 				cliente = alterar(id, cliente);
@@ -87,6 +88,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 		}
 
 		return cliente;
+		
 	}//end alterar()
 	
 	/**
@@ -119,7 +121,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 	 * @param id Id da categoria a ser alterada.
 	 * @param cod Operação a ser realizada
 	 */
-	
+	/*
 	public void alterarCategoria(int id, int cod)
 	{
 		if(Main.crudProduto != null)
@@ -171,19 +173,21 @@ public class CrudCliente extends CrudAbstract<Cliente>
 			IO.println("\nErro ao alterar categoria !\n");
 		}
 	}//end alterarCategoria()
+	*/
 
 	public void menuAlteracao()
 	{ 
-		listarCategorias();
+		listarClientes();
 		int cod = -1; //codigo de selecao
-		int id = IO.readint("Digite o id da categoria a ser alterada: ");
+		int id = IO.readint("Digite o id do cliente a ser alterado: ");
 
 		//testar antes se o id existe
 		if(database.idIsValid(id))
 		{
-			IO.println("O que deseja alterar na categoria?");
+			IO.println("O que deseja alterar no cliente? ");
 			IO.println("Digite:");
-			IO.println("1 para alterar o nome");
+			IO.println("1 para alterar o nome;");
+			IO.println("2 para alterar o email;");
 			IO.println("0 para cancelar");
 			IO.println("");
 			cod = IO.readint("Opção: ");
@@ -337,8 +341,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 			IO.println("1 para inclusão");
 			IO.println("2 para alteração");
 			IO.println("3 para exclusão");
-			IO.println("4 para consulta");
-			IO.println("5 para listar");
+			IO.println("4 para consulta");			
 			IO.println("0 para sair");
 			IO.println("");
 			selecao = IO.readint("Operação: ");
@@ -369,12 +372,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 				case 4:
 					menuConsulta();
 					IO.pause();
-					break;
-					
-				case 5:
-					menuListar();
-					IO.pause();
-					break;
+					break;					
 					
 				default:
 					IO.println("Operação inválida\n");
