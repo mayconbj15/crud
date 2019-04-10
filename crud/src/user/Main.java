@@ -13,11 +13,9 @@ public class Main {
 	public static final String INDEX_FILE_SUFFIX		= ".idx";
 	public static final String INDEX_DIR_FILE_SUFFIX	= ".dir";
 	
-	public static final String ENTITIES_FOLDER			= "entities\\";
-	// prefixos de arquivos de base de dados, índices simples e índices compostos
-	//public static final String DATABASE_FILE_PREFIX		= "Databases\\";
-	//public static final String INDEX_FILE_PREFIX		= "Indexes\\";
-	//public static final String INDEX_DIR_FILE_PREFIX	= ".dir";
+	// diretórios das entidades e dos índices compostos
+	public static final String ENTITIES_FOLDER			= "Entities\\";
+	public static final String COMPOSITE_INDEXES_FOLDER	= "CompositeIndexes\\";
 
 	// prefixos de arquivos de entidades
 	public static final String COMPRAS_FILE_NAME			= "compras";
@@ -58,56 +56,6 @@ public class Main {
 		return ENTITIES_FOLDER + entityName + "\\";
 	}
 	
-	private static boolean deleteDatabaseFile(String fileName)
-	{
-		return
-			Files.deletePrefixedAndSuffixedFile(
-				fileName, // nome do arquivo
-				ENTITIES_FOLDER, // pasta das entidades
-				fileName + "\\", // pasta da  entidade
-				DATABASE_FILE_SUFFIX // sufixo dos arquivos de database
-			);
-	}
-	
-	private static void deleteDatabaseFiles()
-	{
-		deleteDatabaseFile(COMPRAS_FILE_NAME);
-		deleteDatabaseFile(PRODUTOS_FILE_NAME);
-		deleteDatabaseFile(CLIENTES_FILE_NAME);
-		deleteDatabaseFile(CATEGORIAS_FILE_NAME);
-		deleteDatabaseFile(ITENS_COMPRADOS_FILE_NAME);
-	}
-	
-	private static boolean deleteIndexFiles(String fileName)
-	{
-		// como a hash dinâmica gera um arquivo para o diretório e um
-		// arquivo para os buckets, é necessário deletar ambos
-		return Files.deleteSuffixedFile(fileName, INDEX_FILE_SUFFIX) &&
-			Files.deleteSuffixedFile(fileName, INDEX_DIR_FILE_SUFFIX);
-	}
-	
-	private static void deleteIndexFiles()
-	{
-		// índices simples
-		deleteIndexFiles(COMPRAS_FILE_NAME);
-		deleteIndexFiles(PRODUTOS_FILE_NAME);
-		deleteIndexFiles(CLIENTES_FILE_NAME);
-		deleteIndexFiles(CATEGORIAS_FILE_NAME);
-		deleteIndexFiles(ITENS_COMPRADOS_FILE_NAME);
-		
-		// índices compostos
-		deleteIndexFiles(CLIENTE_COMPRA_FILE_NAME);
-		deleteIndexFiles(CATEGORIA_PRODUTO_FILE_NAME);
-		deleteIndexFiles(COMPRA_ITEM_COMPRADO_FILE_NAME);
-		deleteIndexFiles(PRODUTO_ITEM_COMPRADO_FILE_NAME);
-	}
-	
-	private static void deleteFiles()
-	{
-		deleteDatabaseFiles();
-		deleteIndexFiles();
-	}
-	
 	private static <T extends SerializavelAbstract & Entidade> Arquivo<T>
 	startDatabase(Class<T> dbClass, String fileName)
 	{
@@ -144,7 +92,7 @@ public class Main {
 	private static HashDinamicaIntInt startCompositeIndex(String fileName)
 	{
 		HashDinamicaIntInt compositeIndex = null;
-		String folderPath = getEntityFolderPath(fileName);
+		String folderPath = COMPOSITE_INDEXES_FOLDER;
 		
 		try
 		{
@@ -202,11 +150,27 @@ public class Main {
 		);
 	}
 	
+	public static void createCompositeIndexesFolder()
+	{
+		Files.createFolders(COMPOSITE_INDEXES_FOLDER);
+	}
+	
+	public static void createFolders()
+	{
+		createEntitiesFolders();
+		createCompositeIndexesFolder();
+	}
+	
+	private static void deleteFiles()
+	{
+		Files.delete(ENTITIES_FOLDER);
+		Files.delete(COMPOSITE_INDEXES_FOLDER);
+	}
+	
 	public static void main(String[] args) {
 		
-		//deleteFiles();
-		createEntitiesFolders();
-		Files.delete(ENTITIES_FOLDER);
+		deleteFiles();
+		createFolders();
 		startVariables();
 	
 		Crud crudMaster = new Crud(

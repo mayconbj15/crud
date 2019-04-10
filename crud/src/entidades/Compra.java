@@ -2,7 +2,6 @@ package entidades;
 
 import java.io.*;
 
-import java.util.Date;
 import java.util.Calendar;
 
 import serializaveis.SerializavelAbstract;
@@ -159,7 +158,6 @@ public class Compra extends SerializavelAbstract implements Entidade
 	{
 		ByteArrayInputStream byteArrayStream = new ByteArrayInputStream(bytes);
 		DataInputStream dataStream = new DataInputStream(byteArrayStream);
-		Date date = new Date();
 		
 		try
 		{
