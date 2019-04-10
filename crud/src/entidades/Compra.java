@@ -3,8 +3,12 @@ package entidades;
 import java.io.*;
 
 import java.util.Calendar;
+import java.util.ArrayList;
 
 import serializaveis.SerializavelAbstract;
+
+import user.Main;
+
 import util.IO;
 
 /**
@@ -84,7 +88,18 @@ public class Compra extends SerializavelAbstract implements Entidade
 	}
 	
 	public float readValorTotal() {
-		return IO.readfloat("Digite o valor total da compra");
+		ArrayList<ItemComprado> itensComprados = Main.databaseItemComprado.list();
+		
+		float valorTotal = 0;
+		int tam = itensComprados.size();
+		
+		//pegar cada item comprado com o idCompra e ir somando o valor unitário
+		for(int i=0; i < tam; i++){
+			if(itensComprados.get(i).getIdCompra() == this.id)
+				valorTotal+= itensComprados.get(i).getValorUnitario() * itensComprados.get(i).getQuantidade();
+		}
+		
+		return valorTotal;
 	}
 	
 	

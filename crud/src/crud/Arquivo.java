@@ -354,7 +354,7 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 			
 			while (accessFile.getFilePointer() < accessFile.length()) {
 				entityAux = readObject(accessFile);
-				
+
 				if (entityAux != null)
 				{
 					entitiesList.add(entityAux);
@@ -370,6 +370,7 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 		
 		return entitiesList;
 	}
+	
 	
 	/**
 	 * Encontra a entidade com id informado e a deleta.
