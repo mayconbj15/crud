@@ -2,7 +2,7 @@ package user;
 
 import crud.Arquivo;
 import entidades.Cliente;
-import entidades.Produto;
+import entidades.Compra;
 import util.IO;
 
 public class CrudCliente extends CrudAbstract<Cliente>
@@ -13,7 +13,8 @@ public class CrudCliente extends CrudAbstract<Cliente>
 	}
 	
 	public int menuInclusao()
-	{
+	{		
+	
 		Cliente cliente = new Cliente();
 		
 		cliente.setNome(cliente.readName());		
@@ -85,7 +86,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 		
 		else
 		{
-			IO.println("\nCategoria não encontrada.\n");
+			IO.println("\nCliente não encontrado.\n");
 		}
 
 		return cliente;
@@ -132,6 +133,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 	{				
 		if( Main.crudCliente != null )
 		{
+			IO.println("Clientes disponíveis: \n");
 			listar();
 		}
 		else 
@@ -140,6 +142,27 @@ public class CrudCliente extends CrudAbstract<Cliente>
 		}//end if
 		
 	}//end listarClientes()
+	
+	/**
+	 * Listar compras de clientes
+	 * 
+	 * @param {@code}id
+	 */
+	public void listarCompras(int id) 
+	{				
+		if(Main.crudCompra != null)
+		{
+			int [] lista = Main.indiceClienteCompra.listarDadosComAChave(id);
+			int tamanho = lista.length;
+			
+			for(int y = 0; y < tamanho; y++)
+			{
+				Main.crudCompra.consultar(lista[y]);
+			}//end for
+			
+		}//end if
+		
+	}//end listarCompras()
 	
 
 	public void menuListar()
@@ -154,11 +177,10 @@ public class CrudCliente extends CrudAbstract<Cliente>
 		IO.println("");
 		cod = IO.readint("Opção: ");
 		
-		
 		switch(cod) 
 		{
 			case 1:
-				listarClientes();
+				listarClientes();			
 				break;
 				
 			case 2:
@@ -181,7 +203,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 	}
 	
 	public void menuExclusao()
-	{
+	{		
 		listarClientes();		
 		int cod = -1; //codigo de selecao
 		int id = IO.readint("Digite o id do cliente a ser removido: ");
@@ -216,10 +238,10 @@ public class CrudCliente extends CrudAbstract<Cliente>
 					
 					if(cod == 1) 
 					{
-						//excluí a categoria do databaseCategoria
+						//exclui o cliente da databaseCliente
 						excluir(id);
 						
-						//excluir os produtos que estão na categoria
+						//excluir as compras do cliente
 						int[] listOfInvalids = Main.indiceClienteCompra.listarDadosComAChave(id);
 						
 						Main.databaseCompra.deleteObjects(listOfInvalids);

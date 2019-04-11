@@ -114,6 +114,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		}
 
 		return success;
+		
 	}//end alterar()
 	
 	/**
