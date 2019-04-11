@@ -2,7 +2,6 @@ package user;
 
 import crud.Arquivo;
 import entidades.Cliente;
-import entidades.Compra;
 import util.IO;
 
 public class CrudCliente extends CrudAbstract<Cliente>
@@ -13,8 +12,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 	}
 	
 	public int menuInclusao()
-	{		
-	
+	{				
 		Cliente cliente = new Cliente();
 		
 		cliente.setNome(cliente.readName());		
