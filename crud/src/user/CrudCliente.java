@@ -93,7 +93,6 @@ public class CrudCliente extends CrudAbstract<Cliente>
 
 	public void menuAlteracao()
 	{ 
-		listarClientes();
 		int cod = -1; //codigo de selecao
 		int id = IO.readint("Digite o id do cliente a ser alterado: ");
 
@@ -227,7 +226,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 					cod = -1;
 						
 					IO.println("AVISO: Ainda há compras registradas em nome deste cliente.");
-					IO.println("Ainda deseja excluir o cliente? ");
+					IO.println("Ainda deseja excluí-lo? ");
 					IO.println("Digite:");
 					IO.println("1 Sim");
 					IO.println("2 Não");
