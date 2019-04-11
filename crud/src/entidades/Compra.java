@@ -3,6 +3,7 @@ package entidades;
 import java.io.*;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.ArrayList;
 
 import serializaveis.SerializavelAbstract;
@@ -27,7 +28,7 @@ public class Compra extends SerializavelAbstract implements Entidade
 		this.idCliente = idCliente;
 		this.valorTotal = valorTotal;
 		
-		this.data = data.getInstance();
+		this.data = new GregorianCalendar();
 	}
 
 	public Compra(float valorTotal) {
@@ -77,17 +78,7 @@ public class Compra extends SerializavelAbstract implements Entidade
 	{
 		return this.valorTotal = valorTotal;
 	}
-	
-	public Calendar readData() {
-		//Calendar date = Calendar.getInstance();
-		this.data = Calendar.getInstance();
 		
-		this.data.set(data.get(Calendar.YEAR), data.get(Calendar.MONTH), data.get(Calendar.DAY_OF_MONTH), 
-				data.get(Calendar.HOUR_OF_DAY), data.get(Calendar.MINUTE), data.get(Calendar.SECOND));
-		
-		return data;
-	}
-	
 	public float readValorTotal() {
 		ArrayList<ItemComprado> itensComprados = Main.databaseItemComprado.list();
 		
@@ -108,9 +99,18 @@ public class Compra extends SerializavelAbstract implements Entidade
 	public String toString(){
 		return
 			"ID: " + this.id + '\n' +
-			"IDCliente: " + this.idCliente +
-			"Data: " + this.data +
+			"IDCliente: " + this.idCliente + '\n' +
+			"Data " + printData() + '\n' +
 			"Valor Total: " + this.valorTotal;
+	}
+	
+	public String printData() {
+		int month = this.data.get(Calendar.MONTH);
+		month++;
+		
+		return this.data.get(this.data.DAY_OF_MONTH) + "/" + 
+				month + "/" +
+				this.data.get(this.data.YEAR);
 	}
 	
 	@Override

@@ -24,7 +24,6 @@ public class CrudCompra extends CrudAbstract<Compra>
 	{
 		Compra compra = new Compra();
 		
-		compra.setData(compra.readData());
 		compra.setValorTotal(compra.readValorTotal());
 		
 		return inserir(compra);
