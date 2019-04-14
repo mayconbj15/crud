@@ -79,6 +79,11 @@ public class ItemComprado extends SerializavelAbstract implements Entidade
 		return this.quantidade = quantidade;
 	}
 	
+	public float getValorTotal()
+	{
+		return valorUnitario * quantidade;
+	}
+	
 	/**
 	 * Lê a quantidade de itens comprados da entrada padrão e redefine
 	 * o campo {@link #quantidade} desta entidade.

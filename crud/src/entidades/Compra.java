@@ -10,8 +10,6 @@ import serializaveis.SerializavelAbstract;
 
 import user.Main;
 
-import util.IO;
-
 /**
  * Classe das entidades compra.
  */
@@ -77,7 +75,7 @@ public class Compra extends SerializavelAbstract implements Entidade
 	public float setValorTotal(float valorTotal)
 	{
 		return this.valorTotal = valorTotal;
-	}
+	}/*
 		
 	public float readValorTotal() {
 		ArrayList<ItemComprado> itensComprados = Main.databaseItemComprado.list();
@@ -92,8 +90,23 @@ public class Compra extends SerializavelAbstract implements Entidade
 		}
 		
 		return valorTotal;
-	}
+	}*/
 	
+	public float readValorTotal() {
+		int[] idsOfPurchasedItems = Main.indiceCompraItemComprado.listarDadosComAChave(id);
+		
+		float valorTotal = 0;
+		ItemComprado purchasedItem;
+		
+		//pegar cada item comprado com o idCompra e ir somando o valor unitário
+		for (int idOfPurchasedItem : idsOfPurchasedItems)
+		{
+			purchasedItem = Main.databaseItemComprado.readObject(idOfPurchasedItem);
+			valorTotal += purchasedItem.getValorTotal();
+		}
+		
+		return valorTotal;
+	}
 	
 	@Override
 	public String toString(){
@@ -108,9 +121,9 @@ public class Compra extends SerializavelAbstract implements Entidade
 		int month = this.data.get(Calendar.MONTH);
 		month++;
 		
-		return this.data.get(this.data.DAY_OF_MONTH) + "/" + 
+		return this.data.get(Calendar.DAY_OF_MONTH) + "/" + 
 				month + "/" +
-				this.data.get(this.data.YEAR);
+				this.data.get(Calendar.YEAR);
 	}
 	
 	@Override

@@ -3,7 +3,6 @@ package user;
 import crud.Arquivo;
 
 import entidades.Compra;
-import entidades.Categoria;
 
 import util.IO;
 
