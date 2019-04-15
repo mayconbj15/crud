@@ -1,26 +1,25 @@
-package user;
+package gerenciadores;
 
 import entidades.Cliente;
 import entidades.Compra;
 import entidades.ItemComprado;
+import user.Main;
 import util.IO;
 
-public class GerenciadorCompras {
+public class GerenciadorComprasCliente {
 	private Cliente cliente;
 	private Compra compra;
 	
-	public GerenciadorCompras() {
+	public GerenciadorComprasCliente() {
 		this(null,null);
 	}
 	
-	public GerenciadorCompras(Cliente cliente, Compra compra) {
+	public GerenciadorComprasCliente(Cliente cliente, Compra compra) {
 		super();
 		this.cliente = cliente;
 		this.compra = compra;
 	}
 	
-	
-
 	public void menu() {
 		int selecao = 0;
 		
@@ -78,25 +77,31 @@ public class GerenciadorCompras {
 	public void menuNovaCompra() {
 		//cria uma nova compra
 		//Compra compraAtual = new Compra(Main.databaseCompra);
-		int produto = 0;
+		int idProduto = 0;
+		int quantidadeDeProdutos = 0;
 		int continuaCompra = 0;
 		
 		this.compra = new Compra(Main.databaseCompra.readLastID());
 		
 		IO.println("Estoque disponível");
-		Main.crudProduto.listar();
+		
 		
 		do {
-			produto = IO.readLineUntilPositiveInt("Qual produto deseja comprar ? (Digite o id)");
-			if(Main.databaseProduto.idIsValid(produto)) {
-				int quantidade = IO.readLineUntilPositiveInt("Digite a quantidade do produto");
+			Main.crudProduto.listar();
+			idProduto = IO.readLineUntilPositiveInt("Qual produto deseja comprar ? (Digite o id)");
+			quantidadeDeProdutos = IO.readLineUntilPositiveInt("Digite a quantidade do produto");
+			if(Main.databaseProduto.idIsValid(idProduto) && quantidadeDeProdutos <= Main.databaseProduto.readObject(idProduto).getQuantidade()) {
 				
-				Main.crudItemComprado.inserir(new ItemComprado(this.compra.getId(), produto, quantidade, Main.databaseProduto.readObject(produto).getPreco()));
+				
+				Main.crudItemComprado.inserir(new ItemComprado(this.compra.getId(), idProduto, quantidadeDeProdutos, Main.databaseProduto.readObject(idProduto).getPreco()));
 				/*
 				 * [EM CONSTRUÇÃO]
 				 * Falta fazer a ligação dos itens comprados a essa compra
 				 */
 				
+			}
+			else {
+				IO.println("Id inválido");
 			}
 			
 			

@@ -96,7 +96,7 @@ public class Cliente extends SerializavelAbstract implements Entidade
 	}
 	
 	public String readSenha() {
-		return setSenha(IO.readSenha("Digite sua senha"));
+		return setSenha(IO.readLine("Digite sua senha"));
 	}
 	
 	@Override
@@ -141,6 +141,7 @@ public class Cliente extends SerializavelAbstract implements Entidade
 			dataStream.writeInt(this.id);
 			dataStream.writeUTF(this.nome);
 			dataStream.writeUTF(this.email);
+			dataStream.writeUTF(this.senha);
 			
 			dataStream.close();
 		} 
@@ -173,6 +174,7 @@ public class Cliente extends SerializavelAbstract implements Entidade
 			this.id = dataStream.readInt();
 			this.nome = dataStream.readUTF();
 			this.email = dataStream.readUTF();
+			this.senha = dataStream.readUTF();
 			
 			dataStream.close();
 		} 

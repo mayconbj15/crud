@@ -3,7 +3,11 @@ package user;
 import util.*;
 
 import crud.Arquivo;
+
 import entidades.*;
+
+import gerenciadores.GerenciadorComprasCliente;
+import gerenciadores.GerenciadorFuncionario;
 
 /**
  * Classe que gerencia a interação com o usuário.
@@ -34,10 +38,11 @@ public class Crud {
 	{
 		int selecao = -1;
 		
+		IO.println("Olá, meu nobre!\n");
+		
 		
 		do {
 			//Interface de entrada
-			IO.println("Olá, meu nobre!\n");
 			IO.println("Deseja fazer login como funcionário ou cliente?");	
 			IO.println("1 - Cliente");
 			IO.println("2 - Funcionário");
@@ -45,42 +50,15 @@ public class Crud {
 			
 			selecao = IO.readLineUntilPositiveInt("");
 			if(selecao == 1) {
-				GerenciadorCompras gerenciador = new GerenciadorCompras();
-				gerenciador.menu();
+				GerenciadorComprasCliente gerenciadorComprasCliente = new GerenciadorComprasCliente();
+				gerenciadorComprasCliente.menu();
 			}
 			
 			else if(selecao == 2) {
-				IO.println("[Menu Principal Funcionários]");
-				IO.println("Qual das seguintes entidades o senhor deseja manusear ?");
-				IO.println("Digite:");
-				IO.println("1 para produto");
-				IO.println("2 para categoria");
-				IO.println("0 para sair");
-				IO.println("");
-
-				selecao = IO.readint("Opção: ");
-				
-				switch (selecao)
-				{
-					case 0:
-						IO.println("Até breve :)");
-						break;
-					
-					case 1:
-						Main.crudProduto.menu();
-						IO.pause();
-						break;
-						
-					case 2:
-						Main.crudCategoria.menu();
-						IO.pause();
-						break;
-						
-					default:
-						IO.println("Entidade inválida\n");
-						break;
-				}
+				GerenciadorFuncionario gerenciadorFuncionario = new GerenciadorFuncionario();
+				gerenciadorFuncionario.menu();
 			}
+			
 			
 			IO.println("\n--------------------------------------------\n");
 			
