@@ -25,15 +25,23 @@ public class GerenciadorCompras {
 		int selecao = 0;
 		
 		IO.println("Autenticação");
-		IO.println("1 - Fazer login");
-		IO.println("2 - Novo cliente");
+		
 		
 		do {
+			IO.println("1 - Fazer login");
+			IO.println("2 - Novo cliente");
+			IO.println("0 - Sair");
+			
+			selecao = IO.readint();
+			
 			if(selecao == 1) {
 				//fazer login
 				this.cliente = Main.crudCliente.login();
 				if(this.cliente != null) {
 					menuCliente();
+				}
+				else {
+					IO.println("Email ou senha incorreta");
 				}
 			}
 			else if(selecao == 2) {
@@ -72,7 +80,8 @@ public class GerenciadorCompras {
 		//Compra compraAtual = new Compra(Main.databaseCompra);
 		int produto = 0;
 		int continuaCompra = 0;
-		int idCompraAtual = Main.databaseCompra.readLastID();
+		
+		this.compra = new Compra(Main.databaseCompra.readLastID());
 		
 		IO.println("Estoque disponível");
 		Main.crudProduto.listar();
@@ -82,7 +91,7 @@ public class GerenciadorCompras {
 			if(Main.databaseProduto.idIsValid(produto)) {
 				int quantidade = IO.readLineUntilPositiveInt("Digite a quantidade do produto");
 				
-				Main.crudItemComprado.inserir(new ItemComprado(idCompraAtual, produto, quantidade, Main.databaseProduto.readObject(produto).getPreco()));
+				Main.crudItemComprado.inserir(new ItemComprado(this.compra.getId(), produto, quantidade, Main.databaseProduto.readObject(produto).getPreco()));
 				/*
 				 * [EM CONSTRUÇÃO]
 				 * Falta fazer a ligação dos itens comprados a essa compra
@@ -93,6 +102,8 @@ public class GerenciadorCompras {
 			
 			continuaCompra = IO.readLineUntilPositiveInt("Deseja continuar a comprar? 1-Sim 2-Não");
 		}while(continuaCompra != 2);
+		
+		this.compra.setValorTotal(this.compra.readValorTotal());
 		
 		
 	}

@@ -22,6 +22,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 		
 		cliente.setNome(cliente.readName());		
 		cliente.setEmail(cliente.readEmail());
+		cliente.setSenha(cliente.readSenha());
 		
 		return inserir(cliente);
 	}
@@ -267,7 +268,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 		//usar o id como campo de login pela estrutura que estamos usando
 		Cliente cliente = new Cliente();
 		
-		cliente.readName();
+		cliente.readEmail();
 		cliente.readSenha();
 		
 		return autentica(cliente);
@@ -287,7 +288,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 		int size = listaClientes.size();
 		
 		for(int i=0; i < size && clienteValido == null; i++) {
-			if(listaClientes.get(i).getNome().contentEquals(cliente.getNome())) {
+			if(listaClientes.get(i).getEmail().contentEquals(cliente.getEmail())) {
 				//testa se a senha é a mesma
 				if(listaClientes.get(i).getSenha().contentEquals(cliente.getSenha())) {
 					clienteValido = listaClientes.get(i);

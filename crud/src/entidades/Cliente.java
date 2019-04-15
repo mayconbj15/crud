@@ -91,7 +91,8 @@ public class Cliente extends SerializavelAbstract implements Entidade
 	
 	public String readEmail()
 	{
-		return setEmail( IO.readLineUntilEmail("\nInforme o email do cliente: ") );
+		//return setEmail( IO.readLineUntilEmail("\nInforme o email do cliente: ") );
+		return setEmail(IO.readLine("Informe o email do cliente"));
 	}
 	
 	public String readSenha() {
