@@ -19,13 +19,14 @@ public class CrudCompra extends CrudAbstract<Compra>
 		listar();
 	}
 	
-	public int menuInclusao()
-	{
-		Compra compra = new Compra();
+	public int menuInclusao(Compra compra)
+	{	
+		int success = -1;
 		
-		compra.setValorTotal(compra.readValorTotal());
+		if(compra != null)
+			success = inserir(compra);
 		
-		return inserir(compra);
+		return success;
 	}
 
 	/**

@@ -18,7 +18,12 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 	}
 	
 	public int novoItemComprado(ItemComprado itemComprado) {
-		return inserir(itemComprado);
+		int success = -1;
+		
+		if(itemComprado != null)
+			success = inserir(itemComprado);
+		
+		return success;
 	}
 	
 

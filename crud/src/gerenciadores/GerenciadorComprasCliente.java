@@ -110,6 +110,8 @@ public class GerenciadorComprasCliente {
 		
 		this.compra.setValorTotal(this.compra.readValorTotal());
 		
+		Main.crudCompra.menuInclusao(this.compra); //adiciona a compra ao banco de dados
+		
 		
 	}
 }
