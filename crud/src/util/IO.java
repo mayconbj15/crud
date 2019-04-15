@@ -158,6 +158,13 @@ public class IO
 		return readfloat();
 	}
 	
+	//colocar um regex para senha aqui
+	public static String readSenha(String msg) {
+		print(msg);
+		
+		return readLine();
+	}
+	
 	public static void pause() 
 	{
 		readLine("Pressione ENTER para continuar...");

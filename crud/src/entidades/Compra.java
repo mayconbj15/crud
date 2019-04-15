@@ -32,7 +32,11 @@ public class Compra extends SerializavelAbstract implements Entidade
 	public Compra(float valorTotal) {
 		this( -1, -1, valorTotal );
 	}
-
+	
+	public Compra(int id) {
+		this(id, -1, -1);
+	}
+	
 	public Compra(){
 		this(-1 );
 	}

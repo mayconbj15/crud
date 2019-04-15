@@ -4,6 +4,8 @@ import java.io.*;
 
 import serializaveis.SerializavelAbstract;
 import serializaveis.StringSerializavel;
+
+
 import util.IO;
 
 /**
@@ -15,19 +17,21 @@ public class Cliente extends SerializavelAbstract implements Entidade
 	private int id;
 	private String nome;
 	private String email;
+	private String senha;
 
-	public Cliente(int id, String nome, String email) {
+	public Cliente(int id, String nome, String email, String senha) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
+		this.senha = senha;
 	}
 
-	public Cliente(String nome, String email) {
-		this( -1, nome, email );
+	public Cliente(String nome, String email, String senha) {
+		this( -1, nome, email, senha );
 	}
 
 	public Cliente(){
-		this( "", "" );
+		this( "", "", "");
 	}
 	
 	@Override
@@ -56,12 +60,22 @@ public class Cliente extends SerializavelAbstract implements Entidade
 		return this.email = email;
 	}
 	
+	public String getSenha() {
+		return senha;
+	}
+
+	public String setSenha(String senha) {
+		return this.senha = senha;
+	}
+
 	/**
 	 * Lê o nome do cliente da entrada padrão e redefine
 	 * interiormente o campo {@link #nome} desta entidade.
 	 *  
 	 * @return O nome lido.
 	 */
+	
+
 	
 	public String readName()
 	{
@@ -78,6 +92,10 @@ public class Cliente extends SerializavelAbstract implements Entidade
 	public String readEmail()
 	{
 		return setEmail( IO.readLineUntilEmail("\nInforme o email do cliente: ") );
+	}
+	
+	public String readSenha() {
+		return setSenha(IO.readSenha("Digite sua senha"));
 	}
 	
 	@Override

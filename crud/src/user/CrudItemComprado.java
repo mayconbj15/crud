@@ -17,14 +17,10 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 		listar();
 	}
 	
-	public int menuInclusao()
-	{
-		Categoria categoria = new Categoria();
-		
-		categoria.setNome(categoria.readName());
-		
-		return inserir(categoria);
+	public int novoItemComprado(ItemComprado itemComprado) {
+		return inserir(itemComprado);
 	}
+	
 
 	/**
 	 * Altera um campo específico da categoria com id informado.

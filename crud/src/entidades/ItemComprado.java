@@ -28,7 +28,11 @@ public class ItemComprado extends SerializavelAbstract implements Entidade
 	public ItemComprado(int quantidade, float valorUnitario) {
 		this( -1, -1, -1, quantidade, valorUnitario );
 	}
-
+	
+	public ItemComprado(int idCompra, int idProduto, int quantidade, float valorUnitario) {
+		this(-1, idCompra, idProduto, quantidade, valorUnitario);
+	}
+	
 	public ItemComprado(){
 		this( -1, -1 );
 	}

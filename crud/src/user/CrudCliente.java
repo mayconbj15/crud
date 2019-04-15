@@ -4,6 +4,11 @@ import crud.Arquivo;
 import entidades.Cliente;
 import util.IO;
 
+import entidades.Compra;
+import entidades.ItemComprado;
+
+import java.util.ArrayList;
+
 public class CrudCliente extends CrudAbstract<Cliente>
 {
 	public CrudCliente(Arquivo<Cliente> database)
@@ -122,6 +127,8 @@ public class CrudCliente extends CrudAbstract<Cliente>
 		
 		consultar(id);
 	}
+	
+
 	
 	/**
 	 * Lista todos os clientes cadastrados.	 	
@@ -256,23 +263,60 @@ public class CrudCliente extends CrudAbstract<Cliente>
 		
 	}//end menuExclusao
 
+	public Cliente login() {
+		//usar o id como campo de login pela estrutura que estamos usando
+		Cliente cliente = new Cliente();
+		
+		cliente.readName();
+		cliente.readSenha();
+		
+		return autentica(cliente);
+		
+	}
+	
+	public Cliente autentica(Cliente cliente) {
+		Cliente clienteValido = null;
+		
+		/*por enquanto vamos ter que fazer sequencial mesmo por estarmos tratando com nome
+		 * Possíveis soluções que acho
+		 * 1 - criar um novo atributo número para fazer autenticação 
+		 * 2 - implmentar uma lista invertida
+		 * */
+		
+		ArrayList<Cliente> listaClientes = Main.databaseCliente.list(); 
+		int size = listaClientes.size();
+		
+		for(int i=0; i < size && clienteValido == null; i++) {
+			if(listaClientes.get(i).getNome().contentEquals(cliente.getNome())) {
+				//testa se a senha é a mesma
+				if(listaClientes.get(i).getSenha().contentEquals(cliente.getSenha())) {
+					clienteValido = listaClientes.get(i);
+				}
+			}
+		}
+		
+		return clienteValido;
+	}
 	
 	public void menu()
 	{
 		int selecao;
+		//Cliente cliente = new Cliente();
 		
 		IO.println("Olá, meu nobre!\n");
 		
 		do {
 			//Interface de entrada
 			IO.println("[Menu Cliente]");
+			IO.println("Bem vindo ao Mercadão Boladão");
+			
+			selecao = IO.readint();
+			
 			IO.println("Qual das seguintes operações o senhor deseja realizar ?");
 			IO.println("Digite:");
-			IO.println("1 para inclusão");
-			IO.println("2 para alteração");
-			IO.println("3 para exclusão");
-			IO.println("4 para consulta");
-			IO.println("5 para listar");
+			IO.println("1 - Alterar um cliente");
+			IO.println("2 - Excluir um cliente"); //seria alterar ou cancelar uma compra
+			IO.println("3 - Para consultar clientes"); //
 			IO.println("0 para sair");
 			IO.println("");
 			selecao = IO.readint("Operação: ");
@@ -286,29 +330,19 @@ public class CrudCliente extends CrudAbstract<Cliente>
 					break;
 					
 				case 1:
-					menuInclusao();
-					IO.pause();
-					break;
-					
-				case 2:
 					menuAlteracao();
 					IO.pause();
 					break;
 					
-				case 3:
+				case 2:
 					menuExclusao();
 					IO.pause();
 					break;
 					
-				case 4:
+				case 3:
 					menuConsulta();
 					IO.pause();
 					break;	
-					
-				case 5:
-					menuListar();
-					IO.pause();
-					break;
 					
 				default:
 					IO.println("Operação inválida\n");

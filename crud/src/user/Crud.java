@@ -34,59 +34,54 @@ public class Crud {
 	{
 		int selecao = -1;
 		
-		IO.println("Olá, meu nobre!\n");
 		
 		do {
 			//Interface de entrada
-			IO.println("[Menu Principal]");
-			IO.println("Qual das seguintes entidades o senhor deseja manusear ?");
-			IO.println("Digite:");
-			IO.println("1 para produto");
-			IO.println("2 para categoria");
-			IO.println("3 para compra");
-			IO.println("4 para cliente");
-			IO.println("5 para item comprado");
-			IO.println("0 para sair");
-			IO.println("");
-
-			selecao = IO.readint("Opção: ");
+			IO.println("Olá, meu nobre!\n");
+			IO.println("Deseja fazer login como funcionário ou cliente?");	
+			IO.println("1 - Cliente");
+			IO.println("2 - Funcionário");
+			IO.println("0 - Sair");
 			
-			switch (selecao)
-			{
-				case 0:
-					IO.println("Até breve :)");
-					break;
-					
-				case 1:
-					Main.crudProduto.menu();
-					IO.pause();
-					break;
-					
-				case 2:
-					Main.crudCategoria.menu();
-					IO.pause();
-					break;
-					
-				case 3:
-					Main.crudCompra.menu();
-					IO.pause();
-					break;
-					
-				case 4:
-					Main.crudCliente.menu();
-					IO.pause();
-					break;
-					
-				case 5:
-					Main.crudItemComprado.menu();
-					IO.pause();
-					break;
-					
-				default:
-					IO.println("Entidade inválida\n");
-					break;
+			selecao = IO.readLineUntilPositiveInt("");
+			if(selecao == 1) {
+				GerenciadorCompras gerenciador = new GerenciadorCompras();
+				gerenciador.menu();
 			}
+			
+			else if(selecao == 2) {
+				IO.println("[Menu Principal Funcionários]");
+				IO.println("Qual das seguintes entidades o senhor deseja manusear ?");
+				IO.println("Digite:");
+				IO.println("1 para produto");
+				IO.println("2 para categoria");
+				IO.println("0 para sair");
+				IO.println("");
 
+				selecao = IO.readint("Opção: ");
+				
+				switch (selecao)
+				{
+					case 0:
+						IO.println("Até breve :)");
+						break;
+					
+					case 1:
+						Main.crudProduto.menu();
+						IO.pause();
+						break;
+						
+					case 2:
+						Main.crudCategoria.menu();
+						IO.pause();
+						break;
+						
+					default:
+						IO.println("Entidade inválida\n");
+						break;
+				}
+			}
+			
 			IO.println("\n--------------------------------------------\n");
 			
 		} while (selecao != 0);
