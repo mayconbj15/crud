@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 import serializaveis.SerializavelAbstract;
 
+import gerenciadores.Autenticavel;
+
 import user.Main;
 
 /**
