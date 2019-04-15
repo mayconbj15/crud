@@ -2,6 +2,7 @@ package crud;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.function.Function;
 
 import crud.hash_dinamica.implementacoes.HashDinamicaIntLong;
 import entidades.Entidade;
@@ -234,21 +235,62 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	}
 	
 	/**
+	 * Gera um novo id com base no último id usado na base de dados.
+	 * Além disso, já escreve esse novo id no cabeçalho.
+	 * 
+	 * @return o novo id.
+	 */
+	
+	private int createNewId()
+	{
+		return writeLastID( readLastID() + 1 );
+	}
+	
+	/**
+	 * Insere uma entidade na base de dados. O processo é dividido em três
+	 * etapas:
+	 * 
+	 * <p>
+	 * 1 - Este método gera um novo id que será o futuro id da entidade.<br>
+	 * 2 - A função {@code apply} da interface {@code createEntity} é chamada
+	 * recebendo como parâmetro esse novo id e ela deve retornar a entidade já
+	 * pronta para ser inserida na base de dados.<br>
+	 * 3 - A entidade é inserida na base de dados.
+	 * </p>
+	 * 
+	 * @param createEntity Função que criará a entidade tendo acesso previo ao
+	 * id dela.
+	 * 
+	 * @return o id da entidade se tudo der certo; caso contrário -1.
+	 */
+	
+	public int writeObject(Function<Integer, T> createEntity)
+	{
+		int newId = createNewId();
+
+		T entity = createEntity.apply(newId);
+
+		return ( writeObject(entity, newId) ? newId : -1 );
+	}
+	
+	/**
 	 * Insere uma entidade na base de dados.
 	 * 
 	 * @param entity Entidade a ser inserida.
 	 * 
-	 * @return id da entidade se tudo der certo;
+	 * @return o id da entidade se tudo der certo;
 	 * caso contrário -1.
 	 */
 	
 	public int writeObject(T entity) {
 		
-		int newId = readLastID() + 1;
-		
-		writeLastID(newId);
-		
-		return ( writeObject(entity, newId) ? newId : -1 );
+		return writeObject
+		(
+			(entityId) ->
+			{
+				return entity;
+			}
+		);
 	}
 	
 	/**
