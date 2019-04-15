@@ -57,6 +57,8 @@ public class GerenciadorComprasCliente {
 			IO.println("O que deseja meu bom?");
 			IO.println("1 - Realizar uma compra");
 			IO.println("2 - Desfazer uma compra");
+			IO.println("3 - Consultar uma compra");
+			IO.println("4 - Listar suas compras");
 			IO.println("0 - Sair");
 			
 			selecao = IO.readint();
@@ -69,8 +71,24 @@ public class GerenciadorComprasCliente {
 				case 1: 
 					menuNovaCompra();
 				
-			
+				case 3:
+					Main.crudCompra.menuConsulta();
+					IO.pause();
+					break;
+					
+				case 4:
+					Main.crudCompra.menuListar();
+					IO.pause();
+					break;
+					
+				default:
+					IO.println("Operação inválida\n");
+					break;
 			}
+			
+			IO.println("\nOperação finalizada.\n");
+			IO.println("--------------------------------------------\n");
+	
 		}while(selecao != 0);
 	}
 	

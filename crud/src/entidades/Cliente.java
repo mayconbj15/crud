@@ -118,6 +118,7 @@ public class Cliente extends SerializavelAbstract implements Entidade
 		return
 			Integer.BYTES +
 			StringSerializavel.PADRAO_TAMANHO_MAXIMO_EM_BYTES +
+			StringSerializavel.PADRAO_TAMANHO_MAXIMO_EM_BYTES +
 			StringSerializavel.PADRAO_TAMANHO_MAXIMO_EM_BYTES;
 	}
 
