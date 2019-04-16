@@ -29,11 +29,11 @@ public class Main {
 	public static final String ITENS_COMPRADOS_FILE_NAME	= "itensComprados";
 	
 	// prefixos de arquivos de índices compostos
-	public static final String CLIENTE_COMPRA_FILE_NAME			= "clienteCompra";
-	public static final String CATEGORIA_PRODUTO_FILE_NAME		= "categoriaProduto";
-	public static final String COMPRA_ITEM_COMPRADO_FILE_NAME	= "compraItemComprado";
-	public static final String PRODUTO_ITEM_COMPRADO_FILE_NAME	= "produtoItemComprado";
-	public static final String NOME_CLIENTE_ID_CLIENTE_FILE_NAME= "nomeClienteIdCliente";
+	public static final String CLIENTE_COMPRA_FILE_NAME				= "clienteCompra";
+	public static final String CATEGORIA_PRODUTO_FILE_NAME			= "categoriaProduto";
+	public static final String COMPRA_ITEM_COMPRADO_FILE_NAME		= "compraItemComprado";
+	public static final String PRODUTO_ITEM_COMPRADO_FILE_NAME		= "produtoItemComprado";
+	public static final String NOME_CLIENTE_ID_CLIENTE_FILE_NAME	= "nomeClienteIdCliente";
 
 	// objetos para o gerenciamento dos registros de cada entidade
 	public static Arquivo<Compra>		databaseCompra;
