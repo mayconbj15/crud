@@ -1,7 +1,11 @@
 package user;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import crud.Arquivo;
 import crud.hash_dinamica.implementacoes.HashDinamicaIntInt;
+import crud.hash_dinamica.implementacoes.HashDinamicaStringInt;
 import entidades.*;
 import serializaveis.SerializavelAbstract;
 import util.Files;
@@ -29,6 +33,7 @@ public class Main {
 	public static final String CATEGORIA_PRODUTO_FILE_NAME		= "categoriaProduto";
 	public static final String COMPRA_ITEM_COMPRADO_FILE_NAME	= "compraItemComprado";
 	public static final String PRODUTO_ITEM_COMPRADO_FILE_NAME	= "produtoItemComprado";
+	public static final String NOME_CLIENTE_ID_CLIENTE_FILE_NAME= "nomeClienteIdCliente";
 
 	// objetos para o gerenciamento dos registros de cada entidade
 	public static Arquivo<Compra>		databaseCompra;
@@ -38,10 +43,11 @@ public class Main {
 	public static Arquivo<ItemComprado>	databaseItemComprado;
 	
 	// objetos para o gerenciamento dos índices compostos
-	public static HashDinamicaIntInt indiceClienteCompra;
-	public static HashDinamicaIntInt indiceCategoriaProduto;
-	public static HashDinamicaIntInt indiceCompraItemComprado;
-	public static HashDinamicaIntInt indiceProdutoItemComprado;
+	public static HashDinamicaIntInt 	indiceClienteCompra;
+	public static HashDinamicaIntInt 	indiceCategoriaProduto;
+	public static HashDinamicaIntInt 	indiceCompraItemComprado;
+	public static HashDinamicaIntInt 	indiceProdutoItemComprado;
+	public static HashDinamicaStringInt indiceNomeClienteIdCliente;
 
 	// objetos para gerenciamento de menus e interligação com os
 	// objetos que gerenciam os registros de cada entidade
@@ -89,17 +95,75 @@ public class Main {
 		databaseItemComprado = startDatabase(ItemComprado.class	, ITENS_COMPRADOS_FILE_NAME);
 	}
 	
-	private static HashDinamicaIntInt startCompositeIndex(String fileName)
+	private static String getCompositeIndexFolderPath(String fileName)
 	{
-		HashDinamicaIntInt compositeIndex = null;
-		String folderPath = COMPOSITE_INDEXES_FOLDER;
+		return COMPOSITE_INDEXES_FOLDER;
+	}
+	
+	private static <T> T startCompositeIndex(
+		String fileName,
+		Constructor<T> compositeIndexConstructor)
+	{
+		T compositeIndex = null;
+		String folderPath = getCompositeIndexFolderPath(fileName);
 		
 		try
 		{
-			compositeIndex = new HashDinamicaIntInt(
+			compositeIndex = compositeIndexConstructor.newInstance(
 				folderPath + fileName + INDEX_DIR_FILE_SUFFIX,
 				folderPath + fileName + INDEX_FILE_SUFFIX
 			);
+		}
+		
+		catch (InstantiationException |
+			IllegalAccessException |
+			IllegalArgumentException |
+			InvocationTargetException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return compositeIndex;
+	}
+	
+	private static HashDinamicaStringInt startCompositeIndexStringInt(String fileName)
+	{
+		HashDinamicaStringInt compositeIndex = null;
+		
+		try
+		{
+			compositeIndex =
+				startCompositeIndex(
+					fileName,
+					HashDinamicaStringInt.class.getConstructor(
+						String.class,
+						String.class
+					)
+				);
+		}
+		
+		catch (NoSuchMethodException | SecurityException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return compositeIndex;
+	}
+	
+	private static HashDinamicaIntInt startCompositeIndexIntInt(String fileName)
+	{
+		HashDinamicaIntInt compositeIndex = null;
+		
+		try
+		{
+			compositeIndex =
+				startCompositeIndex(
+					fileName,
+					HashDinamicaIntInt.class.getConstructor(
+						String.class,
+						String.class
+					)
+				);
 		}
 		
 		catch (NoSuchMethodException | SecurityException e)
@@ -112,10 +176,11 @@ public class Main {
 	
 	private static void startCompositeIndexes()
 	{
-		indiceClienteCompra = startCompositeIndex(CLIENTE_COMPRA_FILE_NAME);
-		indiceCategoriaProduto = startCompositeIndex(CATEGORIA_PRODUTO_FILE_NAME);
-		indiceCompraItemComprado = startCompositeIndex(COMPRA_ITEM_COMPRADO_FILE_NAME);
-		indiceProdutoItemComprado = startCompositeIndex(PRODUTO_ITEM_COMPRADO_FILE_NAME);
+		indiceClienteCompra = startCompositeIndexIntInt(CLIENTE_COMPRA_FILE_NAME);
+		indiceCategoriaProduto = startCompositeIndexIntInt(CATEGORIA_PRODUTO_FILE_NAME);
+		indiceCompraItemComprado = startCompositeIndexIntInt(COMPRA_ITEM_COMPRADO_FILE_NAME);
+		indiceProdutoItemComprado = startCompositeIndexIntInt(PRODUTO_ITEM_COMPRADO_FILE_NAME);
+		indiceNomeClienteIdCliente = startCompositeIndexStringInt(NOME_CLIENTE_ID_CLIENTE_FILE_NAME);
 	}
 	
 	private static void startVariables()
@@ -136,7 +201,8 @@ public class Main {
 			indiceClienteCompra.fechar() &&
 			indiceCategoriaProduto.fechar() &&
 			indiceCompraItemComprado.fechar() &&
-			indiceProdutoItemComprado.fechar();
+			indiceProdutoItemComprado.fechar() &&
+			indiceNomeClienteIdCliente.fechar();
 	}
 	
 	public static void createEntitiesFolders()
