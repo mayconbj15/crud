@@ -8,20 +8,30 @@ import java.io.*;
 
 public class IO
 {
-	public static final String REGEX_DIGITS = "\\d+";
+	public static final String REGEX_DIGIT = "[0-9]";
+	public static final String REGEX_DIGITS = REGEX_DIGIT + "+";
 	public static final String REGEX_INT = "[+|-]?" + REGEX_DIGITS;
 	public static final String REGEX_INT_POSITIVE = "[+]?" + REGEX_DIGITS;
 	public static final String REGEX_FLOAT = REGEX_INT + "(\\." + REGEX_DIGITS + ")?";
 	public static final String REGEX_FLOAT_POSITIVE = REGEX_INT_POSITIVE + "(\\." + REGEX_DIGITS + ")?";
+
+	public static final String REGEX_LOWER_CASE = "[a-z]";
+	public static final String REGEX_UPPER_CASE = "[A-Z]";
+	public static final String REGEX_LETTER = "[" + REGEX_LOWER_CASE + REGEX_UPPER_CASE + "]";
+	public static final String REGEX_ALFANUMERIC = "[" + REGEX_LETTER + REGEX_DIGIT + "]";
+	public static final String REGEX_SPECIAL_SYMBOLS = "[.!#$%&'*+/=?^_`{|}~-]";
+	public static final String REGEX_ALFANUMERIC_AND_SPECIAL_SYMBOLS = "[" + REGEX_ALFANUMERIC + REGEX_SPECIAL_SYMBOLS + "]";
+	public static final String REGEX_EMAIL_BEFORE_AT_SIGN = REGEX_ALFANUMERIC + "(" + REGEX_ALFANUMERIC_AND_SPECIAL_SYMBOLS + "*" + REGEX_ALFANUMERIC + ")*";
+	public static final String REGEX_EMAIL_AFTER_AT_SIGN = REGEX_ALFANUMERIC + "(" + "[" + REGEX_ALFANUMERIC + ".:-]*" + REGEX_ALFANUMERIC + ")*";
 	
 	/**
-	 * Regex extraída de
+	 * Ideia extraída de
 	 * <a href="https://pt.stackoverflow.com/questions/1386/express%C3%A3o-regular-para-valida%C3%A7%C3%A3o-de-e-mail">
 	 * Regex Email
 	 * </a>
 	 */
 	
-	public static final String REGEX_EMAIL = "/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/";
+	public static final String REGEX_EMAIL = "^" + REGEX_EMAIL_BEFORE_AT_SIGN + "@" + REGEX_EMAIL_AFTER_AT_SIGN + "$";
 	
 	private static BufferedReader reader = new BufferedReader( new InputStreamReader( System.in ) );
 
@@ -160,9 +170,7 @@ public class IO
 	
 	//colocar um regex para senha aqui
 	public static String readSenha(String msg) {
-		print(msg);
-		
-		return readLine();
+		return readLine(msg);
 	}
 	
 	public static void pause() 

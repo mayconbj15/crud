@@ -4,9 +4,6 @@ import crud.Arquivo;
 import entidades.Cliente;
 import util.IO;
 
-import entidades.Compra;
-import entidades.ItemComprado;
-
 import java.util.ArrayList;
 
 public class CrudCliente extends CrudAbstract<Cliente>
@@ -20,9 +17,9 @@ public class CrudCliente extends CrudAbstract<Cliente>
 	{				
 		Cliente cliente = new Cliente();
 		
-		cliente.setNome(cliente.readName());		
-		cliente.setEmail(cliente.readEmail());
-		cliente.setSenha(cliente.readSenha());
+		cliente.readName();		
+		cliente.readEmail();
+		cliente.readSenha();
 		
 		return inserir(cliente);
 	}
