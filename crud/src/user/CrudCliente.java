@@ -1,7 +1,9 @@
 package user;
 
 import crud.Arquivo;
+
 import entidades.Cliente;
+
 import util.IO;
 
 import java.util.ArrayList;
@@ -16,12 +18,18 @@ public class CrudCliente extends CrudAbstract<Cliente>
 	public int menuInclusao()
 	{				
 		Cliente cliente = new Cliente();
+		int idCliente = -1; 
 		
 		cliente.readName();		
 		cliente.readEmail();
 		cliente.readSenha();
 		
-		return inserir(cliente);
+		idCliente = inserir(cliente);
+		
+		if(idCliente != -1)
+			Main.indiceNomeClienteIdCliente.inserir(cliente.getEmail(), idCliente);
+		
+		return idCliente;
 	}
 
 	/**
@@ -281,7 +289,15 @@ public class CrudCliente extends CrudAbstract<Cliente>
 		 * 2 - implmentar uma lista invertida
 		 * */
 		
-		ArrayList<Cliente> listaClientes = Main.databaseCliente.list(); 
+		int idCliente = Main.indiceNomeClienteIdCliente.pesquisarDadoPelaChave(cliente.getEmail());
+		
+		if(idCliente != Integer.MIN_VALUE) {
+			//existe o cliente na database
+			if(cliente.getSenha().equals(Main.databaseCliente.readObject(idCliente).getSenha())) {
+				clienteValido = Main.databaseCliente.readObject(idCliente);
+			}
+		}
+		/*ArrayList<Cliente> listaClientes = Main.databaseCliente.list(); 
 		int size = listaClientes.size();
 		
 		for(int i=0; i < size && clienteValido == null; i++) {
@@ -291,7 +307,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 					clienteValido = listaClientes.get(i);
 				}
 			}
-		}
+		}*/
 		
 		return clienteValido;
 	}
