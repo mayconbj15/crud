@@ -26,6 +26,19 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 		return success;
 	}
 	
+	public int novoItemCompra(int idCompra, int idProduto, int quantidadeDeProdutos) {
+		int success = -1;
+		success = Main.crudItemComprado.inserir(new ItemComprado(idCompra, idProduto, quantidadeDeProdutos, Main.databaseProduto.readObject(idProduto).getPreco()));
+		
+		if(success != -1) {
+			//criando o relacionamento do produto com a atual compra
+			Main.indiceCompraItemComprado.inserir(idCompra, idProduto);
+			Main.indiceProdutoItemComprado.inserir(idProduto, idCompra);
+		}
+		
+		return success;
+	}
+	
 
 	/**
 	 * Altera um campo específico da categoria com id informado.

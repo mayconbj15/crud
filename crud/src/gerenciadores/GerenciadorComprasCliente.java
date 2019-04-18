@@ -96,14 +96,15 @@ public class GerenciadorComprasCliente {
 		}while(selecao != 0);
 	}
 	
+	/**
+	 * Método que cria uma nova compra e adiciona a database relacionando com o idCliente do atual cliente que 
+	 * 	está logado na Crud e fazendo os relacionamento N:N de Compra e Produto
+	 */
 	public void menuNovaCompra() {
-		//cria uma nova compra
-		//Compra compraAtual = new Compra(Main.databaseCompra);
 		int idProduto = 0;
 		int quantidadeDeProdutos = 0;
 		int continuaCompra = 0;
 		
-		//Main.databaseCompra.writeObject(Function<Integer, Compra>);
 		Compra compra = new Compra(Main.databaseCompra.createNewId(), this.cliente.getId());
 		
 		IO.println("Estoque disponível");
@@ -112,18 +113,11 @@ public class GerenciadorComprasCliente {
 			Main.crudProduto.listar();
 			
 			idProduto = IO.readLineUntilPositiveInt("Qual produto deseja comprar ? (Digite o id)");
+			
 			if(Main.databaseProduto.idIsValid(idProduto)) {
 				quantidadeDeProdutos = IO.readLineUntilPositiveInt("Digite a quantidade do produto");
 				if(quantidadeDeProdutos <= Main.databaseProduto.readObject(idProduto).getQuantidade()) {		
-					Main.crudItemComprado.inserir(new ItemComprado(compra.getId(), idProduto, quantidadeDeProdutos, Main.databaseProduto.readObject(idProduto).getPreco()));
-					//criando o relacionamento do produto com a atual compra
-					Main.indiceCompraItemComprado.inserir(compra.getId(), idProduto);
-					Main.indiceProdutoItemComprado.inserir(idProduto, compra.getId());
-					/*
-					 * [EM CONSTRUÇÃO]
-					 * Falta fazer a ligação dos itens comprados a essa compra
-					 */
-					
+					Main.crudItemComprado.novoItemCompra(compra.getId(), idProduto, quantidadeDeProdutos);
 				}
 				else {
 					IO.println("Quantidade inválida");
@@ -134,6 +128,7 @@ public class GerenciadorComprasCliente {
 			}
 			
 			continuaCompra = IO.readLineUntilPositiveInt("Deseja continuar a comprar? 1-Sim 2-Não");
+		
 		}while(continuaCompra != 2);
 		
 		compra.setValorTotal(compra.readValorTotal());
@@ -154,7 +149,6 @@ public class GerenciadorComprasCliente {
 		else {
 			IO.println("Compra cancelada");
 		}
-		
 		
 	}
 }
