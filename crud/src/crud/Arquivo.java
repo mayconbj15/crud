@@ -241,7 +241,7 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	 * @return o novo id.
 	 */
 	
-	public int createNewId()
+	private int createNewId()
 	{
 		return writeLastID( readLastID() + 1 );
 	}

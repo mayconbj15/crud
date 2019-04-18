@@ -22,24 +22,27 @@ public class Compra extends SerializavelAbstract implements Entidade
 	private Calendar data;
 	private float valorTotal;
 
-	public Compra(int id, int idCliente, float valorTotal) {
+	private Compra(int id, int idCliente, Calendar data, float valorTotal) {
 		this.id = id;
 		this.idCliente = idCliente;
 		this.valorTotal = valorTotal;
-		
-		this.data = new GregorianCalendar();
+		this.data = data;
+	}
+
+	public Compra(int idCliente, float valorTotal) {
+		this(-1, idCliente, new GregorianCalendar(), valorTotal);
+	}
+
+	public Compra(int idCliente) {
+		this(idCliente, -1);
 	}
 
 	public Compra(float valorTotal) {
-		this( -1, -1, valorTotal );
-	}
-	
-	public Compra(int id, int idCliente) {
-		this(id, idCliente, -1);
+		this(-1, valorTotal);
 	}
 	
 	public Compra(){
-		this(-1 );
+		this(-1);
 	}
 	
 	@Override
@@ -80,22 +83,7 @@ public class Compra extends SerializavelAbstract implements Entidade
 	public float setValorTotal(float valorTotal)
 	{
 		return this.valorTotal = valorTotal;
-	}/*
-		
-	public float readValorTotal() {
-		ArrayList<ItemComprado> itensComprados = Main.databaseItemComprado.list();
-		
-		float valorTotal = 0;
-		int tam = itensComprados.size();
-		
-		//pegar cada item comprado com o idCompra e ir somando o valor unitário
-		for(int i=0; i < tam; i++){
-			if(itensComprados.get(i).getIdCompra() == this.id)
-				valorTotal+= itensComprados.get(i).getValorUnitario() * itensComprados.get(i).getQuantidade();
-		}
-		
-		return valorTotal;
-	}*/
+	}
 	
 	public float readValorTotal() {
 		int[] idsOfPurchasedItems = Main.indiceCompraItemComprado.listarDadosComAChave(id);
@@ -118,12 +106,14 @@ public class Compra extends SerializavelAbstract implements Entidade
 	 * @param itensComprados
 	 * @return o valor total da compra somando todos os itens comprados
 	 */
-	public float readValorTotal(ArrayList<ItemComprado> itensComprados) {
+	public static float readValorTotal(ArrayList<ItemComprado> itensComprados) {
 		float valorTotal = 0;
 		int size = itensComprados.size();
+		ItemComprado itemComprado;
 		
 		for(int i=0; i < size; i++) {
-			valorTotal+= (float)itensComprados.get(i).getQuantidade() * itensComprados.get(i).getValorUnitario();
+			itemComprado = itensComprados.get(i);
+			valorTotal += (float) itemComprado.getQuantidade() * itemComprado.getValorUnitario();
 		}
 		
 		return valorTotal;

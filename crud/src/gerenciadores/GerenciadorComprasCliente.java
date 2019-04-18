@@ -8,7 +8,6 @@ import user.Main;
 
 import util.IO;
 
-import java.util.function.Function;
 import java.util.ArrayList;
 
 public class GerenciadorComprasCliente {
@@ -98,28 +97,21 @@ public class GerenciadorComprasCliente {
 	}
 	
 	/**
-	 * Método que cria uma nova compra e adiciona a database relacionando com o idCliente do atual cliente que 
-	 * 	está logado na Crud e fazendo os relacionamento N:N de Compra e Produto
+	 * Mostra a compra que a pessoa está fazendo e pede a confirmação.
+	 * Caso a pessoa confirme, insere os itens comprados na base de dados
+	 * e já cria o relacionamento deles com a compra e produto por meio
+	 * dos índices compostos.
+	 * 
+	 * @param compra Compra que está sendo feita.
+	 * @param itensComprados Itens que estão sendo comprados.
+	 * 
+	 * @return {@code true} se a pessoa confirmar a compra. Caso
+	 * contrário, {@code false}.
 	 */
-	public void menuNovaCompra() {
-		int continuaCompra = 0;
-		
-		//usar novo metodo para recuperar id pra gerar o provavel novo id da nova compra
-		Compra compra = new Compra(Main.databaseCompra.createNewId(), this.cliente.getId());
-		ArrayList<ItemComprado> itensComprados = new ArrayList<ItemComprado>();
-		
-		do {
-			IO.println("Estoque disponível");
-			Main.crudProduto.listar();
-			
-			//usar novo metodo para recuperar id pra gerar os provaveis ids dos novos itensComprados
-			itensComprados = Main.crudItemComprado.novosItensComprados(compra.getId());
-			
-			continuaCompra = IO.readLineUntilPositiveInt("Deseja continuar a comprar? 1-Sim 2-Não");
-		
-		}while(continuaCompra != 2);
-		
-		compra.setValorTotal(compra.readValorTotal(itensComprados));
+	
+	private boolean compraConfirmada(Compra compra, ArrayList<ItemComprado> itensComprados)
+	{
+		boolean confirmed = false;
 		
 		IO.println("Você irá fazer a seguinte compra");
 		IO.println(compra);
@@ -127,17 +119,68 @@ public class GerenciadorComprasCliente {
 		IO.println("Com os seguintes produtos");
 		compra.listarProdutosDaCompra(itensComprados);
 		
-		int confirm = IO.readint("Confirma? 1-Sim 2-Não");
+		confirmed = IO.readint("Confirma? (1-Sim 2-Não): ") == 1;
 		
-		if(confirm == 1) {
-			//adicionar os itensComprados as compras
-			Main.crudItemComprado.novosItensComprados(itensComprados);
-			Main.crudCompra.menuInclusao(compra); //adiciona a compra ao banco de dados
+		if(confirmed) {
+			// adiciona os itens comprados à base de dados e também cria
+			// o relacionamento deles com a compra e os produtos por meio
+			// dos índices compostos
+			Main.crudItemComprado.inserirItensComprados(itensComprados);
 		}
 		else {
 			//cancelar compra, apenas não insere no banco de dados
 			IO.println("Compra cancelada");
 		}
 		
+		return confirmed;
+	}
+	
+	/**
+	 * Método que cria uma nova compra e a adiciona à database relacionando-a com o
+	 * idCliente do atual cliente que está logado na Crud e faz os relacionamento N:N
+	 * de ItemComprado com Compra e ItemComprado com Produto
+	 * 
+	 * @return O id da compra se tudo der certo. Caso contrário, -1.
+	 */
+	
+	public int menuNovaCompra() {
+		return
+		Main.databaseCompra.writeObject
+		(
+			(idCompra) ->
+			{
+				Compra compra = new Compra(this.cliente.getId());
+				ArrayList<ItemComprado> itensComprados = new ArrayList<ItemComprado>();
+				ItemComprado itemComprado = null;
+				
+				int continuaCompra = 0;
+				
+				do {
+					IO.println("Estoque disponível");
+					Main.crudProduto.listar();
+					
+					// pergunta qual o produto e qual a quantidade deve ser comprada,
+					// depois, gera o ItemComprado
+					itemComprado = Main.crudItemComprado.novoItemComprado(idCompra);
+					
+					if (itemComprado != null)
+					{
+						itensComprados.add(itemComprado);
+					}
+					
+					continuaCompra = IO.readLineUntilPositiveInt("Deseja continuar a comprar? 1-Sim 2-Não");
+				
+				} while(continuaCompra != 2);
+				
+				compra.setValorTotal(Compra.readValorTotal(itensComprados));
+				
+				if (!compraConfirmada(compra, itensComprados))
+				{
+					compra = null;
+				}
+				
+				return compra;
+			}
+		);
 	}
 }

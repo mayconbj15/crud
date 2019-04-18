@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import crud.Arquivo;
 
 import entidades.ItemComprado;
-
+import entidades.Produto;
 import util.IO;
 
 public class CrudItemComprado extends CrudAbstract<ItemComprado>
@@ -21,17 +21,26 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 		listar();
 	}
 	
-	public ArrayList<ItemComprado> novosItensComprados(int idCompra) {
+	/**
+	 * Lê o produto a ser comprado e a quantidade. Depois, gera o
+	 * ItemComprado correspondente.
+	 * 
+	 * @param idCompra Id da compra em que o ItemComprado está.
+	 * 
+	 * @return ItemComprado correspondente à compra.
+	 */
+	
+	public ItemComprado novoItemComprado(int idCompra) {
 		int quantidadeDeProdutos = 0;
-		int idProduto = IO.readLineUntilPositiveInt("Qual produto deseja comprar ? (Digite o id)");
+		int idProduto = IO.readLineUntilPositiveInt("Qual produto deseja comprar ? (Digite o id): ");
+		Produto produto = Main.databaseProduto.readObject(idProduto);
 		
-		ArrayList<ItemComprado> itensComprados = new ArrayList<ItemComprado>();
+		ItemComprado itemComprado = null;
 		
 		if(Main.databaseProduto.idIsValid(idProduto)) {
-			quantidadeDeProdutos = IO.readLineUntilPositiveInt("Digite a quantidade do produto");
-			if(quantidadeDeProdutos <= Main.databaseProduto.readObject(idProduto).getQuantidade()) {		
-				itensComprados.add(new ItemComprado(idCompra, idProduto, quantidadeDeProdutos, Main.databaseProduto.readObject(idProduto).getPreco()));
-				//Main.crudItemComprado.novoItemCompra(idCompra, idProduto, quantidadeDeProdutos);
+			quantidadeDeProdutos = IO.readLineUntilPositiveInt("Digite a quantidade do produto: ");
+			if(quantidadeDeProdutos <= produto.getQuantidade()) {
+				itemComprado = new ItemComprado(idCompra, idProduto, quantidadeDeProdutos, produto.getPreco());
 			}
 			else {
 				IO.println("Quantidade inválida");
@@ -41,16 +50,16 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 			IO.println("ID inválido");
 		}
 		
-		return itensComprados;
+		return itemComprado;
 	}
 	
-	public void novosItensComprados(ArrayList<ItemComprado> itensComprados) {
+	public void inserirItensComprados(ArrayList<ItemComprado> itensComprados) {
 		if(itensComprados != null) {
 			int size = itensComprados.size();
 			int success = 0;
 			
 			for(int i=0; i < size && success != -1; i++) {
-				success = novoItemCompra(itensComprados.get(i));
+				success = inserirItemComprado(itensComprados.get(i));
 			}
 		}
 		
@@ -66,16 +75,15 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 		return success;
 	}
 	
-	
-	
-	private int novoItemCompra(ItemComprado itemComprado) {
+	private int inserirItemComprado(ItemComprado itemComprado) {
 		int success = -1;
 		success = Main.crudItemComprado.inserir(itemComprado);
 		
 		if(success != -1) {
-			//criando o relacionamento do produto com a atual compra
+			// criando o relacionamento da compra com o item comprado e
+			// do produto com o item comprado
 			Main.indiceCompraItemComprado.inserir(itemComprado.getIdCompra(), itemComprado.getId());
-			Main.indiceProdutoItemComprado.inserir(itemComprado.getIdProduto(), itemComprado.getIdCompra());
+			Main.indiceProdutoItemComprado.inserir(itemComprado.getIdProduto(), itemComprado.getId());
 		}
 		
 		return success;
