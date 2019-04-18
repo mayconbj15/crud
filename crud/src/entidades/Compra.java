@@ -8,8 +8,6 @@ import java.util.ArrayList;
 
 import serializaveis.SerializavelAbstract;
 
-import gerenciadores.Autenticavel;
-
 import user.Main;
 
 /**
@@ -35,8 +33,8 @@ public class Compra extends SerializavelAbstract implements Entidade
 		this( -1, -1, valorTotal );
 	}
 	
-	public Compra(int id) {
-		this(id, -1, -1);
+	public Compra(int id, int idCliente) {
+		this(id, idCliente, -1);
 	}
 	
 	public Compra(){

@@ -101,7 +101,7 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	 * são o int que guarda o último ID usado.
 	 */
 	
-	public int readLastID()
+	private int readLastID()
 	{
 		RandomAccessFile file = openFile();
 		int lastID = -1;
@@ -241,7 +241,7 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	 * @return o novo id.
 	 */
 	
-	private int createNewId()
+	public int createNewId()
 	{
 		return writeLastID( readLastID() + 1 );
 	}

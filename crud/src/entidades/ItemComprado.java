@@ -3,6 +3,7 @@ package entidades;
 import java.io.*;
 
 import serializaveis.SerializavelAbstract;
+import user.Main;
 import util.IO;
 
 /**
@@ -120,17 +121,25 @@ public class ItemComprado extends SerializavelAbstract implements Entidade
 	public String toString(){
 		return
 			"ID: " + this.id + '\n' +
-			"IDCompra: " + this.idCompra +
-			"IDProduto: " + this.idProduto +
-			"Quantidade: " + this.quantidade +
-			"Valor Unitário: " + this.valorUnitario;
+			"IDCompra: " + this.idCompra + '\n' +
+			"IDProduto: " + this.idProduto + '\n' +
+			"PRODUTO: " + '\n' + printProduto() + '\n' +  
+			"Quantidade: " + this.quantidade + '\n' + 
+			"Valor Unitário: " + this.valorUnitario + '\n';
 	}
 	
 	@Override
 	public String print(){
 		return toString();
 	}
-
+	
+	public String printProduto() {
+		Produto produto = Main.databaseProduto.readObject(this.idProduto);
+		
+		return "Nome do produto " + produto.getNome() + '\n' + 
+				"Descrição do produto " + produto.getDescricao() + '\n';
+	}
+	
 	@Override
 	public int obterTamanhoMaximoEmBytes()
 	{

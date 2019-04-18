@@ -3,12 +3,16 @@ package gerenciadores;
 import entidades.Cliente;
 import entidades.Compra;
 import entidades.ItemComprado;
+
 import user.Main;
+
 import util.IO;
+
+import java.util.function.Function;
 
 public class GerenciadorComprasCliente {
 	private Cliente cliente;
-	private Compra compra;
+	//private Compra compra;
 	
 	public GerenciadorComprasCliente() {
 		this(null,null);
@@ -17,7 +21,7 @@ public class GerenciadorComprasCliente {
 	public GerenciadorComprasCliente(Cliente cliente, Compra compra) {
 		super();
 		this.cliente = cliente;
-		this.compra = compra;
+		//this.compra = compra;
 	}
 	
 	public void menu() {
@@ -69,7 +73,7 @@ public class GerenciadorComprasCliente {
 					break;
 					
 				case 1: 
-					menuNovaCompra();
+					menuNovaCompra(); break;
 				
 				case 3:
 					Main.crudCompra.menuConsulta();
@@ -99,36 +103,56 @@ public class GerenciadorComprasCliente {
 		int quantidadeDeProdutos = 0;
 		int continuaCompra = 0;
 		
-		this.compra = new Compra(Main.databaseCompra.readLastID());
+		//Main.databaseCompra.writeObject(Function<Integer, Compra>);
+		Compra compra = new Compra(Main.databaseCompra.createNewId(), this.cliente.getId());
 		
 		IO.println("Estoque disponível");
-		
 		
 		do {
 			Main.crudProduto.listar();
 			idProduto = IO.readLineUntilPositiveInt("Qual produto deseja comprar ? (Digite o id)");
-			quantidadeDeProdutos = IO.readLineUntilPositiveInt("Digite a quantidade do produto");
-			if(Main.databaseProduto.idIsValid(idProduto) && quantidadeDeProdutos <= Main.databaseProduto.readObject(idProduto).getQuantidade()) {
-				
-				
-				Main.crudItemComprado.inserir(new ItemComprado(this.compra.getId(), idProduto, quantidadeDeProdutos, Main.databaseProduto.readObject(idProduto).getPreco()));
-				/*
-				 * [EM CONSTRUÇÃO]
-				 * Falta fazer a ligação dos itens comprados a essa compra
-				 */
-				
+			if(Main.databaseProduto.idIsValid(idProduto)) {
+				quantidadeDeProdutos = IO.readLineUntilPositiveInt("Digite a quantidade do produto");
+				if(quantidadeDeProdutos <= Main.databaseProduto.readObject(idProduto).getQuantidade()) {		
+					Main.crudItemComprado.inserir(new ItemComprado(compra.getId(), idProduto, quantidadeDeProdutos, Main.databaseProduto.readObject(idProduto).getPreco()));
+					//criando o relacionamento do produto com a atual compra
+					Main.indiceCompraItemComprado.inserir(compra.getId(), idProduto);
+					Main.indiceProdutoItemComprado.inserir(idProduto, compra.getId());
+					/*
+					 * [EM CONSTRUÇÃO]
+					 * Falta fazer a ligação dos itens comprados a essa compra
+					 */
+					
+				}
+				else {
+					IO.println("Quantidade inválida");
+				}
 			}
 			else {
-				IO.println("Id inválido");
+				IO.println("ID inválido");
 			}
-			
 			
 			continuaCompra = IO.readLineUntilPositiveInt("Deseja continuar a comprar? 1-Sim 2-Não");
 		}while(continuaCompra != 2);
 		
-		this.compra.setValorTotal(this.compra.readValorTotal());
+		compra.setValorTotal(compra.readValorTotal());
 		
-		Main.crudCompra.menuInclusao(this.compra); //adiciona a compra ao banco de dados
+		IO.println("Você irá fazer a seguinte compra");
+		IO.println(compra);
+		IO.println("Com os seguintes produtos");
+		
+		int[] listaItensComprados = Main.indiceCompraItemComprado.listarDadosComAChave(compra.getId());
+		for(int i=0; i < listaItensComprados.length; i++) {
+			IO.println(Main.databaseItemComprado.readObject(listaItensComprados[i]));
+		}
+		
+		int confirm = IO.readint("Confirma? 1-Sim 2-Não");
+		if(confirm == 1) {
+			Main.crudCompra.menuInclusao(compra); //adiciona a compra ao banco de dados
+		}
+		else {
+			IO.println("Compra cancelada");
+		}
 		
 		
 	}
