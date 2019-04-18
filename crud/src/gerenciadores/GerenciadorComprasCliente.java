@@ -110,6 +110,7 @@ public class GerenciadorComprasCliente {
 		
 		do {
 			Main.crudProduto.listar();
+			
 			idProduto = IO.readLineUntilPositiveInt("Qual produto deseja comprar ? (Digite o id)");
 			if(Main.databaseProduto.idIsValid(idProduto)) {
 				quantidadeDeProdutos = IO.readLineUntilPositiveInt("Digite a quantidade do produto");
