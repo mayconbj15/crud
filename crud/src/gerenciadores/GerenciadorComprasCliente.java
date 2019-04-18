@@ -135,14 +135,12 @@ public class GerenciadorComprasCliente {
 		
 		IO.println("Você irá fazer a seguinte compra");
 		IO.println(compra);
-		IO.println("Com os seguintes produtos");
 		
-		int[] listaItensComprados = Main.indiceCompraItemComprado.listarDadosComAChave(compra.getId());
-		for(int i=0; i < listaItensComprados.length; i++) {
-			IO.println(Main.databaseItemComprado.readObject(listaItensComprados[i]));
-		}
+		IO.println("Com os seguintes produtos");
+		compra.listarProdutosDaCompra();
 		
 		int confirm = IO.readint("Confirma? 1-Sim 2-Não");
+		
 		if(confirm == 1) {
 			Main.crudCompra.menuInclusao(compra); //adiciona a compra ao banco de dados
 		}

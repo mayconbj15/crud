@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import serializaveis.SerializavelAbstract;
 
 import user.Main;
+import util.IO;
 
 /**
  * Classe das entidades compra.
@@ -133,6 +134,13 @@ public class Compra extends SerializavelAbstract implements Entidade
 	@Override
 	public String print(){
 		return toString();
+	}
+	
+	public void listarProdutosDaCompra() {
+		int[] listaItensComprados = Main.indiceCompraItemComprado.listarDadosComAChave(this.id);
+		for(int i=0; i < listaItensComprados.length; i++) {
+			IO.println(Main.databaseItemComprado.readObject(listaItensComprados[i]));
+		}
 	}
 
 	@Override
