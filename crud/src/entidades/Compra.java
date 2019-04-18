@@ -113,6 +113,22 @@ public class Compra extends SerializavelAbstract implements Entidade
 		return valorTotal;
 	}
 	
+	/**
+	 * Método que pega o valor total de uma compra baseando se em uma lista de itens comprados
+	 * @param itensComprados
+	 * @return o valor total da compra somando todos os itens comprados
+	 */
+	public float readValorTotal(ArrayList<ItemComprado> itensComprados) {
+		float valorTotal = 0;
+		int size = itensComprados.size();
+		
+		for(int i=0; i < size; i++) {
+			valorTotal+= (float)itensComprados.get(i).getQuantidade() * itensComprados.get(i).getValorUnitario();
+		}
+		
+		return valorTotal;
+	}
+	
 	@Override
 	public String toString(){
 		return
@@ -136,10 +152,11 @@ public class Compra extends SerializavelAbstract implements Entidade
 		return toString();
 	}
 	
-	public void listarProdutosDaCompra() {
-		int[] listaItensComprados = Main.indiceCompraItemComprado.listarDadosComAChave(this.id);
-		for(int i=0; i < listaItensComprados.length; i++) {
-			IO.println(Main.databaseItemComprado.readObject(listaItensComprados[i]));
+	public void listarProdutosDaCompra(ArrayList<ItemComprado> itensComprados) {
+		//int[] listaItensComprados = Main.indiceCompraItemComprado.listarDadosComAChave(this.id);
+		int size = itensComprados.size();
+		for(int i=0; i < size; i++) {
+			IO.println(itensComprados.get(i));
 		}
 	}
 

@@ -9,6 +9,7 @@ import user.Main;
 import util.IO;
 
 import java.util.function.Function;
+import java.util.ArrayList;
 
 public class GerenciadorComprasCliente {
 	private Cliente cliente;
@@ -101,50 +102,40 @@ public class GerenciadorComprasCliente {
 	 * 	está logado na Crud e fazendo os relacionamento N:N de Compra e Produto
 	 */
 	public void menuNovaCompra() {
-		int idProduto = 0;
-		int quantidadeDeProdutos = 0;
 		int continuaCompra = 0;
 		
+		//usar novo metodo para recuperar id pra gerar o provavel novo id da nova compra
 		Compra compra = new Compra(Main.databaseCompra.createNewId(), this.cliente.getId());
-		
-		IO.println("Estoque disponível");
+		ArrayList<ItemComprado> itensComprados = new ArrayList<ItemComprado>();
 		
 		do {
+			IO.println("Estoque disponível");
 			Main.crudProduto.listar();
 			
-			idProduto = IO.readLineUntilPositiveInt("Qual produto deseja comprar ? (Digite o id)");
-			
-			if(Main.databaseProduto.idIsValid(idProduto)) {
-				quantidadeDeProdutos = IO.readLineUntilPositiveInt("Digite a quantidade do produto");
-				if(quantidadeDeProdutos <= Main.databaseProduto.readObject(idProduto).getQuantidade()) {		
-					Main.crudItemComprado.novoItemCompra(compra.getId(), idProduto, quantidadeDeProdutos);
-				}
-				else {
-					IO.println("Quantidade inválida");
-				}
-			}
-			else {
-				IO.println("ID inválido");
-			}
+			//usar novo metodo para recuperar id pra gerar os provaveis ids dos novos itensComprados
+			itensComprados = Main.crudItemComprado.novosItensComprados(compra.getId());
 			
 			continuaCompra = IO.readLineUntilPositiveInt("Deseja continuar a comprar? 1-Sim 2-Não");
 		
 		}while(continuaCompra != 2);
 		
-		compra.setValorTotal(compra.readValorTotal());
+		compra.setValorTotal(compra.readValorTotal(itensComprados));
 		
 		IO.println("Você irá fazer a seguinte compra");
 		IO.println(compra);
 		
 		IO.println("Com os seguintes produtos");
-		compra.listarProdutosDaCompra();
+		compra.listarProdutosDaCompra(itensComprados);
 		
 		int confirm = IO.readint("Confirma? 1-Sim 2-Não");
 		
 		if(confirm == 1) {
+			//adicionar os itensComprados as compras
+			Main.crudItemComprado.novosItensComprados(itensComprados);
 			Main.crudCompra.menuInclusao(compra); //adiciona a compra ao banco de dados
 		}
 		else {
+			//cancelar compra, apenas não insere no banco de dados
 			IO.println("Compra cancelada");
 		}
 		

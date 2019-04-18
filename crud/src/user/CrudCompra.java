@@ -23,8 +23,10 @@ public class CrudCompra extends CrudAbstract<Compra>
 	{	
 		int success = -1;
 		
-		if(compra != null)
+		if(compra != null) {
 			success = inserir(compra);
+		}
+			
 		
 		return success;
 	}

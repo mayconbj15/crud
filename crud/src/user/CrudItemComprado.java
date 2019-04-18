@@ -1,7 +1,11 @@
 package user;
 
+import java.util.ArrayList;
+
 import crud.Arquivo;
+
 import entidades.ItemComprado;
+
 import util.IO;
 
 public class CrudItemComprado extends CrudAbstract<ItemComprado>
@@ -17,7 +21,43 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 		listar();
 	}
 	
-	public int novoItemComprado(ItemComprado itemComprado) {
+	public ArrayList<ItemComprado> novosItensComprados(int idCompra) {
+		int quantidadeDeProdutos = 0;
+		int idProduto = IO.readLineUntilPositiveInt("Qual produto deseja comprar ? (Digite o id)");
+		
+		ArrayList<ItemComprado> itensComprados = new ArrayList<ItemComprado>();
+		
+		if(Main.databaseProduto.idIsValid(idProduto)) {
+			quantidadeDeProdutos = IO.readLineUntilPositiveInt("Digite a quantidade do produto");
+			if(quantidadeDeProdutos <= Main.databaseProduto.readObject(idProduto).getQuantidade()) {		
+				itensComprados.add(new ItemComprado(idCompra, idProduto, quantidadeDeProdutos, Main.databaseProduto.readObject(idProduto).getPreco()));
+				//Main.crudItemComprado.novoItemCompra(idCompra, idProduto, quantidadeDeProdutos);
+			}
+			else {
+				IO.println("Quantidade inválida");
+			}
+		}
+		else {
+			IO.println("ID inválido");
+		}
+		
+		return itensComprados;
+	}
+	
+	public void novosItensComprados(ArrayList<ItemComprado> itensComprados) {
+		if(itensComprados != null) {
+			int size = itensComprados.size();
+			int success = 0;
+			
+			for(int i=0; i < size && success != -1; i++) {
+				success = novoItemCompra(itensComprados.get(i));
+			}
+		}
+		
+	}
+	
+	//por enquanto não estar sendo usada, decidir se irá mante-lá ou não
+	private int novoItemComprado(ItemComprado itemComprado) {
 		int success = -1;
 		
 		if(itemComprado != null)
@@ -26,14 +66,16 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 		return success;
 	}
 	
-	public int novoItemCompra(int idCompra, int idProduto, int quantidadeDeProdutos) {
+	
+	
+	private int novoItemCompra(ItemComprado itemComprado) {
 		int success = -1;
-		success = Main.crudItemComprado.inserir(new ItemComprado(idCompra, idProduto, quantidadeDeProdutos, Main.databaseProduto.readObject(idProduto).getPreco()));
+		success = Main.crudItemComprado.inserir(itemComprado);
 		
 		if(success != -1) {
 			//criando o relacionamento do produto com a atual compra
-			Main.indiceCompraItemComprado.inserir(idCompra, idProduto);
-			Main.indiceProdutoItemComprado.inserir(idProduto, idCompra);
+			Main.indiceCompraItemComprado.inserir(itemComprado.getIdCompra(), itemComprado.getId());
+			Main.indiceProdutoItemComprado.inserir(itemComprado.getIdProduto(), itemComprado.getIdCompra());
 		}
 		
 		return success;
