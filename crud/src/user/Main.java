@@ -245,8 +245,8 @@ public class Main {
 	
 	private static void deleteFiles()
 	{
-		Files.delete(ENTITIES_FOLDER);
-		Files.delete(COMPOSITE_INDEXES_FOLDER);
+		//Files.delete(ENTITIES_FOLDER);
+		//Files.delete(COMPOSITE_INDEXES_FOLDER);
 	}
 	
 	public static void main(String[] args) {

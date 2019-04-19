@@ -122,6 +122,11 @@ public class GerenciadorComprasCliente {
 					compra = null;
 				}
 				
+				else
+				{
+					Main.indiceClienteCompra.inserir(compra.getIdCliente(), idCompra);
+				}
+				
 				return compra;
 			}
 		);

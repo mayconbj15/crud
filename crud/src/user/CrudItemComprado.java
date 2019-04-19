@@ -62,17 +62,6 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 				success = inserirItemComprado(itensComprados.get(i));
 			}
 		}
-		
-	}
-	
-	//por enquanto não estar sendo usada, decidir se irá mante-lá ou não
-	private int novoItemComprado(ItemComprado itemComprado) {
-		int success = -1;
-		
-		if(itemComprado != null)
-			success = inserir(itemComprado);
-		
-		return success;
 	}
 	
 	private int inserirItemComprado(ItemComprado itemComprado) {
