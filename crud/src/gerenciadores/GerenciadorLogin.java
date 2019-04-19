@@ -2,10 +2,12 @@ package gerenciadores;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.function.Supplier;
 
 import crud.Arquivo;
 import entidades.Entidade;
 import serializaveis.SerializavelAbstract;
+import user.Crud;
 import user.Main;
 import util.IO;
 
@@ -182,51 +184,34 @@ public class GerenciadorLogin<TIPO_ENTIDADE extends SerializavelAbstract & Entid
 	 * Caso contrário, retorna o último usuário cadastrado ou o usuário logado.
 	 */
 	
+	@SuppressWarnings("unchecked")
 	public TIPO_ENTIDADE menuAutenticacao()
 	{
-		TIPO_ENTIDADE user = null;
-		int selecao;
-
-		do {
-			IO.println("[Autenticação]");
-			IO.println("Qual das seguintes operações o senhor deseja realizar ?");
-			IO.println("Digite:");
-			IO.println("1 para fazer login");
-			IO.println("2 para se cadastrar");
-			IO.println("0 para sair");
-			IO.println("");
-			selecao = IO.readint("Operação: ");
-			
-			IO.println("\nOperação iniciada...");
-			
-			switch (selecao)
+		return
+		(TIPO_ENTIDADE) Crud.menu
+		(
+			"Autenticação",
+			"Qual das seguintes operações o senhor deseja realizar ?",
+			new String[] { "login", "cadastrar-se" },
+			new Supplier[]
 			{
-				case 0:
-					IO.println("Até breve :)");
-					break;
-					
-				case 1:
-					user = login();
+				() ->
+				{
+					TIPO_ENTIDADE user = login();
 					IO.println("\nLogin " + ( user == null ? "falhou" : "bem sucedido" ) + ".");
 					IO.pause();
-					break;
-					
-				case 2:
-					user = register();
+					return user;
+				},
+				
+				() ->
+				{
+					TIPO_ENTIDADE user = register();
 					IO.println("\nRegistro " + ( user == null ? "falhou" : "bem sucedido" ) + ".");
 					IO.pause();
-					break;
-					
-				default:
-					IO.println("Operação inválida\n");
-					break;
-			}
-			
-			IO.println("\nOperação finalizada.\n");
-			IO.println("--------------------------------------------\n");
-			
-		} while (selecao != 0 && selecao != 1);
-		
-		return user;
+					return user;
+				}
+			},
+			new int[] { 0, 1 }
+		);
 	}
 }

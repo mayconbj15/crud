@@ -27,7 +27,7 @@ public class Crud {
 		IO.println("");
 	}
 	
-	public static <T> T menu(String nome, String mensagem, String[] opcoes, Function<Integer, T> gerenciarOpcoes)
+	public static <T> T menu(String nome, String mensagem, String[] opcoes, Function<Integer, T> gerenciarOpcoes, int[] opcoesDeSaida)
 	{
 		T result = null;
 		int opcao = 0;
@@ -56,30 +56,47 @@ public class Crud {
 			
 			IO.println("\n--------------------------------------------\n");
 	
-		} while(opcao != 0);
+		} while (!MyArray.contains(opcao, opcoesDeSaida));
 		
 		return result;
 	}
+	
+	public static <T> T menu(String nome, String mensagem, String[] opcoes, Function<Integer, T> gerenciarOpcoes)
+	{
+		return menu(nome, mensagem, opcoes, gerenciarOpcoes, new int[] { 0 });
+	}
 
-	public static void menu(String nome, String mensagem, String[] opcoes, Runnable[] acoes)
+	public static void menu(String nome, String mensagem, String[] opcoes, Runnable[] acoes, int[] opcoesDeSaida)
 	{
 		menu(nome, mensagem, opcoes,
 			(opcao) ->
 			{
 				acoes[opcao - 1].run();
 				return null;
-			}
+			},
+			opcoesDeSaida
 		);
 	}
+
+	public static void menu(String nome, String mensagem, String[] opcoes, Runnable[] acoes)
+	{
+		menu(nome, mensagem, opcoes, acoes, new int[] { 0 });
+	}
 	
-	public static <T> T menu(String nome, String mensagem, String[] opcoes, Supplier<T>[] acoes)
+	public static <T> T menu(String nome, String mensagem, String[] opcoes, Supplier<T>[] acoes, int[] opcoesDeSaida)
 	{
 		return menu(nome, mensagem, opcoes,
 			(opcao) ->
 			{
 				return acoes[opcao - 1].get();
-			}
+			},
+			opcoesDeSaida
 		);
+	}
+	
+	public static <T> T menu(String nome, String mensagem, String[] opcoes, Supplier<T>[] acoes)
+	{
+		return menu(nome, mensagem, opcoes, acoes, new int[] { 0 });
 	}
 	
 	/**
