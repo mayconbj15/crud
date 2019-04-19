@@ -82,7 +82,7 @@ public class GerenciadorLogin<TIPO_ENTIDADE extends SerializavelAbstract & Entid
 	{
 		TIPO_ENTIDADE user = null;
 		
-		if (database != null)
+		if (database != null && email != null && senha != null)
 		{
 			int userId = Main.indiceEmailUsuarioIdUsuario.pesquisarDadoPelaChave(email);
 			
@@ -90,7 +90,7 @@ public class GerenciadorLogin<TIPO_ENTIDADE extends SerializavelAbstract & Entid
 			{
 				user = database.readObject(userId);
 				
-				if ( !senha.equals(user.getSenha()) )
+				if ( user != null && !senha.equals(user.getSenha()) )
 				{
 					user = null;
 				}
@@ -180,8 +180,8 @@ public class GerenciadorLogin<TIPO_ENTIDADE extends SerializavelAbstract & Entid
 	 * 
 	 * </table>
 	 * 
-	 * @return {@code null} se o usuário não completar nenhuma operação.
-	 * Caso contrário, retorna o último usuário cadastrado ou o usuário logado.
+	 * @return {@code null} se o usuário não completar nenhuma operação ou se
+	 * ele apenas se cadastrar. Caso contrário, retorna o usuário logado.
 	 */
 	
 	@SuppressWarnings("unchecked")
@@ -198,7 +198,7 @@ public class GerenciadorLogin<TIPO_ENTIDADE extends SerializavelAbstract & Entid
 				() ->
 				{
 					TIPO_ENTIDADE user = login();
-					IO.println("\nLogin " + ( user == null ? "falhou" : "bem sucedido" ) + ".");
+					IO.println("\nLogin " + ( user == null ? "falhou." : "bem sucedido." ));
 					IO.pause();
 					return user;
 				},
@@ -206,11 +206,13 @@ public class GerenciadorLogin<TIPO_ENTIDADE extends SerializavelAbstract & Entid
 				() ->
 				{
 					TIPO_ENTIDADE user = register();
-					IO.println("\nRegistro " + ( user == null ? "falhou" : "bem sucedido" ) + ".");
+					IO.println("\nRegistro " + ( user == null ? "falhou." : "bem sucedido." ));
 					IO.pause();
-					return user;
+					return null;
+					//return user;
 				}
 			},
+			// se o usuário escolher as opções 0 ou 1 ele não voltará mais ao menu
 			new int[] { 0, 1 }
 		);
 	}

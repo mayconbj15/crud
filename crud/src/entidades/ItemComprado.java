@@ -136,8 +136,8 @@ public class ItemComprado extends SerializavelAbstract implements Entidade
 	public String printProduto() {
 		Produto produto = Main.databaseProduto.readObject(this.idProduto);
 		
-		return "Nome do produto " + produto.getNome() + '\n' + 
-				"Descrição do produto " + produto.getDescricao() + '\n';
+		return "Nome do produto: " + produto.getNome() + '\n' + 
+				"Descrição do produto: " + produto.getDescricao();
 	}
 	
 	@Override

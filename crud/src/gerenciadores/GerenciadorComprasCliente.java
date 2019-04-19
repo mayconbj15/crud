@@ -55,13 +55,14 @@ public class GerenciadorComprasCliente {
 	{
 		boolean confirmed = false;
 		
-		IO.println("Você irá fazer a seguinte compra");
+		IO.println("Você irá fazer a seguinte compra:");
 		IO.println(compra);
 		
-		IO.println("\nCom os seguintes produtos");
+		IO.println("\nCom os seguintes produtos:");
 		compra.listarProdutosDaCompra(itensComprados);
 		
 		confirmed = IO.readint("\nConfirma (1-Sim 2-Não)? ") == 1;
+		IO.println("");
 		
 		if(confirmed) {
 			// adiciona os itens comprados à base de dados e também cria
@@ -112,6 +113,8 @@ public class GerenciadorComprasCliente {
 					
 					continuaCompra = IO.readLineUntilPositiveInt(
 							"\nDeseja continuar a comprar (1-Sim 2-Não)? ");
+					
+					IO.println("");
 				
 				} while(continuaCompra != 2);
 				

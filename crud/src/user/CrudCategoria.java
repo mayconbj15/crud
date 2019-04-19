@@ -206,7 +206,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		
 		int id = IO.readint("Digite o id da categoria a ser alterada: ");
 		
-		Crud.menu
+		Crud.noBackMenu
 		(
 			"Alteração",
 			"O que deseja alterar na categoria ?",
@@ -247,7 +247,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 	
 	public void menuListar()
 	{
-		Crud.menu
+		Crud.noBackMenu
 		(
 			"Listagem",
 			"O que deseja listar ?",
@@ -266,11 +266,12 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		listarCategorias();
 		int cod = -1; //codigo de selecao
 		int id = IO.readint("Digite o id da categoria a ser removida: ");
+		IO.println("");
 
 		//testar antes se o id existe
 		if (database.idIsValid(id))
 		{
-			Crud.menu
+			Crud.noBackMenu
 			(
 				"Confirmação",
 				"Realmente deseja excluir a categoria ?",
@@ -289,7 +290,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 						
 						else
 						{
-							Crud.menu
+							Crud.noBackMenu
 							(
 								"Excluir Produtos",
 								"AVISO: Ainda há produtos nesta categoria.\n" +
@@ -305,9 +306,9 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 
 									() ->
 									{
-										Crud.menu
+										Crud.noBackMenu
 										(
-											"Outras opções",
+											"Outras Opções",
 											"Qual das seguintes operações deseja realizar ?",
 											new String[] { "mover produtos para outra categoria", "criar nova categoria" },
 											new Runnable[]

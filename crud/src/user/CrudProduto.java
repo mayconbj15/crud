@@ -181,7 +181,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 		//testar antes se o id existe
 		if(database.idIsValid(id))
 		{
-			Crud.menu
+			Crud.noBackMenu
 			(
 				"Alteração",
 				"O que deseja alterar no produto ?",
@@ -211,7 +211,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 		//testar antes se o id existe
 		if (database.idIsValid(id))
 		{
-			Crud.menu
+			Crud.noBackMenu
 			(
 				"Confirmação",
 				"Realmente deseja excluir o produto ?",
