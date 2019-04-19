@@ -1,47 +1,44 @@
 package gerenciadores;
 
 import entidades.Funcionario;
+import user.Crud;
 import user.Main;
 import util.IO;
 
 public class GerenciadorFuncionario {
-	private Funcionario funcionario;
+	//private Funcionario funcionario;
 	
-	public GerenciadorFuncionario() {
-		
+	public GerenciadorFuncionario(Funcionario funcionario) {
+		//this.funcionario = funcionario;
+	}
+	
+	public GerenciadorFuncionario()
+	{
+		this(null);
+	}
+	
+	public void menuFuncionario()
+	{
+		Crud.menu
+		(
+			"Funcionário",
+			"Qual das seguintes entidades o senhor deseja manusear ?",
+			new String[] { "produto", "categoria" },
+			new Runnable[]
+			{
+				() -> { Main.crudProduto.menu(); IO.pause(); },
+				() -> { Main.crudCategoria.menu(); IO.pause(); }
+			}
+		);
 	}
 	
 	public void menu(){
-		int selecao = 0;
+		Funcionario usuarioLogado = Main.crudFuncionario.getGerenciadorLogin().menuAutenticacao();
 		
-		IO.println("[Menu Principal Funcionários]");
-		IO.println("Qual das seguintes entidades o senhor deseja manusear ?");
-		IO.println("Digite:");
-		IO.println("1 para produto");
-		IO.println("2 para categoria");
-		IO.println("0 para sair");
-		IO.println("");
-
-		selecao = IO.readint("Opção: ");
-		
-		switch (selecao){
-			case 0:
-				IO.println("Até breve :)");
-				break;
-			
-			case 1:
-				Main.crudProduto.menu();
-				IO.pause();
-				break;
-				
-			case 2:
-				Main.crudCategoria.menu();
-				IO.pause();
-				break;
-				
-			default:
-				IO.println("Entidade inválida\n");
-				break;
+		if (usuarioLogado != null)
+		{
+			//this.funcionario = usuarioLogado;
+			menuFuncionario();
 		}
 	}
 }

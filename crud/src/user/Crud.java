@@ -2,9 +2,8 @@ package user;
 
 import util.*;
 
-import crud.Arquivo;
-
-import entidades.*;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import gerenciadores.GerenciadorComprasCliente;
 import gerenciadores.GerenciadorFuncionario;
@@ -14,55 +13,94 @@ import gerenciadores.GerenciadorFuncionario;
  */
 
 public class Crud {
-	
-	public Crud(
-		Arquivo<Compra> databaseCompra,
-		Arquivo<Produto> databaseProduto,
-		Arquivo<Cliente> databaseCliente,
-		Arquivo<Categoria> databaseCategoria,
-		Arquivo<ItemComprado> databaseItemComprado)
-	{
 
-		Main.crudCompra = new CrudCompra(databaseCompra);
-		Main.crudCliente = new CrudCliente(databaseCliente);
-		Main.crudProduto = new CrudProduto(databaseProduto);
-		Main.crudCategoria = new CrudCategoria(databaseCategoria);
-		Main.crudItemComprado = new CrudItemComprado(databaseItemComprado);
+	public static void gerarCabecalhoEOpcoes(String nome, String mensagem, String[] opcoes)
+	{
+		IO.println("[Menu " + nome + "]");
+		IO.println(mensagem);
+		IO.println("Digite:");
+		for (int i = 0; i < opcoes.length; i++)
+		{
+			IO.println((i + 1) + " para " + opcoes[i]);
+		}
+		IO.println("0 para sair");
+		IO.println("");
+	}
+	
+	public static <T> T menu(String nome, String mensagem, String[] opcoes, Function<Integer, T> gerenciarOpcoes)
+	{
+		T result = null;
+		int opcao = 0;
+		
+		do
+		{
+			gerarCabecalhoEOpcoes(nome, mensagem, opcoes);
+			opcao = IO.readint("Opção: ");
+			
+			IO.println("");
+			
+			if (opcao == 0)
+			{
+				IO.println("Até breve :D");
+			}
+			
+			else if (opcao < 0 || opcao > opcoes.length)
+			{
+				IO.println("Opção inválida");
+			}
+			
+			else
+			{
+				result = gerenciarOpcoes.apply(opcao);
+			}
+			
+			IO.println("\n--------------------------------------------\n");
+	
+		} while(opcao != 0);
+		
+		return result;
 	}
 
+	public static void menu(String nome, String mensagem, String[] opcoes, Runnable[] acoes)
+	{
+		menu(nome, mensagem, opcoes,
+			(opcao) ->
+			{
+				acoes[opcao - 1].run();
+				return null;
+			}
+		);
+	}
+	
+	public static <T> T menu(String nome, String mensagem, String[] opcoes, Supplier<T>[] acoes)
+	{
+		return menu(nome, mensagem, opcoes,
+			(opcao) ->
+			{
+				return acoes[opcao - 1].get();
+			}
+		);
+	}
+	
 	/**
 	 * Gerencia a interação com o usuário.
 	 */
 	
-	public void menu()
+	public static void menu()
 	{
-		int selecao = -1;
-		
 		IO.println("Olá, meu nobre!\n");
 		
-		
-		do {
-			//Interface de entrada
-			IO.println("Deseja fazer login como funcionário ou cliente?");	
-			IO.println("1 - Cliente");
-			IO.println("2 - Funcionário");
-			IO.println("0 - Sair");
-			
-			selecao = IO.readLineUntilPositiveInt("");
-			if(selecao == 1) {
-				GerenciadorComprasCliente gerenciadorComprasCliente = new GerenciadorComprasCliente();
-				gerenciadorComprasCliente.menu();
+		menu
+		(
+			"Principal",
+			"Como deseja fazer login ?",
+			new String[] { "cliente", "funcionario" },
+			new Runnable[]
+			{
+				() -> new GerenciadorComprasCliente().menu(),
+				() -> new GerenciadorFuncionario().menu()
 			}
-			
-			else if(selecao == 2) {
-				GerenciadorFuncionario gerenciadorFuncionario = new GerenciadorFuncionario();
-				gerenciadorFuncionario.menu();
-			}
-			
-			
-			IO.println("\n--------------------------------------------\n");
-			
-		} while (selecao != 0);
+		);
 
 	}//end menu()
 	

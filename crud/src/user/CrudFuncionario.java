@@ -3,19 +3,43 @@ package user;
 import util.IO;
 
 import crud.Arquivo;
+import entidades.Cliente;
+import entidades.Funcionario;
 import entidades.Produto;
+import gerenciadores.GerenciadorLogin;
 
 /**
  * Classe que gerencia a interação com o usuário.
  */
 
-public class CrudProduto extends CrudAbstract<Produto>
+public class CrudFuncionario extends CrudAbstract<Funcionario>
 {
-	public CrudProduto(Arquivo<Produto> database)
+	GerenciadorLogin<Funcionario> gerenciadorLogin;
+	
+	public CrudFuncionario(Arquivo<Funcionario> database)
 	{
 		super(database);
+		
+		try
+		{
+			this.gerenciadorLogin =
+				new GerenciadorLogin<>(
+					database,
+					Funcionario.class.getConstructor()
+				);
+		}
+		
+		catch (NoSuchMethodException | SecurityException e)
+		{
+			e.printStackTrace();
+		}
 	}
-
+	
+	public GerenciadorLogin<Funcionario> getGerenciadorLogin()
+	{
+		return gerenciadorLogin;
+	}
+	
 	public void menuInclusao()
 	{
 		Produto produto = new Produto();
@@ -155,47 +179,28 @@ public class CrudProduto extends CrudAbstract<Produto>
 
 		return success;
 	}//end alterar()
-	
-	/**
-	 * Altera a categoria do produto informado pelo id.
-	 * 
-	 * @param idProduto Id do produto para alterar a categoria.
-	 * @param newIdCategoria Id da nova categoria.
-	 */
-	
-	public void alterarCategoria(int idProduto, int newIdCategoria)
-	{
-		Produto produto = database.readObject(idProduto);
-		
-		if( produto != null )
-		{
-			produto.setIdCategoria(newIdCategoria);
-			alterar(idProduto, produto);
-		}
-	}
 
 	public void menuAlteracao()
 	{ 
+		int cod = -1; //codigo de selecao
 		int id = IO.readint("Digite o id do produto a ser alterado: ");
 
 		//testar antes se o id existe
 		if(database.idIsValid(id))
 		{
-			Crud.menu
-			(
-				"Alteração",
-				"O que deseja alterar no produto ?",
-				new String[] { "categoria", "nome", "descrição", "preço", "fornecedor", "quantidade" },
-				new Runnable[]
-				{
-					() -> { alterar(id, 1); },
-					() -> { alterar(id, 2); },
-					() -> { alterar(id, 3); },
-					() -> { alterar(id, 4); },
-					() -> { alterar(id, 5); },
-					() -> { alterar(id, 6); }
-				}
-			);
+			IO.println("O que deseja alterar no produto?");
+			IO.println("Digite:");
+			IO.println("1 para alterar a categoria");
+			IO.println("2 para alterar o nome");
+			IO.println("3 para alterar a descrição");
+			IO.println("4 para alterar o preço");
+			IO.println("5 para alterar o fornecedor");
+			IO.println("6 para alterar a quantidade");
+			IO.println("0 para cancelar");
+			IO.println("");
+			cod = IO.readint("Opção: ");
+			
+			alterar(id, cod);
 		}
 		
 		else
@@ -206,29 +211,28 @@ public class CrudProduto extends CrudAbstract<Produto>
 
 	public void menuExclusao()
 	{ 
+		int cod = -1; //codigo de selecao
 		int id = IO.readint("Digite o id do produto a ser excluído: ");
 
 		//testar antes se o id existe
 		if (database.idIsValid(id))
 		{
-			Crud.menu
-			(
-				"Confirmação",
-				"Realmente deseja excluir o produto ?",
-				new String[] { "sim" },
-				new Runnable[]
-				{
-					() ->
-					{
-						Produto produtoExcluido = excluir(id);
-						
-						Main.indiceCategoriaProduto.excluir(
-							produtoExcluido.getIdCategoria(),
-							produtoExcluido.getId()
-						);
-					}
-				}
-			);
+			IO.println("Realmente deseja excluir o produto ?");
+			IO.println("Digite:");
+			IO.println("1 Sim");
+			IO.println("2 Não");
+			IO.println("");
+			cod = IO.readint("Opção: ");
+			
+			if (cod == 1)
+			{
+				Produto produtoExcluido = excluir(id);
+				
+				Main.indiceCategoriaProduto.excluir(
+					produtoExcluido.getIdCategoria(),
+					produtoExcluido.getId()
+				);
+			}
 		}
 		
 		else
@@ -237,39 +241,9 @@ public class CrudProduto extends CrudAbstract<Produto>
 		}
 	}
 
-	public void menuConsulta()
-	{
-		int id = IO.readint("Digite o id do produto a ser alterado: ");
-		
-		consultar(id);
-	}
-
 	public void menuListar()
 	{
 		listar();
 	}
-
-	/**
-	 * Gerencia a interação com o usuário.
-	 */
-	
-	public void menu()
-	{
-		Crud.menu
-		(
-			"Produto",
-			"Qual das seguintes operações o senhor deseja realizar ?",
-			new String[] { "inclusão", "alteração", "exclusão", "consulta", "listagem" },
-			new Runnable[]
-			{
-				() -> { menuInclusao(); IO.pause(); },
-				() -> { menuAlteracao(); IO.pause(); },
-				() -> { menuExclusao(); IO.pause(); },
-				() -> { menuConsulta(); IO.pause(); },
-				() -> { menuListar(); IO.pause(); }
-			}
-		);
-		
-	}//end menu()
 	
 }//end class CrudProduto

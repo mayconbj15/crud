@@ -12,12 +12,6 @@ public class CrudCompra extends CrudAbstract<Compra>
 	{
 		super(database);
 	}
-
-	public void listarCategorias()
-	{
-		IO.println("Categorias disponíveis:\n");
-		listar();
-	}
 	
 	public int menuInclusao(Compra compra)
 	{	
@@ -26,8 +20,7 @@ public class CrudCompra extends CrudAbstract<Compra>
 		if(compra != null) {
 			success = inserir(compra);
 		}
-			
-		
+
 		return success;
 	}
 
@@ -108,7 +101,6 @@ public class CrudCompra extends CrudAbstract<Compra>
 	}
 
 	public void menuExclusao(){
-		listarCategorias();
 		int cod = -1; //codigo de selecao
 		int id = IO.readint("Digite o id da compra a ser removida: ");
 

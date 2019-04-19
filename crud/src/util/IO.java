@@ -166,7 +166,19 @@ public class IO
 		print(msg);
 		
 		return readfloat();
+	}/*
+	
+	public static String readSenha()
+	{
+		return System.console().readPassword().toString();
 	}
+	
+	//colocar um regex para senha aqui
+	public static String readSenha(String msg) {
+		print(msg);
+		
+		return readSenha();
+	}*/
 	
 	//colocar um regex para senha aqui
 	public static String readSenha(String msg) {

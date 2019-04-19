@@ -6,17 +6,18 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import gerenciadores.Autenticavel;
 import serializaveis.SerializavelAbstract;
 import serializaveis.StringSerializavel;
 import util.IO;
 
-public class Funcionario extends SerializavelAbstract implements Entidade{
+public class Funcionario extends SerializavelAbstract implements Entidade, Autenticavel {
 	private int id;
 	private String nome;
 	private String email;
 	private String senha;
 
-	public Funcionario(int id, String nome, String email, String senha) {
+	private Funcionario(int id, String nome, String email, String senha) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
@@ -28,7 +29,7 @@ public class Funcionario extends SerializavelAbstract implements Entidade{
 	}
 
 	public Funcionario(){
-		this( "", "", "");
+		this("", "", "");
 	}
 	
 	@Override
@@ -49,6 +50,7 @@ public class Funcionario extends SerializavelAbstract implements Entidade{
 		return this.nome = nome;
 	}
 
+	@Override
 	public String getEmail(){
 		return this.email;
 	}
@@ -57,6 +59,7 @@ public class Funcionario extends SerializavelAbstract implements Entidade{
 		return this.email = email;
 	}
 	
+	@Override
 	public String getSenha() {
 		return senha;
 	}
@@ -66,34 +69,40 @@ public class Funcionario extends SerializavelAbstract implements Entidade{
 	}
 
 	/**
-	 * Lê o nome do cliente da entrada padrão e redefine
+	 * Lê o nome do funcionário da entrada padrão e redefine
 	 * interiormente o campo {@link #nome} desta entidade.
 	 *  
 	 * @return O nome lido.
 	 */
-	
 
-	
-	public String readName()
+	public String readNome()
 	{
-		return setNome( IO.readLine("\nInforme o nome do cliente: ") );
+		return setNome( IO.readLine("\nInforme o seu nome: ") );
 	}
 	
 	/**
-	 * Lê o email do cliente e redefine interiormente o campo
+	 * Lê o email do funcionário e redefine interiormente o campo
 	 * {@link #email} desta entidade.
 	 *  
 	 * @return O email lido.
 	 */
 	
+	@Override
 	public String readEmail()
 	{
-		//return setEmail( IO.readLineUntilEmail("\nInforme o email do cliente: ") );
-		return setEmail(IO.readLine("Informe o email do cliente"));
+		return setEmail( IO.readLineUntilEmail("\nInforme o seu email: ") );
 	}
 	
+	/**
+	 * Lê a senha do funcionário e redefine interiormente o campo
+	 * {@link #senha} desta entidade.
+	 * 
+	 * @return A senha lida.
+	 */
+	
+	@Override
 	public String readSenha() {
-		return setSenha(IO.readLine("Digite sua senha"));
+		return setSenha( IO.readSenha("\nInforme a sua senha: ") );
 	}
 	
 	@Override

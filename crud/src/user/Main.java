@@ -26,6 +26,7 @@ public class Main {
 	public static final String PRODUTOS_FILE_NAME			= "produtos";
 	public static final String CLIENTES_FILE_NAME			= "clientes";
 	public static final String CATEGORIAS_FILE_NAME			= "categorias";
+	public static final String FUNCIONARIOS_FILE_NAME		= "funcionarios";
 	public static final String ITENS_COMPRADOS_FILE_NAME	= "itensComprados";
 	
 	// prefixos de arquivos de índices compostos
@@ -40,6 +41,7 @@ public class Main {
 	public static Arquivo<Produto>		databaseProduto;
 	public static Arquivo<Cliente>		databaseCliente;
 	public static Arquivo<Categoria>	databaseCategoria;
+	public static Arquivo<Funcionario>	databaseFuncionario;
 	public static Arquivo<ItemComprado>	databaseItemComprado;
 	
 	// objetos para o gerenciamento dos índices compostos
@@ -47,7 +49,7 @@ public class Main {
 	public static HashDinamicaIntInt 	indiceCategoriaProduto;
 	public static HashDinamicaIntInt 	indiceCompraItemComprado;
 	public static HashDinamicaIntInt 	indiceProdutoItemComprado;
-	public static HashDinamicaStringInt indiceNomeClienteIdCliente;
+	public static HashDinamicaStringInt indiceEmailUsuarioIdUsuario;
 
 	// objetos para gerenciamento de menus e interligação com os
 	// objetos que gerenciam os registros de cada entidade
@@ -55,6 +57,7 @@ public class Main {
 	public static CrudProduto crudProduto;
 	public static CrudCliente crudCliente;
 	public static CrudCategoria crudCategoria;
+	public static CrudFuncionario crudFuncionario;
 	public static CrudItemComprado crudItemComprado;
 	
 	private static String getEntityFolderPath(String entityName)
@@ -92,6 +95,7 @@ public class Main {
 		databaseProduto		= startDatabase(Produto.class		, PRODUTOS_FILE_NAME);
 		databaseCliente		= startDatabase(Cliente.class		, CLIENTES_FILE_NAME);
 		databaseCategoria	= startDatabase(Categoria.class		, CATEGORIAS_FILE_NAME);
+		databaseFuncionario	= startDatabase(Funcionario.class	, FUNCIONARIOS_FILE_NAME);
 		databaseItemComprado = startDatabase(ItemComprado.class	, ITENS_COMPRADOS_FILE_NAME);
 	}
 	
@@ -180,13 +184,24 @@ public class Main {
 		indiceCategoriaProduto = startCompositeIndexIntInt(CATEGORIA_PRODUTO_FILE_NAME);
 		indiceCompraItemComprado = startCompositeIndexIntInt(COMPRA_ITEM_COMPRADO_FILE_NAME);
 		indiceProdutoItemComprado = startCompositeIndexIntInt(PRODUTO_ITEM_COMPRADO_FILE_NAME);
-		indiceNomeClienteIdCliente = startCompositeIndexStringInt(NOME_CLIENTE_ID_CLIENTE_FILE_NAME);
+		indiceEmailUsuarioIdUsuario = startCompositeIndexStringInt(NOME_CLIENTE_ID_CLIENTE_FILE_NAME);
+	}
+	
+	private static void startCRUDs()
+	{
+		crudCompra = new CrudCompra(databaseCompra);
+		crudCliente = new CrudCliente(databaseCliente);
+		crudProduto = new CrudProduto(databaseProduto);
+		crudCategoria = new CrudCategoria(databaseCategoria);
+		crudFuncionario = new CrudFuncionario(databaseFuncionario);
+		crudItemComprado = new CrudItemComprado(databaseItemComprado);
 	}
 	
 	private static void startVariables()
 	{
 		startDatabases();
 		startCompositeIndexes();
+		startCRUDs();
 	}
 	
 	private static boolean closeFiles()
@@ -202,7 +217,7 @@ public class Main {
 			indiceCategoriaProduto.fechar() &&
 			indiceCompraItemComprado.fechar() &&
 			indiceProdutoItemComprado.fechar() &&
-			indiceNomeClienteIdCliente.fechar();
+			indiceEmailUsuarioIdUsuario.fechar();
 	}
 	
 	public static void createEntitiesFolders()
@@ -212,6 +227,7 @@ public class Main {
 			ENTITIES_FOLDER + CLIENTES_FILE_NAME,
 			ENTITIES_FOLDER + PRODUTOS_FILE_NAME,
 			ENTITIES_FOLDER + CATEGORIAS_FILE_NAME,
+			ENTITIES_FOLDER + FUNCIONARIOS_FILE_NAME,
 			ENTITIES_FOLDER + ITENS_COMPRADOS_FILE_NAME
 		);
 	}
@@ -229,25 +245,16 @@ public class Main {
 	
 	private static void deleteFiles()
 	{
-		//Files.delete(ENTITIES_FOLDER);
+		Files.delete(ENTITIES_FOLDER);
 		Files.delete(COMPOSITE_INDEXES_FOLDER);
 	}
 	
 	public static void main(String[] args) {
-		
 		deleteFiles();
 		createFolders();
 		startVariables();
-	
-		Crud crudMaster = new Crud(
-			databaseCompra,
-			databaseProduto,
-			databaseCliente,
-			databaseCategoria,
-			databaseItemComprado
-		);
 		
-		crudMaster.menu();
+		Crud.menu();
 		
 		closeFiles();
 	}

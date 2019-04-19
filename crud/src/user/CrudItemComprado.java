@@ -32,18 +32,18 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 	
 	public ItemComprado novoItemComprado(int idCompra) {
 		int quantidadeDeProdutos = 0;
-		int idProduto = IO.readLineUntilPositiveInt("Qual produto deseja comprar ? (Digite o id): ");
+		int idProduto = IO.readLineUntilPositiveInt("Qual produto deseja comprar (Digite o id) ? ");
 		Produto produto = Main.databaseProduto.readObject(idProduto);
 		
 		ItemComprado itemComprado = null;
 		
-		if(Main.databaseProduto.idIsValid(idProduto)) {
+		if(produto != null) {
 			quantidadeDeProdutos = IO.readLineUntilPositiveInt("Digite a quantidade do produto: ");
 			if(quantidadeDeProdutos <= produto.getQuantidade()) {
 				itemComprado = new ItemComprado(idCompra, idProduto, quantidadeDeProdutos, produto.getPreco());
 			}
 			else {
-				IO.println("Quantidade inválida");
+				IO.println("Estoque insuficiente");
 			}
 		}
 		else {

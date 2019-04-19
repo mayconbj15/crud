@@ -2,6 +2,7 @@ package entidades;
 
 import java.io.*;
 
+import gerenciadores.Autenticavel;
 import serializaveis.SerializavelAbstract;
 import serializaveis.StringSerializavel;
 
@@ -12,7 +13,7 @@ import util.IO;
  * Classe das entidades cliente.
  */
 
-public class Cliente extends SerializavelAbstract implements Entidade
+public class Cliente extends SerializavelAbstract implements Entidade, Autenticavel
 {
 	private int id;
 	private String nome;
@@ -52,6 +53,7 @@ public class Cliente extends SerializavelAbstract implements Entidade
 		return this.nome = nome;
 	}
 
+	@Override
 	public String getEmail(){
 		return this.email;
 	}
@@ -60,6 +62,7 @@ public class Cliente extends SerializavelAbstract implements Entidade
 		return this.email = email;
 	}
 	
+	@Override
 	public String getSenha() {
 		return senha;
 	}
@@ -74,12 +77,10 @@ public class Cliente extends SerializavelAbstract implements Entidade
 	 *  
 	 * @return O nome lido.
 	 */
-	
 
-	
-	public String readName()
+	public String readNome()
 	{
-		return setNome( IO.readLine("\nInforme o nome do cliente: ") );
+		return setNome( IO.readLine("\nInforme o seu nome: ") );
 	}
 	
 	/**
@@ -89,13 +90,22 @@ public class Cliente extends SerializavelAbstract implements Entidade
 	 * @return O email lido.
 	 */
 	
+	@Override
 	public String readEmail()
 	{
-		return setEmail( IO.readLineUntilEmail("\nInforme o email do cliente: ") );
+		return setEmail( IO.readLineUntilEmail("\nInforme o seu email: ") );
 	}
 	
+	/**
+	 * Lê a senha do cliente e redefine interiormente o campo
+	 * {@link #senha} desta entidade.
+	 * 
+	 * @return A senha lida.
+	 */
+	
+	@Override
 	public String readSenha() {
-		return setSenha( IO.readSenha("Digite sua senha: ") );
+		return setSenha( IO.readSenha("\nInforme a sua senha: ") );
 	}
 	
 	@Override

@@ -143,11 +143,7 @@ public class Compra extends SerializavelAbstract implements Entidade
 	}
 	
 	public void listarProdutosDaCompra(ArrayList<ItemComprado> itensComprados) {
-		//int[] listaItensComprados = Main.indiceCompraItemComprado.listarDadosComAChave(this.id);
-		int size = itensComprados.size();
-		for(int i=0; i < size; i++) {
-			IO.println(itensComprados.get(i));
-		}
+		itensComprados.forEach( (itemComprado) -> IO.println(itemComprado) );
 	}
 
 	@Override
