@@ -6,7 +6,6 @@ import crud.Arquivo;
 import entidades.Cliente;
 import entidades.Funcionario;
 import entidades.Produto;
-import gerenciadores.GerenciadorLogin;
 
 /**
  * Classe que gerencia a interação com o usuário.
@@ -14,30 +13,9 @@ import gerenciadores.GerenciadorLogin;
 
 public class CrudFuncionario extends CrudAbstract<Funcionario>
 {
-	GerenciadorLogin<Funcionario> gerenciadorLogin;
-	
 	public CrudFuncionario(Arquivo<Funcionario> database)
 	{
 		super(database);
-		
-		try
-		{
-			this.gerenciadorLogin =
-				new GerenciadorLogin<>(
-					database,
-					Funcionario.class.getConstructor()
-				);
-		}
-		
-		catch (NoSuchMethodException | SecurityException e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	public GerenciadorLogin<Funcionario> getGerenciadorLogin()
-	{
-		return gerenciadorLogin;
 	}
 	
 	public void menuInclusao()

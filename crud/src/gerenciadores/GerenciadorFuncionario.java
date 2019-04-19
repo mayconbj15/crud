@@ -7,9 +7,24 @@ import util.IO;
 
 public class GerenciadorFuncionario {
 	//private Funcionario funcionario;
+	GerenciadorLogin<Funcionario> gerenciadorLogin;
 	
 	public GerenciadorFuncionario(Funcionario funcionario) {
 		//this.funcionario = funcionario;
+		
+		try
+		{
+			this.gerenciadorLogin =
+				new GerenciadorLogin<>(
+					Main.databaseFuncionario,
+					Funcionario.class.getConstructor()
+				);
+		}
+		
+		catch (NoSuchMethodException | SecurityException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public GerenciadorFuncionario()
@@ -33,7 +48,7 @@ public class GerenciadorFuncionario {
 	}
 	
 	public void menu(){
-		Funcionario usuarioLogado = Main.crudFuncionario.getGerenciadorLogin().menuAutenticacao();
+		Funcionario usuarioLogado = gerenciadorLogin.menuAutenticacao();
 		
 		if (usuarioLogado != null)
 		{

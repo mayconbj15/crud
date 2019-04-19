@@ -3,35 +3,13 @@ package user;
 import crud.Arquivo;
 
 import entidades.Cliente;
-import gerenciadores.GerenciadorLogin;
 import util.IO;
 
 public class CrudCliente extends CrudAbstract<Cliente>
 {
-	GerenciadorLogin<Cliente> gerenciadorLogin;
-	
 	public CrudCliente(Arquivo<Cliente> database)
 	{
 		super(database);
-		
-		try
-		{
-			this.gerenciadorLogin =
-				new GerenciadorLogin<Cliente>(
-					database,
-					Cliente.class.getConstructor()
-				);
-		}
-		
-		catch (NoSuchMethodException | SecurityException e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	public GerenciadorLogin<Cliente> getGerenciadorLogin()
-	{
-		return gerenciadorLogin;
 	}
 	
 	public int menuInclusao()

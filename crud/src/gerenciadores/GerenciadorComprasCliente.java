@@ -13,10 +13,25 @@ import java.util.ArrayList;
 public class GerenciadorComprasCliente {
 	private Cliente cliente;
 	//private Compra compra;
+	GerenciadorLogin<Cliente> gerenciadorLogin;
 	
 	public GerenciadorComprasCliente(Cliente cliente, Compra compra) {
 		this.cliente = cliente;
 		//this.compra = compra;
+		
+		try
+		{
+			this.gerenciadorLogin =
+				new GerenciadorLogin<Cliente>(
+					Main.databaseCliente,
+					Cliente.class.getConstructor()
+				);
+		}
+		
+		catch (NoSuchMethodException | SecurityException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public GerenciadorComprasCliente() {
@@ -129,7 +144,7 @@ public class GerenciadorComprasCliente {
 	}
 	
 	public void menu() {
-		Cliente usuarioLogado = Main.crudCliente.getGerenciadorLogin().menuAutenticacao();
+		Cliente usuarioLogado = gerenciadorLogin.menuAutenticacao();
 		
 		if (usuarioLogado != null)
 		{
