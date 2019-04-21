@@ -53,14 +53,22 @@ public class GerenciadorLogin<TIPO_ENTIDADE extends SerializavelAbstract & Entid
 			if (user != null)
 			{
 				user.readNome();
-				user.readEmail();
+				String email = user.readEmail();
 				user.readSenha();
 				
-				int userId = database.writeObject(user);
-				
-				if (userId != -1)
+				if (Main.indiceEmailUsuarioIdUsuario.pesquisarDadoPelaChave(email) == Integer.MIN_VALUE)
 				{
-					Main.indiceEmailUsuarioIdUsuario.inserir(user.getEmail(), user.getId());
+					int userId = database.writeObject(user);
+					
+					if (userId != -1)
+					{
+						Main.indiceEmailUsuarioIdUsuario.inserir(email, userId);
+					}
+				}
+				
+				else
+				{
+					IO.println("Este e-mail já está em uso.");
 				}
 			}
 		}
@@ -123,8 +131,6 @@ public class GerenciadorLogin<TIPO_ENTIDADE extends SerializavelAbstract & Entid
 	
 	/**
 	 * Tenta logar com as credenciais do suposto usuário informado.
-	 * 
-	 * @param supposedUser Suposto usuário válido.
 	 * 
 	 * @return {@code null} se algo der errado. Caso contrário,
 	 * retorna o real usuário com as credenciais informadas.
