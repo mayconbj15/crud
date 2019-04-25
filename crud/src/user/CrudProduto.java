@@ -173,6 +173,17 @@ public class CrudProduto extends CrudAbstract<Produto>
 			alterar(idProduto, produto);
 		}
 	}
+	
+	public void changeQuantity(int idProduto, int quantity) {
+		Produto produto = database.readObject(idProduto);
+		
+		if(produto != null) {
+			produto.setQuantidade(produto.getQuantidade() + quantity);
+			
+			alterar(idProduto, produto);
+		}
+		
+	}
 
 	public void menuAlteracao()
 	{ 

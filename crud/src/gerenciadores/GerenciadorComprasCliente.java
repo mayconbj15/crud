@@ -79,6 +79,22 @@ public class GerenciadorComprasCliente {
 	}
 	
 	/**
+	 * Método que retira a quantidade de produtos comprados pelo cliente do estoque
+	 * @param itensComprados
+	 */
+	private void decreaseQuantityOfProducts(ArrayList<ItemComprado> itensComprados) {
+		//retirar a quantidade comprada do bando de dados
+		int size = itensComprados.size();
+		ItemComprado itemComprado;
+		
+		for(int i=0; i < size; i++) {
+			itemComprado = itensComprados.get(i);
+			Main.crudProduto.changeQuantity(itemComprado.getIdProduto(), -(itemComprado.getQuantidade()));
+		}
+
+	}
+	
+	/**
 	 * Método que cria uma nova compra e a adiciona à database relacionando-a com o
 	 * idCliente do atual cliente que está logado na Crud e faz os relacionamento N:N
 	 * de ItemComprado com Compra e ItemComprado com Produto
@@ -128,6 +144,8 @@ public class GerenciadorComprasCliente {
 				else
 				{
 					Main.indiceClienteCompra.inserir(compra.getIdCliente(), idCompra);
+					
+					decreaseQuantityOfProducts(itensComprados);
 				}
 				
 				return compra;
