@@ -82,14 +82,14 @@ public class GerenciadorComprasCliente {
 	 * Método que retira a quantidade de produtos comprados pelo cliente do estoque
 	 * @param itensComprados
 	 */
-	private void decreaseQuantityOfProducts(ArrayList<ItemComprado> itensComprados) {
+	private void diminuirEstoque(ArrayList<ItemComprado> itensComprados) {
 		//retirar a quantidade comprada do bando de dados
 		int size = itensComprados.size();
 		ItemComprado itemComprado;
 		
 		for(int i=0; i < size; i++) {
 			itemComprado = itensComprados.get(i);
-			Main.crudProduto.changeQuantity(itemComprado.getIdProduto(), -(itemComprado.getQuantidade()));
+			Main.crudProduto.alterarQuantidade(itemComprado.getIdProduto(), -(itemComprado.getQuantidade()));
 		}
 
 	}
@@ -145,7 +145,7 @@ public class GerenciadorComprasCliente {
 				{
 					Main.indiceClienteCompra.inserir(compra.getIdCliente(), idCompra);
 					
-					decreaseQuantityOfProducts(itensComprados);
+					diminuirEstoque(itensComprados);
 				}
 				
 				return compra;
