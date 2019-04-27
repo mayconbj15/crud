@@ -50,13 +50,36 @@ public class CrudCompra extends CrudAbstract<Compra>
 	 * Caso contrário, retorna {@code true}.
 	 */
 	
-	public Compra alterarValorTotal(int id)
+	public Compra alterar(int id, int cod)
 	{
-		// procurar a categoria desejada na base de dados
-		Compra compra=  database.readObject(id);
+		// procurar a compra desejada na base de dados
+		Compra compra =  database.readObject(id);
 		
-		if (compra != null) { // checa se a categoria foi encontrada	
+		if (compra != null) // checa se a categoria foi encontrada 
+		{ 
 			// [EM DESENVOLVIMENTO]
+			switch (cod)
+			{
+				case 0:
+					compra = null;
+					IO.println("Operação cancelada\n");
+					break;
+
+				case 1:
+					compra.readValorTotal();
+					break;					
+					
+				default:
+					compra = null;
+					IO.println("\nOpção inválida !\n");
+					break;
+			}					
+			
+			if (compra != null)
+			{
+				compra = alterar(id, compra);
+			}
+
 		}
 		
 		else
@@ -65,8 +88,35 @@ public class CrudCompra extends CrudAbstract<Compra>
 		}
 
 		return compra;
+		
 	}//end alterar()
 	
+	public void menuAlteracao()
+	{ 
+		int id = IO.readint("Digite o id da COMPRA a ser alterada: ");
+
+		//testar antes se o id existe
+		if(database.idIsValid(id))
+		{
+			Crud.menu
+			(
+				"Alteração",
+				"O que deseja alterar na Compra ?",
+				new String[] { "Data", "Valor total" },
+				new Runnable[]
+				{
+					() -> { alterar(id, 1); }
+					//() -> { alterar(id, 2); }
+				}
+			);
+		}
+		
+		else
+		{
+			IO.println("Id inválido!");
+		}
+	}
+
 
 	public void menuConsulta()
 	{
@@ -100,7 +150,8 @@ public class CrudCompra extends CrudAbstract<Compra>
 		listar();		
 	}
 
-	public void menuExclusao(){
+	public void menuExclusao()
+	{
 		int cod = -1; //codigo de selecao
 		int id = IO.readint("Digite o id da compra a ser removida: ");
 
@@ -113,14 +164,17 @@ public class CrudCompra extends CrudAbstract<Compra>
 			IO.println("");
 			cod = IO.readint("Opção: ");
 			
-			if (cod == 1){
+			if (cod == 1)
+			{
 				excluir(id);
 			}
-			else if(cod == 2) {
+			else if(cod == 2) 
+			{
 				IO.println("Operação cancelada");
 			}
 		}
-		else{
+		else
+		{
 			IO.println("Id inválido!");
 		}
 		

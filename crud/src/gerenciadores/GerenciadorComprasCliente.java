@@ -169,7 +169,8 @@ public class GerenciadorComprasCliente {
 		);
 	}
 	
-	public void menu() {
+	public void menu() 
+	{
 		Cliente usuarioLogado = gerenciadorLogin.menuAutenticacao();
 		
 		if (usuarioLogado != null)
