@@ -233,7 +233,8 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 	
 	public void listarProdutos(int id) 
 	{				
-		if(Main.crudProduto != null){
+		if(Main.crudProduto != null)
+		{
 			int [] lista = Main.indiceCategoriaProduto.listarDadosComAChave(id);
 			int tamanho = lista.length;
 			

@@ -30,7 +30,8 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 	 * @return ItemComprado correspondente à compra.
 	 */
 	
-	public ItemComprado novoItemComprado(int idCompra) {
+	public ItemComprado novoItemComprado(int idCompra) 
+	{
 		int quantidadeDeProdutos = 0;
 		int idProduto = IO.readLineUntilPositiveInt("\nQual produto deseja comprar (Digite o id) ? ");
 		Produto produto = Main.databaseProduto.readObject(idProduto);
@@ -53,7 +54,8 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 		return itemComprado;
 	}
 	
-	public void inserirItensComprados(ArrayList<ItemComprado> itensComprados) {
+	public void inserirItensComprados(ArrayList<ItemComprado> itensComprados) 
+	{
 		if(itensComprados != null) {
 			int size = itensComprados.size();
 			int success = 0;
@@ -64,11 +66,13 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 		}
 	}
 	
-	private int inserirItemComprado(ItemComprado itemComprado) {
+	private int inserirItemComprado(ItemComprado itemComprado) 
+	{
 		int success = -1;
 		success = Main.crudItemComprado.inserir(itemComprado);
 		
-		if(success != -1) {
+		if(success != -1) 
+		{
 			// criando o relacionamento da compra com o item comprado e
 			// do produto com o item comprado
 			Main.indiceCompraItemComprado.inserir(itemComprado.getIdCompra(), itemComprado.getId());
@@ -105,14 +109,14 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 	 * Caso contrário, retorna {@code true}.
 	 */
 	
-	public boolean alterar(int id, int cod)
+	public ItemComprado alterar(int id, int cod)
 	{
 		boolean success = false;
 
-		// procurar a categoria desejada na base de dados
-		Categoria categoria =  database.readObject(id);
+		// procurar o item comprado desejado na base de dados
+		ItemComprado itemComprado =  database.readObject(id);
 		
-		if (categoria != null) // checa se a categoria foi encontrada
+		if (itemComprado != null) // checa se a item comprado foi encontrado
 		{
 			success = true;
 			
@@ -124,7 +128,7 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 					break;
 
 				case 1:
-					categoria.readName();
+					itemComprado.readQuantity();
 					break;
 					
 				default:
@@ -133,9 +137,9 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 					break;
 			}
 			
-			if (success)
+			if (itemComprado != null)
 			{
-				success = alterar(id, categoria);
+				itemComprado = alterar(id, itemComprado);
 			}
 		}
 		

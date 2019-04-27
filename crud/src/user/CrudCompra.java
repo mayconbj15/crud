@@ -17,7 +17,8 @@ public class CrudCompra extends CrudAbstract<Compra>
 	{	
 		int success = -1;
 		
-		if(compra != null) {
+		if(compra != null) 
+		{
 			success = inserir(compra);
 		}
 
@@ -73,13 +74,13 @@ public class CrudCompra extends CrudAbstract<Compra>
 					compra = null;
 					IO.println("\nOpção inválida !\n");
 					break;
-			}					
+					
+			}//end switch-case					
 			
 			if (compra != null)
 			{
 				compra = alterar(id, compra);
 			}
-
 		}
 		
 		else
@@ -102,11 +103,10 @@ public class CrudCompra extends CrudAbstract<Compra>
 			(
 				"Alteração",
 				"O que deseja alterar na Compra ?",
-				new String[] { "Data", "Valor total" },
+				new String[] { "Itens comprados" },
 				new Runnable[]
 				{
-					() -> { alterar(id, 1); }
-					//() -> { alterar(id, 2); }
+					() -> { alterar(id, 1); }					
 				}
 			);
 		}
@@ -156,7 +156,8 @@ public class CrudCompra extends CrudAbstract<Compra>
 		int id = IO.readint("Digite o id da compra a ser removida: ");
 
 		//testar antes se o id existe
-		if (database.idIsValid(id)){
+		if (database.idIsValid(id))
+		{
 			IO.println("Realmente deseja excluir a compra " + database.readObject(id).getId() + " ?");
 			IO.println("Digite:");
 			IO.println("1 Sim");

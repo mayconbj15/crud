@@ -10,12 +10,14 @@ import util.IO;
 
 import java.util.ArrayList;
 
-public class GerenciadorComprasCliente {
+public class GerenciadorComprasCliente 
+{
 	private Cliente cliente;
 	//private Compra compra;
 	GerenciadorLogin<Cliente> gerenciadorLogin;
 	
-	public GerenciadorComprasCliente(Cliente cliente, Compra compra) {
+	public GerenciadorComprasCliente(Cliente cliente, Compra compra) 
+	{
 		this.cliente = cliente;
 		//this.compra = compra;
 		
@@ -64,13 +66,15 @@ public class GerenciadorComprasCliente {
 		confirmed = IO.readint("\nConfirma (1-Sim 2-Não)? ") == 1;
 		IO.println("");
 		
-		if(confirmed) {
+		if(confirmed) 
+		{
 			// adiciona os itens comprados à base de dados e também cria
 			// o relacionamento deles com a compra e os produtos por meio
 			// dos índices compostos
 			Main.crudItemComprado.inserirItensComprados(itensComprados);
 		}
-		else {
+		else 
+		{
 			//cancelar compra, apenas não insere no banco de dados
 			IO.println("Compra cancelada");
 		}
@@ -82,12 +86,14 @@ public class GerenciadorComprasCliente {
 	 * Método que retira a quantidade de produtos comprados pelo cliente do estoque
 	 * @param itensComprados
 	 */
-	private void diminuirEstoque(ArrayList<ItemComprado> itensComprados) {
+	private void diminuirEstoque(ArrayList<ItemComprado> itensComprados) 
+	{
 		//retirar a quantidade comprada do bando de dados
 		int size = itensComprados.size();
 		ItemComprado itemComprado;
 		
-		for(int i=0; i < size; i++) {
+		for(int i=0; i < size; i++) 
+		{
 			itemComprado = itensComprados.get(i);
 			Main.crudProduto.alterarQuantidade(itemComprado.getIdProduto(), -(itemComprado.getQuantidade()));
 		}
@@ -102,7 +108,8 @@ public class GerenciadorComprasCliente {
 	 * @return O id da compra se tudo der certo. Caso contrário, -1.
 	 */
 	
-	private int menuNovaCompra() {
+	private int menuNovaCompra() 
+	{
 		return
 		Main.databaseCompra.writeObject // fornece o id da entidade antes de inseri-la de fato
 		(
@@ -153,7 +160,8 @@ public class GerenciadorComprasCliente {
 		);
 	}
 	
-	private void menuCliente() {
+	private void menuCliente() 
+	{
 		Crud.menu
 		(
 			"Cliente",

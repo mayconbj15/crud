@@ -12,8 +12,8 @@ import gerenciadores.GerenciadorFuncionario;
  * Classe que gerencia a interação com o usuário.
  */
 
-public class Crud {
-
+public class Crud 
+{
 	public static void gerarCabecalhoEOpcoes(String nome, String mensagem, String[] opcoes)
 	{
 		IO.println("[Menu " + nome + "]");

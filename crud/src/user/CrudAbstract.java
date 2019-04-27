@@ -111,14 +111,15 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends SerializavelAbstract & 
 		{
 			TIPO_ENTIDADE entity = database.readObject(id);
 			
-			if(entity != null){
+			if(entity != null)
+			{
 				IO.println( "\n" + entity.print());
 				success = true;
 			}
-			else{
+			else
+			{
 				IO.println("Entidade inexistente");
-			}
-				
+			}				
 		}
 		
 		else
