@@ -69,7 +69,8 @@ public class CrudCompra extends CrudAbstract<Compra>
 
 				case 1:
 					IO.println("Qual dos seguintes produtos deseja alterar? ");					
-					listarItensComprados(id);
+					CrudItemComprado.listarItensComprados(id);					
+					Main.crudItemComprado.menuAlteracao();
 					
 					break;					
 					
@@ -102,10 +103,10 @@ public class CrudCompra extends CrudAbstract<Compra>
 		//testar antes se o id existe
 		if(database.idIsValid(id))
 		{
-			Crud.menu
+			Crud.noBackMenu
 			(
 				"Alteração",
-				"O que deseja alterar na Compra ?",
+				"O que deseja alterar na compra ?",
 				new String[] { "Itens comprados" },
 				new Runnable[]
 				{
@@ -138,7 +139,7 @@ public class CrudCompra extends CrudAbstract<Compra>
 			new Runnable[]
 			{
 				() -> { listarCompras(); },
-				() -> { listarItensComprados( IO.readint("Entre com o id da compra desejada: ") ); }
+				() -> { CrudItemComprado.listarItensComprados( IO.readint("Entre com o id da compra desejada: ") ); }
 			}
 		);
 		
@@ -148,23 +149,7 @@ public class CrudCompra extends CrudAbstract<Compra>
 	{
 		IO.println("Compras documentadas: ");
 		listar();
-	}
-	
-	/**
-	 * Listar todos os produtos de uma compra dado o seu id.
-	 * 
-	 * @param id
-	 */
-	public void listarItensComprados(int id) 
-	{
-		int [] lista = Main.indiceCompraItemComprado.listarDadosComAChave(id);
-		int tamanho = lista.length;							
-		
-		for(int y = 0; y < tamanho; y++)
-		{
-			Main.crudItemComprado.consultar(lista[y]);
-		}//end for
-	}
+	}	
 
 	public void menuExclusao()
 	{
