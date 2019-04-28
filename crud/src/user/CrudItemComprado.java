@@ -149,6 +149,7 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 		}
 
 		return success;
+		
 	}//end alterar()
 	
 	/**
@@ -233,7 +234,7 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 			IO.println("\nErro ao alterar categoria !\n");
 		}
 	}//end alterarCategoria()
-
+/*
 	public void menuAlteracao()
 	{ 
 		listarCategorias();
@@ -251,6 +252,36 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 			cod = IO.readint("Opção: ");
 			
 			alterar(id, cod);
+		}
+		
+		else
+		{
+			IO.println("Id inválido!");
+		}
+	}
+*/
+	public void menuAlteracao()
+	{ 
+		int id = IO.readint("Digite o id do item comprado a ser alterado: ");
+
+		//testar antes se o id existe
+		if(database.idIsValid(id))
+		{
+			Crud.noBackMenu
+			(
+				"Alteração",
+				"O que deseja alterar no produto ?",
+				new String[] { "categoria", "nome", "descrição", "preço", "fornecedor", "quantidade" },
+				new Runnable[]
+				{
+					() -> { alterar(id, 1); },
+					() -> { alterar(id, 2); },
+					() -> { alterar(id, 3); },
+					() -> { alterar(id, 4); },
+					() -> { alterar(id, 5); },
+					() -> { alterar(id, 6); }
+				}
+			);
 		}
 		
 		else

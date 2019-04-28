@@ -3,6 +3,7 @@ package user;
 import crud.Arquivo;
 
 import entidades.Compra;
+import entidades.ItemComprado;
 
 import util.IO;
 
@@ -54,9 +55,9 @@ public class CrudCompra extends CrudAbstract<Compra>
 	public Compra alterar(int id, int cod)
 	{
 		// procurar a compra desejada na base de dados
-		Compra compra =  database.readObject(id);
+		Compra compra =  database.readObject(id);		
 		
-		if (compra != null) // checa se a categoria foi encontrada 
+		if (compra != null) // checa se a compra foi encontrada 
 		{ 
 			// [EM DESENVOLVIMENTO]
 			switch (cod)
@@ -67,7 +68,9 @@ public class CrudCompra extends CrudAbstract<Compra>
 					break;
 
 				case 1:
-					compra.readValorTotal();
+					IO.println("Qual dos seguintes produtos deseja alterar? ");					
+					listarItensComprados(id);
+					
 					break;					
 					
 				default:
@@ -124,30 +127,43 @@ public class CrudCompra extends CrudAbstract<Compra>
 		
 		consultar(id);
 	}
-	
-	/**
-	 * Lista todos os produtos que estão na categoria com o id informado.
-	 * 
-	 * @param id Id da categoria a se listar os produtos.
-	 */
-	
-	/*public void listarProdutos(int id) 
-	{				
-		if(Main.crudProduto != null){
-			int [] lista = Main.indiceComposto.listarDadosComAChave(id);
-			int tamanho = lista.length;
 			
-			for(int y = 0; y < tamanho; y++)
-			{
-				Main.crudProduto.consultar(lista[y]);
-			}//end for
-		}
-		
-	}//end listarProdutos()*/
-	
 	public void menuListar()
 	{
-		listar();		
+		Crud.noBackMenu
+		(
+			"Listagem",
+			"O que deseja listar ?",
+			new String[] { "todas as compras", "itens comprados de uma compra" },
+			new Runnable[]
+			{
+				() -> { listarCompras(); },
+				() -> { listarItensComprados( IO.readint("Entre com o id da compra desejada: ") ); }
+			}
+		);
+		
+	}//end menuListar()
+	
+	public void listarCompras() 
+	{
+		IO.println("Compras documentadas: ");
+		listar();
+	}
+	
+	/**
+	 * Listar todos os produtos de uma compra dado o seu id.
+	 * 
+	 * @param id
+	 */
+	public void listarItensComprados(int id) 
+	{
+		int [] lista = Main.indiceCompraItemComprado.listarDadosComAChave(id);
+		int tamanho = lista.length;							
+		
+		for(int y = 0; y < tamanho; y++)
+		{
+			Main.crudItemComprado.consultar(lista[y]);
+		}//end for
 	}
 
 	public void menuExclusao()

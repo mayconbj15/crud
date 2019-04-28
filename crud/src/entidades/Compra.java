@@ -106,12 +106,14 @@ public class Compra extends SerializavelAbstract implements Entidade
 	 * @param itensComprados
 	 * @return o valor total da compra somando todos os itens comprados
 	 */
-	public static float readValorTotal(ArrayList<ItemComprado> itensComprados) {
+	public static float readValorTotal(ArrayList<ItemComprado> itensComprados) 
+	{
 		float valorTotal = 0;
 		int size = itensComprados.size();
 		ItemComprado itemComprado;
 		
-		for(int i=0; i < size; i++) {
+		for(int i=0; i < size; i++) 
+		{
 			itemComprado = itensComprados.get(i);
 			valorTotal += (float) itemComprado.getQuantidade() * itemComprado.getValorUnitario();
 		}

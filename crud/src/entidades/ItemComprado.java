@@ -1,6 +1,7 @@
 package entidades;
 
 import java.io.*;
+import java.util.ArrayList;
 
 import serializaveis.SerializavelAbstract;
 import user.Main;
@@ -115,7 +116,7 @@ public class ItemComprado extends SerializavelAbstract implements Entidade
 		return setValorUnitario(
 			IO.readLineUntilPositiveFloat("\nInforme o valor unitário do item: ")
 		);
-	}
+	}		
 	
 	@Override
 	public String toString(){
@@ -151,6 +152,10 @@ public class ItemComprado extends SerializavelAbstract implements Entidade
 			Float.BYTES;
 	}
 
+	public void listarItensComprados(ArrayList<ItemComprado> itensComprados) {
+		itensComprados.forEach( (itemComprado) -> IO.println(itemComprado) );
+	}
+	
 	/**
 	 * <p>
 	 * Obs.: a estrutura do arranjo é a seguinte:
