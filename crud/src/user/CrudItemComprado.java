@@ -109,7 +109,7 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 	 * Caso contrário, retorna {@code true}.
 	 */
 	
-	public boolean alterar(int id, int cod)
+	public boolean alterar(int id)
 	{
 		boolean success = false;
 
@@ -120,23 +120,8 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 		{
 			success = true;
 			
-			switch (cod)
-			{
-				case 0:
-					success = false;
-					IO.println("Operação cancelada\n");
-					break;
-
-				case 1:
-					itemComprado.readQuantity();
-					break;
-					
-				default:
-					success = false;
-					IO.println("\nOpção inválida !\n");
-					break;
-			}
-			
+			itemComprado.readQuantity();
+									
 			if (itemComprado != null)
 			{
 				itemComprado = alterar(id, itemComprado);
@@ -152,31 +137,7 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 		
 	}//end alterar()
 	
-	public void menuAlteracao()
-	{ 
-		int id = IO.readint("Digite o id do item a ser alterado: ");
-
-		//testar antes se o id existe
-		if(database.idIsValid(id))
-		{
-			Crud.noBackMenu
-			(
-				"Alteração",
-				"O que deseja alterar no produto ?",
-				new String[] { "quantidade" },
-				new Runnable[]
-				{
-					() -> { alterar(id, 1); }					
-				}
-			);
-		}
-		
-		else
-		{
-			IO.println("Id inválido!");
-		}
-	}
-
+	
 	public void menuConsulta()
 	{
 		int id = IO.readint("Digite o id da categoria a ser consultada: ");

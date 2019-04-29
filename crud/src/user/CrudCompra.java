@@ -3,7 +3,6 @@ package user;
 import crud.Arquivo;
 
 import entidades.Compra;
-import entidades.ItemComprado;
 
 import util.IO;
 
@@ -56,6 +55,7 @@ public class CrudCompra extends CrudAbstract<Compra>
 	{
 		// procurar a compra desejada na base de dados
 		Compra compra =  database.readObject(id);		
+		int idItensComprados = -1;
 		
 		if (compra != null) // checa se a compra foi encontrada 
 		{ 
@@ -69,9 +69,9 @@ public class CrudCompra extends CrudAbstract<Compra>
 
 				case 1:
 					IO.println("Qual dos seguintes produtos deseja alterar? ");					
-					CrudItemComprado.listarItensComprados(id);					
-					Main.crudItemComprado.menuAlteracao();
-					
+					CrudItemComprado.listarItensComprados(id);		
+					idItensComprados = IO.readint("Digite o id do item comprado: ");
+					Main.crudItemComprado.alterar(idItensComprados);					
 					break;					
 					
 				default:
@@ -164,6 +164,7 @@ public class CrudCompra extends CrudAbstract<Compra>
 			IO.println("1 Sim");
 			IO.println("2 Não");
 			IO.println("");
+			
 			cod = IO.readint("Opção: ");
 			
 			if (cod == 1)
