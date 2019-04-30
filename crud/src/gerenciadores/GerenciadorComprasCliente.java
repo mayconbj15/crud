@@ -170,7 +170,7 @@ public class GerenciadorComprasCliente
 			new Runnable[]
 			{
 				() -> { menuNovaCompra(); IO.pause(); },
-				() -> { IO.pause(); },
+				() -> { Main.crudCompra.menuExclusao(); IO.pause(); },
 				() -> { Main.crudCompra.menuConsulta(); IO.pause(); },
 				() -> { Main.crudCompra.menuListar(); IO.pause(); }
 			}

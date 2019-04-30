@@ -160,7 +160,7 @@ public class CrudCompra extends CrudAbstract<Compra>
 		//testar antes se o id existe
 		if (database.idIsValid(id))
 		{
-			IO.println("Realmente deseja excluir a compra " + database.readObject(id).getId() + " ?");
+			IO.println("Realmente deseja excluir a compra " + id + " ?");
 			IO.println("Digite:");
 			IO.println("1 Sim");
 			IO.println("2 Não");
@@ -183,4 +183,5 @@ public class CrudCompra extends CrudAbstract<Compra>
 		}
 		
 	}//end menuExclusao
-}
+		
+}//end class CrudCompra
