@@ -3,7 +3,6 @@ package user;
 import crud.Arquivo;
 
 import entidades.Compra;
-
 import util.IO;
 
 public class CrudCompra extends CrudAbstract<Compra>
@@ -51,11 +50,12 @@ public class CrudCompra extends CrudAbstract<Compra>
 	 * Caso contrário, retorna {@code true}.
 	 */
 	
-	public Compra alterar(int id, int cod)
+	public boolean alterar(int id, int cod)
 	{
 		// procurar a compra desejada na base de dados
 		Compra compra =  database.readObject(id);		
 		int idItensComprados = -1;
+		boolean success = false;
 		
 		if (compra != null) // checa se a compra foi encontrada 
 		{ 
@@ -70,12 +70,13 @@ public class CrudCompra extends CrudAbstract<Compra>
 				case 1:
 					IO.println("Qual dos seguintes produtos deseja alterar? ");					
 					CrudItemComprado.listarItensComprados(id);		
-					idItensComprados = IO.readint("Digite o id do item comprado: ");
-					Main.crudItemComprado.alterar(idItensComprados);					
+					idItensComprados = IO.readint("Digite o id do item comprado: ");					
+					success = Main.crudItemComprado.alterar(idItensComprados);					
 					break;					
 					
 				default:
 					compra = null;
+					success = false;
 					IO.println("\nOpção inválida !\n");
 					break;
 					
@@ -92,7 +93,7 @@ public class CrudCompra extends CrudAbstract<Compra>
 			IO.println("\nCategoria não encontrada.\n");
 		}
 
-		return compra;
+		return success;
 		
 	}//end alterar()
 	

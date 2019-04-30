@@ -326,11 +326,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 					}
 				}
 			);
-			
-			if (cod == 1)
-			{
-				
-			}//end if
+						
 		}		
 		else
 		{
