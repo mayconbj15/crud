@@ -179,7 +179,8 @@ public class HashDinamicaIntInt extends HashDinamica<IntSerializavel, IntSeriali
 	 * 
 	 * @param chave Chave a ser procurada.
 	 * 
-	 * @return lista com os dados correspondentes às chaves.
+	 * @return {@code null} se a chave não for encontrada. Caso
+	 * contrário, a lista com os dados correspondentes às chaves.
 	 */
 	
 	public int[] listarDadosComAChave(int chave)
@@ -188,7 +189,7 @@ public class HashDinamicaIntInt extends HashDinamica<IntSerializavel, IntSeriali
 			listarDadosComAChave(new IntSerializavel(chave));
 		int listSize = list.size();
 		
-		int[] dados = new int[listSize];
+		int[] dados = ( listSize == 0 ? null : new int[listSize] );
 		
 		for (int i = 0; i < listSize; i++)
 		{

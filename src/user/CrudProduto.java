@@ -1,8 +1,12 @@
 package user;
 
 import util.IO;
+import util.MyArray;
+
+import java.util.Arrays;
 
 import crud.Arquivo;
+import entidades.ItemComprado;
 import entidades.Produto;
 
 /**
@@ -248,11 +252,57 @@ public class CrudProduto extends CrudAbstract<Produto>
 		}
 	}
 
-	public void menuConsulta()
+	public void consultarComprasDeUmProduto()
 	{
-		int id = IO.readint("Digite o id do produto a ser alterado: ");
+		int id = IO.readint("Digite o id do produto cujas compras deseja-se consultar: ");
+		
+		int[] idsItensComprados = Main.indiceProdutoItemComprado.listarDadosComAChave(id);
+		
+		if (idsItensComprados != null)
+		{
+			int numeroDeComprasJaConsultadas = 0;
+			int[] idsDasComprasJaConsultadas = new int[idsItensComprados.length];
+			Arrays.fill(idsDasComprasJaConsultadas, -1);
+			
+			for (int idItemComprado : idsItensComprados)
+			{
+				ItemComprado itemComprado = Main.databaseItemComprado.readObject(idItemComprado);
+				
+				if (!MyArray.contains(itemComprado.getIdCompra(), idsDasComprasJaConsultadas))
+				{
+					idsDasComprasJaConsultadas[ numeroDeComprasJaConsultadas++ ] = itemComprado.getIdCompra();
+					
+					Main.crudCompra.consultar(itemComprado.getIdCompra());
+				}
+			}
+		}
+		
+		else
+		{
+			IO.println("Produto não encontrado.");
+		}
+	}
+	
+	public void consultarProduto()
+	{
+		int id = IO.readint("Digite o id do produto a ser consultado: ");
 		
 		consultar(id);
+	}
+	
+	public void menuConsulta()
+	{
+		Crud.menu
+		(
+			"Consulta",
+			"Qual das seguintes operações o senhor deseja realizar ?",
+			new String[] { "consultar produto", "consultar compras de um produto" },
+			new Runnable[]
+			{
+				() -> { consultarProduto(); IO.pause(); },
+				() -> { consultarComprasDeUmProduto(); IO.pause(); }
+			}
+		);
 	}
 
 	public void menuListar()
