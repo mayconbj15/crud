@@ -265,7 +265,6 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 	public void menuExclusao()
 	{
 		listarCategorias();
-		int cod = -1; //codigo de selecao
 		int id = IO.readint("Digite o id da categoria a ser removida: ");
 		IO.println("");
 
