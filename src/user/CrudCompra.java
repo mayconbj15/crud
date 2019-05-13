@@ -157,29 +157,37 @@ public class CrudCompra extends CrudAbstract<Compra>
 		int cod = -1; //codigo de selecao
 		int id = IO.readint("Digite o id da compra a ser removida: ");
 
-		//testar antes se o id existe
-		if (database.idIsValid(id))
+		// testar antes se há compras registradas no arquivo de itens comprados
+		if (Main.indiceCompraItemComprado.listarDadosComAChave(id) == null)
 		{
-			IO.println("Realmente deseja excluir a compra " + id + " ?");
-			IO.println("Digite:");
-			IO.println("1 Sim");
-			IO.println("2 Não");
-			IO.println("");
-			
-			cod = IO.readint("Opção: ");
-			
-			if (cod == 1)
+			//testar antes se o id existe
+			if (database.idIsValid(id))
 			{
-				excluir(id);
+				IO.println("Realmente deseja excluir a compra " + id + " ?");
+				IO.println("Digite:");
+				IO.println("1 Sim");
+				IO.println("2 Não");
+				IO.println("");
+				
+				cod = IO.readint("Opção: ");
+				
+				if (cod == 1)
+				{
+					excluir(id);
+				}
+				else if(cod == 2) 
+				{
+					IO.println("Operação cancelada");
+				}
 			}
-			else if(cod == 2) 
+			else
 			{
-				IO.println("Operação cancelada");
+				IO.println("Id inválido!");
 			}
 		}
 		else
 		{
-			IO.println("Id inválido!");
+			IO.println("ERRO: Há compras registrados no arquivo de itens comprados.");
 		}
 		
 	}//end menuExclusao

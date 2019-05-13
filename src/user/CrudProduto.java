@@ -222,33 +222,41 @@ public class CrudProduto extends CrudAbstract<Produto>
 	public void menuExclusao()
 	{ 
 		int id = IO.readint("Digite o id do produto a ser excluído: ");
-
-		//testar antes se o id existe
-		if (database.idIsValid(id))
-		{
-			Crud.noBackMenu
-			(
-				"Confirmação",
-				"Realmente deseja excluir o produto ?",
-				new String[] { "sim" },
-				new Runnable[]
-				{
-					() ->
-					{
-						Produto produtoExcluido = excluir(id);
-						
-						Main.indiceCategoriaProduto.excluir(
-							produtoExcluido.getIdCategoria(),
-							produtoExcluido.getId()
-						);
-					}
-				}
-			);
-		}
 		
+		// testar antes se há produtos registradas no arquivo de itens comprados
+		if(Main.indiceProdutoItemComprado.listarDadosComAChave(id) == null)
+		{
+			//testar antes se o id existe
+			if (database.idIsValid(id))
+			{
+				Crud.noBackMenu
+				(
+					"Confirmação",
+					"Realmente deseja excluir o produto ?",
+					new String[] { "sim" },
+					new Runnable[]
+					{
+						() ->
+						{
+							Produto produtoExcluido = excluir(id);
+							
+							Main.indiceCategoriaProduto.excluir(
+								produtoExcluido.getIdCategoria(),
+								produtoExcluido.getId()
+							);
+						}
+					}
+				);
+			}
+			
+			else
+			{
+				IO.println("Id inválido!");
+			}
+		}
 		else
 		{
-			IO.println("Id inválido!");
+			IO.println("ERRO: Há produtos registrados no arquivo de itens comprados.");
 		}
 	}
 
