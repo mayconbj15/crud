@@ -83,9 +83,9 @@ public class CrudItemComprado extends CrudAbstract<ItemComprado>
 	
 
 	/**
-	 * Altera um campo específico da categoria com id informado.
-	 * {@code cod} é responsável por indicar qual dos campos da
-	 * categoria deseja-se alterar.
+	 * Altera um campo específico de um item comprado com id informado.
+	 * {@code cod} é responsável por indicar qual dos campos do
+	 * item comprado deseja-se alterar.
 	 * 
 	 * <p></p>
 	 * 

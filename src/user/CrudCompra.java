@@ -25,9 +25,9 @@ public class CrudCompra extends CrudAbstract<Compra>
 	}
 
 	/**
-	 * Altera o valor total de uma categoria caso o valor unitário de uma compra seja alterado.
+	 * Altera o valor total de uma compra caso o valor unitário de uma compra seja alterado.
 	 * {@code cod} é responsável por indicar qual dos campos da
-	 * categoria deseja-se alterar.
+	 * compra deseja-se alterar.
 	 * 
 	 * <p></p>
 	 * 
