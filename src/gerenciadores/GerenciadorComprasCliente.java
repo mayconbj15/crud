@@ -166,11 +166,12 @@ public class GerenciadorComprasCliente
 		(
 			"Cliente",
 			"Qual das seguintes operações o senhor deseja realizar ?",
-			new String[] { "comprar", "desfazer uma compra", "consultar uma compra", "listar suas compras" },
+			new String[] { "comprar", "desfazer uma compra", "alterar uma compra", "consultar uma compra", "listar suas compras" },
 			new Runnable[]
 			{
 				() -> { menuNovaCompra(); IO.pause(); },
 				() -> { Main.crudCompra.menuExclusao(); IO.pause(); },
+				() -> { Main.crudCompra.menuAlteracao(); IO.pause(); },
 				() -> { Main.crudCompra.menuConsulta(); IO.pause(); },
 				() -> { Main.crudCompra.menuListar(); IO.pause(); }
 			}

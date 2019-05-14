@@ -59,7 +59,6 @@ public class CrudCompra extends CrudAbstract<Compra>
 		
 		if (compra != null) // checa se a compra foi encontrada 
 		{ 
-			// [EM DESENVOLVIMENTO]
 			switch (cod)
 			{
 				case 0:
@@ -90,7 +89,7 @@ public class CrudCompra extends CrudAbstract<Compra>
 		
 		else
 		{
-			IO.println("\nCategoria não encontrada.\n");
+			IO.println("\nCompra não encontrada.\n");
 		}
 
 		return success;
