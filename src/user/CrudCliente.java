@@ -206,56 +206,34 @@ public class CrudCliente extends CrudAbstract<Cliente>
 		
 		int id = IO.readint("Digite o id do cliente a ser removido: ");
 
-		//testar antes se o id existe
-		if (database.idIsValid(id))
+		// testar antes se há compras registradas para esse cliente
+		if (Main.indiceClienteCompra.listarDadosComAChave(id) == null)
 		{
-			Crud.menu
-			(
-				"Exclusão",
-				"Realmente deseja excluir o cliente ?",
-				new String[] { "sim" },
-				new Runnable[]
-				{
-					() ->
+			//testar antes se o id existe
+			if (database.idIsValid(id))
+			{
+				Crud.menu
+				(
+					"Exclusão",
+					"Realmente deseja excluir o cliente ?",
+					new String[] { "sim" },
+					new Runnable[]
 					{
-						int[] idsOfThePurchasesOfTheClient =
-							Main.indiceClienteCompra.listarDadosComAChave(id);
-						
-						if(idsOfThePurchasesOfTheClient.length == 0)
-						{
-							excluir(id);	
-						}
-						
-						else
-						{
-							Crud.menu
-							(
-								"Excluir Compras",
-								"AVISO: Ainda há compras registradas em nome deste cliente.\n" +
-								"Ainda sim deseja excluí-lo ?",
-								new String[] { "sim" },
-								new Runnable[]
-								{
-									() ->
-									{
-										// exclui o cliente da databaseCliente
-										excluir(id);
-										// exclui as compras do cliente
-										Main.databaseCompra.deleteObjects(idsOfThePurchasesOfTheClient);
-									}
-								}
-							);
-							
-						}//end if
+						() -> { excluir(id); }
 					}
-				}
-			);
+				);
+			}
+			
+			else
+			{
+				IO.println("Id inválido!");
+			}//end if
+			
 		}
-		
 		else
 		{
-			IO.println("Id inválido!");
-		}//end if
+			IO.println("ERRO: Há compras registrados para esse cliente.");
+		}
 		
 	}//end menuExclusao
 	

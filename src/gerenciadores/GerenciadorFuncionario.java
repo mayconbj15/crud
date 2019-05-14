@@ -38,11 +38,12 @@ public class GerenciadorFuncionario {
 		(
 			"Funcionário",
 			"Qual das seguintes entidades o senhor deseja manusear ?",
-			new String[] { "produto", "categoria" },
+			new String[] { "produto", "categoria", "cliente" },
 			new Runnable[]
 			{
 				() -> { Main.crudProduto.menu(); IO.pause(); },
-				() -> { Main.crudCategoria.menu(); IO.pause(); }
+				() -> { Main.crudCategoria.menu(); IO.pause(); },
+				() -> { Main.crudCliente.menu(); IO.pause(); }
 			}
 		);
 	}
