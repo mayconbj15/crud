@@ -4,10 +4,12 @@ import util.IO;
 import util.MyArray;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 
 import crud.Arquivo;
 import entidades.ItemComprado;
 import entidades.Produto;
+import entidades.Cliente;
 
 /**
  * Classe que gerencia a interação com o usuário.
@@ -318,6 +320,36 @@ public class CrudProduto extends CrudAbstract<Produto>
 		listar();
 	}
 
+	
+	/**
+	 * Método que lista os clientes que compraram um certo produto
+	 */
+	public void relatarProdutosClientes() {
+		IO.println("Relatório de quantos clientes compraram certo produto\n");
+		IO.println("PRODUTOS");
+		
+		ArrayList<Produto> produtos = Main.databaseProduto.list(); 
+		
+		for(Produto produto : produtos) {
+			IO.println(produto);
+		}
+		
+		int produto;
+		do {
+			produto = IO.readLineUntilPositiveInt("Qual produto deseja ver a relação dos clientes");
+		}while(!Main.databaseProduto.idIsValid(produto));
+		
+		
+		
+		int[] idsItensComprados = Main.indiceProdutoItemComprado.listarDadosComAChave(produto); //pega os itensComprados que tem esse produto
+		
+		for(int idCompra: idsItensComprados) {
+			Cliente cliente = Main.databaseCliente.readObject(Main.databaseCompra.readObject(idCompra).getIdCliente());
+			IO.println(cliente);
+		}
+	}
+	
+	
 	/**
 	 * Gerencia a interação com o usuário.
 	 */
