@@ -179,17 +179,10 @@ public class Produto extends SerializavelAbstract implements Entidade
 	@Override
 	public String print() {
 		
-		String categoryName = Main.crudCategoria.getCategoryName(idCategoria);
-		categoryName = ( categoryName == null ? "Desconhecido" : categoryName );
-		
 		return
 			"ID: " + this.id + '\n' +
 			"IDCategoria: " + this.idCategoria + '\n' +
-			"Nome da Categoria: " + categoryName + '\n' +
-			"Nome: " + this.nome + '\n' +
-			"Descrição: " + this.descricao + '\n' +
-			"Preço: " + this.preco + '\n' +
-			"Fornecedor: " + this.fornecedor + '\n' +
+			printToUser() +
 			"Quantidade: " + this.quantidade + '\n';
 	}
 
@@ -203,6 +196,20 @@ public class Produto extends SerializavelAbstract implements Entidade
 			"Preço: " + this.preco + '\n' +
 			"Fornecedor: " + this.fornecedor + '\n' +
 			"Quantidade: " + this.quantidade;
+	}
+	
+	@Override
+	public String printToUser(){
+		
+		String categoryName = Main.crudCategoria.getCategoryName(idCategoria);
+		categoryName = ( categoryName == null ? "Desconhecido" : categoryName );
+		
+		return
+			"Nome da Categoria: " + categoryName + '\n' +
+			"Nome: " + this.nome + '\n' +
+			"Descrição: " + this.descricao + '\n' +
+			"Preço: " + this.preco + '\n' +
+			"Fornecedor: " + this.fornecedor + '\n';
 	}
 
 	@Override

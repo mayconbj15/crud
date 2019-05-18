@@ -8,6 +8,7 @@ import util.IO;
 public class GerenciadorFuncionario {
 	//private Funcionario funcionario;
 	GerenciadorLogin<Funcionario> gerenciadorLogin;
+	public Funcionario usuarioLogado;
 	
 	public GerenciadorFuncionario(Funcionario funcionario) {
 		//this.funcionario = funcionario;
@@ -49,7 +50,7 @@ public class GerenciadorFuncionario {
 	}
 	
 	public void menu(){
-		Funcionario usuarioLogado = gerenciadorLogin.menuAutenticacao();
+		usuarioLogado = gerenciadorLogin.menuAutenticacao();
 		
 		if (usuarioLogado != null)
 		{

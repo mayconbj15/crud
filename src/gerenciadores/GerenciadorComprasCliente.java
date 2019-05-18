@@ -15,6 +15,7 @@ public class GerenciadorComprasCliente
 	private Cliente cliente;
 	//private Compra compra;
 	GerenciadorLogin<Cliente> gerenciadorLogin;
+	public Cliente usuarioLogado;
 	
 	public GerenciadorComprasCliente(Cliente cliente, Compra compra) 
 	{
@@ -166,21 +167,26 @@ public class GerenciadorComprasCliente
 		(
 			"Cliente",
 			"Qual das seguintes operações o senhor deseja realizar ?",
-			new String[] { "comprar", "desfazer uma compra", "alterar uma compra", "consultar uma compra", "listar suas compras" },
+			new String[]
+			{
+				"comprar", "desfazer uma compra", "alterar uma compra",
+				"consultar uma compra", "listar suas compras", "relatar produtos comprados"
+			},
 			new Runnable[]
 			{
 				() -> { menuNovaCompra(); IO.pause(); },
 				() -> { Main.crudCompra.menuExclusao(); IO.pause(); },
 				() -> { Main.crudCompra.menuAlteracao(); IO.pause(); },
 				() -> { Main.crudCompra.menuConsulta(); IO.pause(); },
-				() -> { Main.crudCompra.menuListar(); IO.pause(); }
+				() -> { Main.crudCompra.menuListar(); IO.pause(); },
+				() -> { Main.crudCompra.menuRelatarProdutos(); IO.pause(); }
 			}
 		);
 	}
 	
 	public void menu() 
 	{
-		Cliente usuarioLogado = gerenciadorLogin.menuAutenticacao();
+		usuarioLogado = gerenciadorLogin.menuAutenticacao();
 		
 		if (usuarioLogado != null)
 		{

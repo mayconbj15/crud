@@ -27,4 +27,13 @@ public interface Entidade
 	 */
 	
 	public String print();
+	
+	/**
+	 * Método que obtém apenas as informações úteis para o usuário
+	 * sobre a entidade.
+	 * 
+	 * @return uma representação da entidade para o usuário.
+	 */
+	
+	public String printToUser();
 }

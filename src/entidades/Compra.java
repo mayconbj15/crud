@@ -126,8 +126,7 @@ public class Compra extends SerializavelAbstract implements Entidade
 		return
 			"ID: " + this.id + '\n' +
 			"IDCliente: " + this.idCliente + '\n' +
-			"Data " + printData() + '\n' +
-			"Valor Total: " + this.valorTotal;
+			printToUser();
 	}
 	
 	public String printData() {
@@ -142,6 +141,14 @@ public class Compra extends SerializavelAbstract implements Entidade
 	@Override
 	public String print(){
 		return toString();
+	}
+
+	@Override
+	public String printToUser()
+	{
+		return
+				"Data " + printData() + '\n' +
+				"Valor Total: " + this.valorTotal;
 	}
 	
 	public void listarProdutosDaCompra(ArrayList<ItemComprado> itensComprados) {

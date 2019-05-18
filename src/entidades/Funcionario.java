@@ -109,13 +109,18 @@ public class Funcionario extends SerializavelAbstract implements Entidade, Auten
 	public String toString(){
 		return
 			"ID: " + this.id + '\n' +
-			"Nome: " + this.nome + '\n' +
-			"Email: " + this.email;
+			printToUser();
 	}
 	
 	@Override
 	public String print(){
 		return toString();
+	}
+	
+	@Override
+	public String printToUser(){
+		return "Nome: " + this.nome + '\n' +
+				"Email: " + this.email;
 	}
 
 	@Override

@@ -112,8 +112,7 @@ public class Cliente extends SerializavelAbstract implements Entidade, Autentica
 	public String toString(){
 		return
 			"ID: " + this.id + '\n' +
-			"Nome: " + this.nome + '\n' +
-			"Email: " + this.email;
+			printToUser();
 	}
 	
 	@Override
@@ -193,6 +192,14 @@ public class Cliente extends SerializavelAbstract implements Entidade, Autentica
 		{
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public String printToUser()
+	{
+		return
+				"Nome: " + this.nome + '\n' +
+				"Email: " + this.email;
 	}
 }
 

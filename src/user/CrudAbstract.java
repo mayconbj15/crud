@@ -98,12 +98,14 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends SerializavelAbstract & 
 	 * Consulta a entidade com o id informado.
 	 * 
 	 * @param id Id da entidade a ser consultada.
+	 * @param paraOUsuario Mostra apenas informações
+	 * úteis para o usuário.
 	 * 
 	 * @return {@code true} se tudo der certo;
 	 * {@code false} caso contrário.
 	 */
 	
-	public boolean consultar(int id)
+	private boolean consultar(int id, boolean paraOUsuario)
 	{
 		boolean success = false;
 		
@@ -113,7 +115,8 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends SerializavelAbstract & 
 			
 			if(entity != null)
 			{
-				IO.println( "\n" + entity.print());
+				IO.println( "\n" + ( paraOUsuario ? entity.printToUser() : entity.print() ));
+				
 				success = true;
 			}
 			else
@@ -128,6 +131,35 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends SerializavelAbstract & 
 		}
 		
 		return success;
+	}
+	
+	/**
+	 * Consulta a entidade com o id informado.
+	 * 
+	 * @param id Id da entidade a ser consultada.
+	 * 
+	 * @return {@code true} se tudo der certo;
+	 * {@code false} caso contrário.
+	 */
+	
+	public boolean consultar(int id)
+	{
+		return consultar(id, false);
+	}
+	
+	/**
+	 * Consulta a entidade com o id informado mostrando
+	 * apenas informações relevantes para o usuário.
+	 * 
+	 * @param id Id da entidade a ser consultada.
+	 * 
+	 * @return {@code true} se tudo der certo;
+	 * {@code false} caso contrário.
+	 */
+	
+	public boolean consultarParaOUsuario(int id)
+	{
+		return consultar(id, true);
 	}
 	
 	/**

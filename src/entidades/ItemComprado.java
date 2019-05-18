@@ -116,7 +116,7 @@ public class ItemComprado extends SerializavelAbstract implements Entidade
 		return setValorUnitario(
 			IO.readLineUntilPositiveFloat("\nInforme o valor unitário do item: ")
 		);
-	}		
+	}
 	
 	@Override
 	public String toString(){
@@ -124,14 +124,20 @@ public class ItemComprado extends SerializavelAbstract implements Entidade
 			"ID: " + this.id + '\n' +
 			"IDCompra: " + this.idCompra + '\n' +
 			"IDProduto: " + this.idProduto + '\n' +
-			"PRODUTO: " + '\n' + printProduto() + '\n' +  
-			"Quantidade: " + this.quantidade + '\n' + 
-			"Valor Unitário: " + this.valorUnitario + '\n';
+			printToUser();
 	}
 	
 	@Override
 	public String print(){
 		return toString();
+	}
+	
+	@Override
+	public String printToUser(){
+		return
+			"PRODUTO: " + '\n' + printProduto() + '\n' +  
+			"Quantidade: " + this.quantidade + '\n' + 
+			"Valor Unitário: " + this.valorUnitario + '\n';
 	}
 	
 	public String printProduto() {

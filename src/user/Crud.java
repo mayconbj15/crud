@@ -14,6 +14,9 @@ import gerenciadores.GerenciadorFuncionario;
 
 public class Crud 
 {
+	public static GerenciadorComprasCliente gerenciadorCliente;
+	public static GerenciadorFuncionario gerenciadorFuncionario; 
+	
 	public static void gerarCabecalhoEOpcoes(String nome, String mensagem, String[] opcoes)
 	{
 		IO.println("[Menu " + nome + "]");
@@ -141,8 +144,16 @@ public class Crud
 			new String[] { "cliente", "funcionario" },
 			new Runnable[]
 			{
-				() -> new GerenciadorComprasCliente().menu(),
-				() -> new GerenciadorFuncionario().menu()
+				() ->
+				{
+					gerenciadorCliente = new GerenciadorComprasCliente();
+					gerenciadorCliente.menu();
+				},
+				() ->
+				{
+					gerenciadorFuncionario = new GerenciadorFuncionario();
+					gerenciadorFuncionario.menu();
+				}
 			}
 		);
 

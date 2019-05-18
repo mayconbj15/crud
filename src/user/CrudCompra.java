@@ -1,5 +1,7 @@
 package user;
 
+import java.util.ArrayList;
+
 import crud.Arquivo;
 
 import entidades.Compra;
@@ -149,7 +151,7 @@ public class CrudCompra extends CrudAbstract<Compra>
 	{
 		IO.println("Compras documentadas: ");
 		listar();
-	}	
+	}
 
 	public void menuExclusao()
 	{
@@ -190,5 +192,45 @@ public class CrudCompra extends CrudAbstract<Compra>
 		}
 		
 	}//end menuExclusao
+	
+	public void menuRelatarProdutos() 
+	{
+		IO.println("Produtos comprados:");
+		
+		// Obtém os ids das compras do cliente logado
+		int[] idsCompras = Main.indiceClienteCompra.listarDadosComAChave(
+			Crud.gerenciadorCliente.usuarioLogado.getId()
+		);
+		
+		if (idsCompras.length > 0)
+		{
+			int[] idsItensComprados;
+			ArrayList<Integer> idsProdutosComprados = new ArrayList<Integer>();
+			int idProduto;
+
+			for (int idCompra : idsCompras)
+			{
+				// Obtém os ids dos itens comprados das compras do cliente logado
+				idsItensComprados = Main.indiceCompraItemComprado.listarDadosComAChave(idCompra);
+
+				for (int idItemComprado : idsItensComprados)
+				{
+					idProduto = Main.databaseItemComprado.readObject(idItemComprado).getIdProduto();
+					
+					if (!idsProdutosComprados.contains(idProduto))
+					{
+						idsProdutosComprados.add(idProduto);
+						
+						Main.crudProduto.consultarParaOUsuario(idProduto);
+					}
+				}
+			}
+		}
+		
+		else
+		{
+			IO.println("Você não comprou nenhum produto.");
+		}
+	}
 		
 }//end class CrudCompra

@@ -254,8 +254,11 @@ public class Main {
 		createFolders();
 		startVariables();
 		
-		// email da conta padrao: M@M
-		// senha da conta padrao: m
+		// email da conta padrao para funcionario: F@F
+		// senha da conta padrao: f
+		
+		// email da conta padrao para funcionario: C@C
+		// senha da conta padrao: c
 		Crud.menu();
 		
 		closeFiles();

@@ -61,11 +61,17 @@ public class Categoria extends SerializavelAbstract implements Entidade
 	public String toString(){
 		return
 			"ID: " + this.id + '\n' +
-			"Nome: " + this.nome;
+			printToUser();
 	}
 	
 	public String print(){
 		return toString();
+	}
+
+	@Override
+	public String printToUser()
+	{
+		return "Nome: " + this.nome;
 	}
 
 	@Override
