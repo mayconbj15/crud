@@ -4,10 +4,12 @@ import util.IO;
 import util.MyArray;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 
 import crud.Arquivo;
 import entidades.ItemComprado;
 import entidades.Produto;
+import entidades.Cliente;
 
 /**
  * Classe que gerencia a interação com o usuário.
@@ -312,12 +314,76 @@ public class CrudProduto extends CrudAbstract<Produto>
 			}
 		);
 	}
-
+	
+	public void menuListarPre() {
+		IO.println("Qual tipo de listagem deseja ?");
+		IO.println("1 - Listagem de todos os produtos\n2 - Listagem dos clientes que compraram determinado produto\n");
+		
+		int cho = IO.readint();
+		
+		switch(cho) {
+			case 1: menuListar(); break;
+			case 2: relatarProdutosClientes(); break;
+			default: IO.println("Opção inválida\n"); break;
+		}
+		
+	}
 	public void menuListar()
 	{
 		listar();
 	}
 
+	
+	/**
+	 * Método que lista os clientes que compraram um certo produto
+	 */
+	public void relatarProdutosClientes() {
+		IO.println("Relatório de quantos clientes compraram certo produto\n");
+		IO.println("PRODUTOS\n");
+		
+		ArrayList<Produto> produtos = Main.databaseProduto.list();
+		ArrayList<Integer> clientes = new ArrayList<Integer>();
+		
+		for(Produto produto : produtos) {
+			IO.println(produto);
+		}
+		
+		int produto;
+		do {
+			produto = IO.readLineUntilPositiveInt("Qual produto deseja ver a relação dos clientes (digite o id)\n");
+		}while(!Main.databaseProduto.idIsValid(produto));
+		
+		
+		if(Main.databaseItemComprado.list().size() > 0) {
+			int[] idsItensComprados = Main.indiceProdutoItemComprado.listarDadosComAChave(produto); //pega os itensComprados que tem esse produto
+			
+			if(idsItensComprados.length > 0) {
+				for(int idItemComprado: idsItensComprados) {
+					int idCompra = Main.databaseItemComprado.readObject(idItemComprado).getIdCompra();
+					int idCliente = Main.databaseCompra.readObject(idCompra).getIdCliente();
+					
+					if(idCliente != -1) {
+						if(!clientes.contains(idCliente))
+							clientes.add(idCliente);
+						Main.crudCliente.consultarParaOUsuario(idCliente);
+					}
+					
+					
+				}
+			}
+			else {
+				IO.println("Esse produto não foi comprado por ninguém");
+			}
+		}
+		else {
+			IO.println("Nenhum produto comprado na loja");
+		}
+		
+		
+		
+	}
+	
+	
 	/**
 	 * Gerencia a interação com o usuário.
 	 */
@@ -335,7 +401,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 				() -> { menuAlteracao(); IO.pause(); },
 				() -> { menuExclusao(); IO.pause(); },
 				() -> { menuConsulta(); IO.pause(); },
-				() -> { menuListar(); IO.pause(); }
+				() -> { menuListarPre(); IO.pause(); }
 			}
 		);
 		
