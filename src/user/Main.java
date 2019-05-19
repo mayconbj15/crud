@@ -9,6 +9,7 @@ import crud.hash_dinamica.implementacoes.HashDinamicaStringInt;
 import entidades.*;
 import serializaveis.SerializavelAbstract;
 import util.Files;
+import util.IO;
 
 public class Main {
 	
@@ -260,6 +261,9 @@ public class Main {
 		// email da conta padrao para funcionario: C@C
 		// senha da conta padrao: c
 		Crud.menu();
+		
+		IO.println("HASH DINÂMICA {lápide, chave, dado}:\n");
+		IO.println(indiceCategoriaProduto.toString(false, false));
 		
 		closeFiles();
 	}
