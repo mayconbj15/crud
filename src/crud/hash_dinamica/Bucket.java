@@ -28,6 +28,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.function.BiFunction;
 
 import serializaveis.SerializavelAbstract;
@@ -53,6 +54,7 @@ public class Bucket<TIPO_DAS_CHAVES extends SerializavelAbstract, TIPO_DOS_DADOS
 	protected int numeroDeRegistrosPorBucket;
 	protected RegistroDoIndice<TIPO_DAS_CHAVES, TIPO_DOS_DADOS> registroDoIndice;
 	byte[] bucket;
+	String toStr;
 	
 	/**
 	 * Cria um objeto que gerencia um bucket da hash dinâmica.
@@ -171,7 +173,7 @@ public class Bucket<TIPO_DAS_CHAVES extends SerializavelAbstract, TIPO_DOS_DADOS
 	
 	public byte atribuirProfundidadeLocal(byte profundidadeLocal)
 	{
-		if (profundidadeLocal > 0)
+		if (profundidadeLocal >= 0)
 		{
 			this.profundidadeLocal = profundidadeLocal;
 			bucket[0] = profundidadeLocal;
@@ -248,14 +250,15 @@ public class Bucket<TIPO_DAS_CHAVES extends SerializavelAbstract, TIPO_DOS_DADOS
 	 * em cada um deles. Esse método deve retornar um valor inteiro
 	 * que indica se o procedimento deve parar ou não. O retorno
 	 * 0 indica que o processo deve continuar, qualquer retorno
-	 * diferente termina o processo. O segundo parâmetro que o método
-	 * recebe é o deslocamento em relação ao início do arranjo
-	 * {@code bucket} em que o registro está.
+	 * diferente termina o processo. O primeiro parâmetro que o
+	 * método recebe é o registro em questão. O segundo parâmetro é
+	 * o deslocamento em relação ao início do arranjo {@code bucket}
+	 * em que o registro está.
 	 * 
 	 * @param metodo Método a ser aplicado em cada registro.
 	 * 
-	 * @return {@code true} se o método retornar {@code true} uma
-	 * vez. Caso contrário, {@code false}.
+	 * @return 0 se o {@code metodo} sempre retornar 0. Caso contrário,
+	 * retorna o que o {@code metodo} retornar.
 	 */
 	
 	public int percorrerRegistros(
@@ -573,7 +576,7 @@ public class Bucket<TIPO_DAS_CHAVES extends SerializavelAbstract, TIPO_DOS_DADOS
 	public Bucket<TIPO_DAS_CHAVES, TIPO_DOS_DADOS> clone()
 	{
 		return new Bucket<TIPO_DAS_CHAVES, TIPO_DOS_DADOS>(
-				bucket,
+				Arrays.copyOf(bucket, bucket.length),
 				profundidadeLocal,
 				numeroDeRegistrosPorBucket,
 				registroDoIndice.quantidadeMaximaDeBytesParaAChave,
@@ -597,6 +600,7 @@ public class Bucket<TIPO_DAS_CHAVES extends SerializavelAbstract, TIPO_DOS_DADOS
 		try
 		{
 			byteArrayInputStream.read(bucket);
+			this.profundidadeLocal = bucket[0];
 			
 			byteArrayInputStream.close();
 		}
@@ -605,5 +609,33 @@ public class Bucket<TIPO_DAS_CHAVES extends SerializavelAbstract, TIPO_DOS_DADOS
 		{
 			ioex.printStackTrace();
 		}
+	}
+	
+	public String toString(String delimitadorEntreRegistros,
+		String delimitadorEntreOsCamposDoRegistro, boolean mostrarApenasAsChaves)
+	{
+		toStr = "[ ";
+		
+		percorrerRegistros(
+			(registro, deslocamento) ->
+			{
+				toStr +=
+				"{" +
+				registro.toString(delimitadorEntreOsCamposDoRegistro, mostrarApenasAsChaves) +
+				"}" + delimitadorEntreRegistros;
+				
+				return 0; // continuar processo
+			}
+		);
+		
+		toStr = toStr.substring(0, toStr.length() - delimitadorEntreRegistros.length()) + " ]";
+		
+		return toStr;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return toString(", ", ", ", false);
 	}
 }
