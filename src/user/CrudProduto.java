@@ -4,11 +4,13 @@ import util.IO;
 import util.MyArray;
 
 import java.util.Arrays;
+import java.util.function.Function;
 import java.util.ArrayList;
 
 import crud.Arquivo;
 import entidades.ItemComprado;
 import entidades.Produto;
+import gerenciadores.Pair;
 import entidades.Cliente;
 
 /**
@@ -317,13 +319,16 @@ public class CrudProduto extends CrudAbstract<Produto>
 	
 	public void menuListarPre() {
 		IO.println("Qual tipo de listagem deseja ?");
-		IO.println("1 - Listagem de todos os produtos\n2 - Listagem dos clientes que compraram determinado produto\n");
+		IO.println("1 - Listagem de todos os produtos\n"
+			+ "2 - Listagem dos clientes que compraram determinado produto\n"
+			+ "3 - Listagem dos produtos mais vendidos\n");
 		
 		int cho = IO.readint();
 		
 		switch(cho) {
 			case 1: menuListar(); break;
 			case 2: relatarProdutosClientes(); break;
+			case 3: relatarProdutosMaisVendidos(); break;
 			default: IO.println("Opção inválida\n"); break;
 		}
 		
@@ -381,6 +386,68 @@ public class CrudProduto extends CrudAbstract<Produto>
 		
 		
 		
+	}
+	
+	public static <T> int first(ArrayList<T> array, Function<T, Boolean> comparator)
+	{
+		int size = array.size();
+		int index = -1;
+		
+		// percorre o ArrayList
+		for (int i = 0; index == -1 && i < size; i++)
+		{
+			// checa se o objeto casa com o padrão desejado
+			if ( comparator.apply(array.get(i)) )
+			{
+				index = i;
+			}
+		}
+		
+		return index;
+	}
+
+	/*
+	 * Método que lista os n produtos mais vendidos.
+	 */
+	public void relatarProdutosMaisVendidos()
+	{
+		ArrayList<ItemComprado> itensComprados = Main.databaseItemComprado.list();
+		ArrayList< Pair<Integer, Integer> > array = new ArrayList<>();
+		
+		int n = IO.readLineUntilPositiveInt("Digite a quantidade de produtos que deseja vizualizar! ");
+
+		itensComprados.forEach(
+			(item) ->
+			{
+				int indiceDoParProduto = first(array, (it) -> it.obj1 == item.getIdProduto());
+						
+				if(indiceDoParProduto != -1)
+				{
+					array.get(indiceDoParProduto).obj2 += item.getQuantidade();
+				}
+				else
+				{
+					array.add( new Pair<Integer, Integer>(item.getIdProduto(), item.getQuantidade()) );
+				}
+				
+			}
+		);
+		
+		// ordenar produtos pelas quantidades de vendas
+		array.sort(
+			(par1, par2) ->
+			{
+				return par1.obj2 - par2.obj2;
+			}
+		);
+		
+		for(int i = array.size()-1; n > 0 && i > -1; i--, n--)
+		{
+			int idProduto = array.get(i).obj1.intValue();
+			int quantidade = array.get(i).obj2.intValue();
+			IO.println("\nProduto com ID " + idProduto + " com " + quantidade + " itens vendidos!");
+			IO.println(Main.databaseProduto.readObject(idProduto));
+		}
 	}
 	
 	

@@ -262,9 +262,6 @@ public class Main {
 		// senha da conta padrao: c
 		Crud.menu();
 		
-		IO.println("HASH DINÂMICA {lápide, chave, dado}:\n");
-		IO.println(indiceCategoriaProduto.toString(false, false));
-		
 		closeFiles();
 	}
 }
