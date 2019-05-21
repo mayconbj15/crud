@@ -11,7 +11,6 @@ import crud.Arquivo;
 import entidades.ItemComprado;
 import entidades.Produto;
 import gerenciadores.Pair;
-import entidades.Cliente;
 
 /**
  * Classe que gerencia a interação com o usuário.
