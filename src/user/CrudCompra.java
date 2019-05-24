@@ -103,7 +103,7 @@ public class CrudCompra extends CrudAbstract<Compra>
 		int id = IO.readint("Digite o id da COMPRA a ser alterada: ");
 
 		//testar antes se o id existe
-		if(database.idIsValid(id))
+		if(database.entityExists(id))
 		{
 			Crud.noBackMenu
 			(
@@ -162,7 +162,7 @@ public class CrudCompra extends CrudAbstract<Compra>
 		if (Main.indiceCompraItemComprado.listarDadosComAChave(id) == null)
 		{
 			//testar antes se o id existe
-			if (database.idIsValid(id))
+			if (database.entityExists(id))
 			{
 				IO.println("Realmente deseja excluir a compra " + id + " ?");
 				IO.println("Digite:");

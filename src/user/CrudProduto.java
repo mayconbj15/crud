@@ -197,7 +197,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 		int id = IO.readint("Digite o id do produto a ser alterado: ");
 
 		//testar antes se o id existe
-		if(database.idIsValid(id))
+		if(database.entityExists(id))
 		{
 			Crud.noBackMenu
 			(
@@ -230,7 +230,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 		if(Main.indiceProdutoItemComprado.listarDadosComAChave(id) == null)
 		{
 			//testar antes se o id existe
-			if (database.idIsValid(id))
+			if (database.entityExists(id))
 			{
 				Crud.noBackMenu
 				(
@@ -355,7 +355,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 		int produto;
 		do {
 			produto = IO.readLineUntilPositiveInt("Qual produto deseja ver a relação dos clientes (digite o id)\n");
-		}while(!Main.databaseProduto.idIsValid(produto));
+		} while(!Main.databaseProduto.entityExists(produto));
 		
 		
 		if(Main.databaseItemComprado.list().size() > 0) {

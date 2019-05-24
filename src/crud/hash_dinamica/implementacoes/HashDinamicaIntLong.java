@@ -27,6 +27,7 @@ package crud.hash_dinamica.implementacoes;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+
 import crud.hash_dinamica.HashDinamica;
 import serializaveis.IntSerializavel;
 import serializaveis.LongSerializavel;
@@ -172,6 +173,17 @@ public class HashDinamicaIntLong extends HashDinamica<IntSerializavel, LongSeria
 	public boolean excluir(int chave)
 	{
 		return excluir(new IntSerializavel(chave));
+	}
+	
+	/**
+	 * Exclui todos os registros com a chave informada.
+	 * 
+	 * @param chave Chave a ser procurada.
+	 */
+	
+	public boolean excluirRegistrosComAChave(int chave)
+	{
+		return excluirRegistrosComAChave(new IntSerializavel(chave));
 	}
 	
 	/**

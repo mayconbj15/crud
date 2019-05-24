@@ -174,13 +174,23 @@ public class HashDinamicaIntInt extends HashDinamica<IntSerializavel, IntSeriali
 	}
 	
 	/**
+	 * Exclui todos os registros com a chave informada.
+	 * 
+	 * @param chave Chave a ser procurada.
+	 */
+	
+	public boolean excluirRegistrosComAChave(int chave)
+	{
+		return excluirRegistrosComAChave(new IntSerializavel(chave));
+	}
+	
+	/**
 	 * Procura todos os registros com uma chave específica e gera
 	 * uma lista com os dados correspondentes a essas chaves.
 	 * 
 	 * @param chave Chave a ser procurada.
 	 * 
-	 * @return {@code null} se a chave não for encontrada. Caso
-	 * contrário, a lista com os dados correspondentes às chaves.
+	 * @return lista com os dados correspondentes às chaves.
 	 */
 	
 	public int[] listarDadosComAChave(int chave)
@@ -189,7 +199,7 @@ public class HashDinamicaIntInt extends HashDinamica<IntSerializavel, IntSeriali
 			listarDadosComAChave(new IntSerializavel(chave));
 		int listSize = list.size();
 		
-		int[] dados = ( listSize == 0 ? null : new int[listSize] );
+		int[] dados = new int[listSize];
 		
 		for (int i = 0; i < listSize; i++)
 		{

@@ -104,7 +104,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 		int id = IO.readint("Digite o id do cliente a ser alterado: ");
 
 		//testar antes se o id existe
-		if(database.idIsValid(id))
+		if(database.entityExists(id))
 		{
 			Crud.menu
 			(
@@ -186,7 +186,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 				{
 					int idCliente = IO.readint("Entre com o id do cliente desejado: ");
 					
-					if (database.idIsValid(idCliente)) 
+					if (database.entityExists(idCliente)) 
 					{
 						listarCompras(idCliente);
 					}
@@ -210,7 +210,7 @@ public class CrudCliente extends CrudAbstract<Cliente>
 		if (Main.indiceClienteCompra.listarDadosComAChave(id) == null)
 		{
 			//testar antes se o id existe
-			if (database.idIsValid(id))
+			if (database.entityExists(id))
 			{
 				Crud.menu
 				(

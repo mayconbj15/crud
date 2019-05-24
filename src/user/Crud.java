@@ -42,17 +42,12 @@ public class Crud
 			
 			IO.println("");
 			
-			if (opcao == 0)
-			{
-				IO.println("Até breve :D");
-			}
-			
-			else if (opcao < 0 || opcao > opcoes.length)
+			if (opcao < 0 || opcao > opcoes.length)
 			{
 				IO.println("Opção inválida");
 			}
 			
-			else
+			else if (opcao != 0)
 			{
 				result = gerenciarOpcoes.apply(opcao);
 			}
@@ -157,6 +152,7 @@ public class Crud
 			}
 		);
 
+		IO.println("Até breve :D");
 	}//end menu()
 	
 }//end class Main

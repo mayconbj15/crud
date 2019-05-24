@@ -159,7 +159,6 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 			switch (cod)
 			{
 				case 0:
-					IO.println("Até breve :)");
 					break;
 					
 				case 1: // mover produtos para uma categoria diferente
@@ -269,7 +268,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 		IO.println("");
 
 		//testar antes se o id existe
-		if (database.idIsValid(id))
+		if (database.entityExists(id))
 		{
 			Crud.noBackMenu
 			(
@@ -301,6 +300,7 @@ public class CrudCategoria extends CrudAbstract<Categoria>
 									() ->
 									{
 										Main.databaseProduto.deleteObjects(idsOfTheProductsOfTheCategory);
+										Main.indiceCategoriaProduto.excluirRegistrosComAChave(id);
 										excluir(id);
 									},
 

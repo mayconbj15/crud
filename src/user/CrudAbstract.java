@@ -109,7 +109,7 @@ public abstract class CrudAbstract<TIPO_ENTIDADE extends SerializavelAbstract & 
 	{
 		boolean success = false;
 		
-		if (database.idIsValid(id))
+		if (database.entityExists(id)) // checa se a entidade existe
 		{
 			TIPO_ENTIDADE entity = database.readObject(id);
 			

@@ -173,9 +173,23 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	 * na base de dados. Caso contrário, {@code false}.
 	 */
 	
-	public boolean idIsValid(int id)
+//	public boolean idIsValid(int id)
+//	{
+//		return id > -1 && id <= readLastID();
+//	}
+	
+	/**
+	 * Checa se uma entidade existe e está ativa na base de dados.
+	 * 
+	 * @param entityId Id da entidade a ser procurada.
+	 * 
+	 * @return {@code true} se a entidade estiver ativa. Caso
+	 * contrário, {@code false}.
+	 */
+	
+	public boolean entityExists(int entityId)
 	{
-		return id > -1 && id <= readLastID();
+		return indice.pesquisarDadoPelaChave(entityId) != Long.MIN_VALUE;
 	}
 	
 	/**
