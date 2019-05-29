@@ -4,7 +4,6 @@ import util.IO;
 import util.MyArray;
 
 import java.util.Arrays;
-import java.util.function.Function;
 import java.util.ArrayList;
 
 import crud.Arquivo;
@@ -387,24 +386,6 @@ public class CrudProduto extends CrudAbstract<Produto>
 		
 	}
 	
-	public static <T> int first(ArrayList<T> array, Function<T, Boolean> comparator)
-	{
-		int size = array.size();
-		int index = -1;
-		
-		// percorre o ArrayList
-		for (int i = 0; index == -1 && i < size; i++)
-		{
-			// checa se o objeto casa com o padrão desejado
-			if ( comparator.apply(array.get(i)) )
-			{
-				index = i;
-			}
-		}
-		
-		return index;
-	}
-
 	/*
 	 * Método que lista os n produtos mais vendidos.
 	 */
@@ -418,11 +399,11 @@ public class CrudProduto extends CrudAbstract<Produto>
 		itensComprados.forEach(
 			(item) ->
 			{
-				int indiceDoParProduto = first(array, (it) -> it.obj1 == item.getIdProduto());
-						
+				int indiceDoParProduto = MyArray.first(array, (it) -> it.key == item.getIdProduto());
+
 				if(indiceDoParProduto != -1)
 				{
-					array.get(indiceDoParProduto).obj2 += item.getQuantidade();
+					array.get(indiceDoParProduto).value += item.getQuantidade();
 				}
 				else
 				{
@@ -436,14 +417,14 @@ public class CrudProduto extends CrudAbstract<Produto>
 		array.sort(
 			(par1, par2) ->
 			{
-				return par1.obj2 - par2.obj2;
+				return par1.value - par2.value;
 			}
 		);
 		
 		for(int i = array.size()-1; n > 0 && i > -1; i--, n--)
 		{
-			int idProduto = array.get(i).obj1.intValue();
-			int quantidade = array.get(i).obj2.intValue();
+			int idProduto = array.get(i).key.intValue();
+			int quantidade = array.get(i).value.intValue();
 			IO.println("\nProduto com ID " + idProduto + " com " + quantidade + " itens vendidos!");
 			IO.println(Main.databaseProduto.readObject(idProduto));
 		}
