@@ -36,7 +36,7 @@ public class ElementoDeslocamento{
 	}
 	
 	public String toString() {
-		return this.chave + "" + this.dado + "\n";
+		return this.chave + "" + this.dado;
 	}
 	
 }
