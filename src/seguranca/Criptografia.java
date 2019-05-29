@@ -29,6 +29,7 @@ public class Criptografia{
 		
 		if(mensagem != null) {
 			transformarChave();
+			cifrarMensagem();
 		}
 		
 		return novaMensagem;
@@ -51,8 +52,12 @@ public class Criptografia{
 	 /**
      * Algoritmo de ordenacao Quicksort.
      */
-    public void sort() {
+    private void sort() {
         quicksort(0, (this.chaveTransformada.length)-1);
+    }
+    
+    private void cifrarMensagem() {
+    	
     }
    
     /**
@@ -91,7 +96,7 @@ public class Criptografia{
     /**
     * Troca o conteudo de duas posicoes do array
     */
-   public void swap(int i, int j) {
+   private void swap(int i, int j) {
 	   ElementoDeslocamento temp = chaveTransformada[i];
 	   chaveTransformada[i] = chaveTransformada[j];
 	   chaveTransformada[j] = temp;
