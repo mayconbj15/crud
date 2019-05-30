@@ -47,6 +47,11 @@ public class Criptografia{
 		}
 		
 		sort(); //ordena o vetor de deslocamento com base na chave (caracter)
+		
+		for(int i=0; i<this.chaveTransformada.length; i++) {
+    		System.out.print(chaveTransformada[i] + " ");
+    	}
+    	System.out.println();
 	}//end transformarChave()
 	
 	 /**
@@ -61,15 +66,14 @@ public class Criptografia{
     	int i;
     	int j;
     	int k = 0; //variavel que irá percorrer a nova mensagem colocando os caracteres no vetor
-    	int deslocamento;
     	int tamanhoMensagem = mensagem.length();
-    	
+    	int tamanhoChave = this.chaveTransformada.length; //que irá determinar o deslocamento de caracteres
     	
     	
     	for(i=0; i < this.chaveTransformada.length; i++) {
     		j = this.chaveTransformada[i].getDado(); //pega onde irá iniciar
     		
-    		for( ; j<tamanhoMensagem; j = j + 4) {
+    		for( ; j<tamanhoMensagem; j = j + tamanhoChave) {
     			novaMensagem[k] = mensagem.charAt(j);
     			k++;
     		}
@@ -80,7 +84,28 @@ public class Criptografia{
     	}
     	System.out.println();
     }
-   
+    
+    private void decifrar(String mensagem) {
+    	char[] novaMensagem = new char[mensagem.length()];
+    	int i;
+    	int j;
+    	int k = 0; //variavel que irá percorrer a nova mensagem colocando os caracteres no vetor
+    	int tamanhoMensagem = mensagem.length();
+    	int tamanhoChave = this.chaveTransformada.length; //que irá determinar o deslocamento de caracteres
+    	
+    	
+    	for(i=0; i < tamanhoMensagem; k++) {
+    		j = this.chaveTransformada[k].getDado();
+    		for( ; j<tamanhoMensagem; j = j + tamanhoChave, i++) {
+    			novaMensagem[j] = mensagem.charAt(i);
+    		}
+    	}
+    	
+    	for(i=0; i<novaMensagem.length; i++) {
+    		System.out.print(novaMensagem[i] + " ");
+    	}
+    	System.out.println();
+    }
     /**
      * Algoritmo de ordenacao Quicksort de acordo com o nome.
 	 * @param int esq inicio do array a ser ordenado
@@ -124,8 +149,9 @@ public class Criptografia{
    }
 	
 	public static void main(String[] args) {
-		Criptografia cript = new Criptografia("joao");
+		Criptografia cript = new Criptografia("puc");
 		
-		cript.cifrar("Maycon Bruno de Jesus");
+		cript.cifrar("Criptografia");
+		cript.decifrar("ioaaCpgfrtri");
 	}
 }//end class
