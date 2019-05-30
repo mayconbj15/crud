@@ -29,7 +29,7 @@ public class Criptografia{
 		
 		if(mensagem != null) {
 			transformarChave();
-			cifrarMensagem();
+			cifrarMensagem(mensagem);
 		}
 		
 		return novaMensagem;
@@ -56,8 +56,29 @@ public class Criptografia{
         quicksort(0, (this.chaveTransformada.length)-1);
     }
     
-    private void cifrarMensagem() {
+    private void cifrarMensagem(String mensagem) {
+    	char[] novaMensagem = new char[mensagem.length()];
+    	int i;
+    	int j;
+    	int k = 0; //variavel que irá percorrer a nova mensagem colocando os caracteres no vetor
+    	int deslocamento;
+    	int tamanhoMensagem = mensagem.length();
     	
+    	
+    	
+    	for(i=0; i < this.chaveTransformada.length; i++) {
+    		j = this.chaveTransformada[i].getDado(); //pega onde irá iniciar
+    		
+    		for( ; j<tamanhoMensagem; j = j + 4) {
+    			novaMensagem[k] = mensagem.charAt(j);
+    			k++;
+    		}
+    	}
+    	
+    	for(i=0; i<novaMensagem.length; i++) {
+    		System.out.print(novaMensagem[i] + " ");
+    	}
+    	System.out.println();
     }
    
     /**
