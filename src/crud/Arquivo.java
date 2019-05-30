@@ -7,6 +7,7 @@ import java.util.function.Function;
 import crud.hash_dinamica.implementacoes.HashDinamicaIntLong;
 import entidades.Entidade;
 import serializaveis.SerializavelAbstract;
+import seguranca.Criptografia;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -27,6 +28,7 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	private int lastID;
 	RandomAccessFile accessFile;
 	private Constructor<T> constructor;
+	Criptografia criptografia;
 	
 	public HashDinamicaIntLong indice;
 	//private final int TREE_ORDER = 21;
@@ -48,11 +50,13 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 		Constructor<T> constructor,
 		String databaseFileName,
 		String indexesDirFileName,
-		String indexesFileName)
+		String indexesFileName, byte[] criptKey)
 	{
 		this.name = databaseFileName;
 		this.lastID = -1;
 		this.constructor = constructor;
+		
+		this.criptografia = new Criptografia(criptKey);
 		
 		try
 		{
@@ -221,6 +225,8 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 				entity.setId(id);
 
 				byte[] byteArray = entity.obterBytes();
+				byte[] byteArrayCifrado = criptografia.cifrar(byteArray);
+				
 
 				// go to final of file
 				accessFile.seek(accessFile.length());
@@ -230,8 +236,8 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 				indice.inserir(entity.getId(), accessFile.getFilePointer());
 
 				accessFile.writeByte(' '); // insere a lapide
-				accessFile.writeInt(byteArray.length); // insere o tamanho da entidade
-				accessFile.write(byteArray); // insere a entidade
+				accessFile.writeInt(byteArrayCifrado.length); // insere o tamanho da entidade criptografada
+				accessFile.write(byteArrayCifrado); // insere a entidade criptografada
 				
 				accessFile.close();
 				

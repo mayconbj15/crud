@@ -2,6 +2,7 @@ package user;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.Charset;
 
 import crud.Arquivo;
 import crud.hash_dinamica.implementacoes.HashDinamicaIntInt;
@@ -71,6 +72,7 @@ public class Main {
 	{
 		Arquivo<T> db = null;
 		String folderPath = getEntityFolderPath(fileName);
+		Charset cs = Charset.forName("UTF-8");
 		
 		try
 		{
@@ -78,7 +80,8 @@ public class Main {
 				dbClass.getConstructor(),
 				folderPath + fileName + DATABASE_FILE_SUFFIX,
 				folderPath + fileName + INDEX_DIR_FILE_SUFFIX,
-				folderPath + fileName + INDEX_FILE_SUFFIX
+				folderPath + fileName + INDEX_FILE_SUFFIX,
+				new String("crud").getBytes(cs)
 			);
 		}
 		
