@@ -6,8 +6,11 @@
 
 package seguranca;
 
+import java.io.UnsupportedEncodingException;
+import util.IO;;
+
 public class Criptografia{		
-	private String chave; 
+	private byte[] chave; 
 	ElementoDeslocamento[] chaveTransformada;
 	
 	public Criptografia()
@@ -15,21 +18,24 @@ public class Criptografia{
 		this.chave   = null;
 	}
 	
-	public Criptografia(String chave) 
+	public Criptografia(byte[] chave) 
 	{		
 		this.chave   = chave;
 	}
 	
-	private void setChave(String chave) {
+	private void setChave(byte[] chave) {
 		this.chave = chave;
 	}
 	
-	public String cifrar(String mensagem) {
-		String novaMensagem = null;
+	/*
+	 * Método que irá cifrar um vetor de bytes
+	 */
+	public byte[] cifrar(byte[] mensagem) {
+		byte[] novaMensagem = null;
 		
 		if(mensagem != null) {
 			transformarChave();
-			cifrarMensagem(mensagem);
+			novaMensagem = cifrarMensagem(mensagem);
 		}
 		
 		return novaMensagem;
@@ -39,19 +45,15 @@ public class Criptografia{
 	 * Método para transformar a chave e deixa-lá ordenada
 	 */
 	private void transformarChave(){
-		int tamanhoChave = this.chave.length();
+		int tamanhoChave = this.chave.length;
 		this.chaveTransformada = new ElementoDeslocamento[tamanhoChave];
 		
 		for(int i=0; i<tamanhoChave; i++) {
-			chaveTransformada[i] = new ElementoDeslocamento(this.chave.charAt(i), i);
+			chaveTransformada[i] = new ElementoDeslocamento(this.chave[i], i);
 		}
 		
 		sort(); //ordena o vetor de deslocamento com base na chave (caracter)
-		
-		for(int i=0; i<this.chaveTransformada.length; i++) {
-    		System.out.print(chaveTransformada[i] + " ");
-    	}
-    	System.out.println();
+
 	}//end transformarChave()
 	
 	 /**
@@ -61,12 +63,12 @@ public class Criptografia{
         quicksort(0, (this.chaveTransformada.length)-1);
     }
     
-    private void cifrarMensagem(String mensagem) {
-    	char[] novaMensagem = new char[mensagem.length()];
+    private byte[] cifrarMensagem(byte[] mensagem) {
+    	byte[] novaMensagem = new byte[mensagem.length];
     	int i;
     	int j;
     	int k = 0; //variavel que irá percorrer a nova mensagem colocando os caracteres no vetor
-    	int tamanhoMensagem = mensagem.length();
+    	int tamanhoMensagem = mensagem.length;
     	int tamanhoChave = this.chaveTransformada.length; //que irá determinar o deslocamento de caracteres
     	
     	
@@ -74,38 +76,33 @@ public class Criptografia{
     		j = this.chaveTransformada[i].getDado(); //pega onde irá iniciar
     		
     		for( ; j<tamanhoMensagem; j = j + tamanhoChave) {
-    			novaMensagem[k] = mensagem.charAt(j);
+    			novaMensagem[k] = mensagem[j];
     			k++;
     		}
     	}
     	
-    	for(i=0; i<novaMensagem.length; i++) {
-    		System.out.print(novaMensagem[i] + " ");
-    	}
-    	System.out.println();
+    	return novaMensagem;
     }
     
-    private void decifrar(String mensagem) {
-    	char[] novaMensagem = new char[mensagem.length()];
+    private byte[] decifrar(byte[] mensagem) {
+    	byte[] novaMensagem = new byte[mensagem.length];
     	int i;
     	int j;
     	int k = 0; //variavel que irá percorrer a nova mensagem colocando os caracteres no vetor
-    	int tamanhoMensagem = mensagem.length();
+    	int tamanhoMensagem = mensagem.length;
     	int tamanhoChave = this.chaveTransformada.length; //que irá determinar o deslocamento de caracteres
     	
     	
     	for(i=0; i < tamanhoMensagem; k++) {
     		j = this.chaveTransformada[k].getDado();
     		for( ; j<tamanhoMensagem; j = j + tamanhoChave, i++) {
-    			novaMensagem[j] = mensagem.charAt(i);
+    			novaMensagem[j] = mensagem[i];
     		}
     	}
-    	
-    	for(i=0; i<novaMensagem.length; i++) {
-    		System.out.print(novaMensagem[i] + " ");
-    	}
-    	System.out.println();
+ 	
+    	return novaMensagem;
     }
+    
     /**
      * Algoritmo de ordenacao Quicksort de acordo com o nome.
 	 * @param int esq inicio do array a ser ordenado
@@ -113,7 +110,7 @@ public class Criptografia{
 	 */
     private void quicksort(int esq, int dir) {
     	int i = esq, j = dir;
-    	char pivo = chaveTransformada[(dir+esq)/2].getChave(); //pega a posição do pivo
+    	byte pivo = chaveTransformada[(dir+esq)/2].getChave(); //pega a posição do pivo
 		           
     	while(i <= j) {
     		while (chaveTransformada[i].getChave() < pivo){
@@ -147,11 +144,34 @@ public class Criptografia{
 	   chaveTransformada[i] = chaveTransformada[j];
 	   chaveTransformada[j] = temp;
    }
-	
-	public static void main(String[] args) {
-		Criptografia cript = new Criptografia("ana");
+   	
+   public static void main(String[] args) throws UnsupportedEncodingException{
+		Criptografia cript = new Criptografia(new String("joao").getBytes("UTF-8"));
 		
-		cript.cifrar("Criptografia");
-		cript.decifrar("ioaaCpgfrtri");
+		String teste;
+		while(true) {
+			teste = IO.readLine("Digita carai");
+			
+			System.out.print("Original: ");
+			byte[] testeBytes = teste.getBytes("UTF-8");
+			for(int i=0; i<testeBytes.length; i++) {
+				System.out.print(testeBytes[i] + " ");
+			}
+			System.out.println();
+			
+			byte[] mensagemCifrada = cript.cifrar(teste.getBytes("UTF-8"));
+			byte[] mensagemOriginal = cript.decifrar(mensagemCifrada);
+			
+			System.out.print("Cifrada: ");
+			for(int i=0; i<mensagemCifrada.length; i++) {
+				System.out.print(mensagemCifrada[i] + " ");
+			}
+			System.out.println();
+			
+			System.out.print("Original: ");
+			for(int i=0; i<mensagemOriginal.length; i++) {
+				System.out.print(mensagemOriginal[i] + " ");
+			}
+		}
 	}
 }//end class
