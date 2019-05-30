@@ -21,6 +21,7 @@ public class Criptografia{
 	public Criptografia(byte[] chave) 
 	{		
 		this.chave   = chave;
+		transformarChave();
 	}
 	
 	private void setChave(byte[] chave) {
@@ -34,7 +35,7 @@ public class Criptografia{
 		byte[] novaMensagem = null;
 		
 		if(mensagem != null) {
-			transformarChave();
+
 			novaMensagem = cifrarMensagem(mensagem);
 		}
 		
@@ -84,7 +85,7 @@ public class Criptografia{
     	return novaMensagem;
     }
     
-    private byte[] decifrar(byte[] mensagem) {
+    public byte[] decifrar(byte[] mensagem) {
     	byte[] novaMensagem = new byte[mensagem.length];
     	int i;
     	int j;

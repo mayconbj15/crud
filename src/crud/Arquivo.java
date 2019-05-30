@@ -345,7 +345,8 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 				try
 				{
 					entity = constructor.newInstance();
-					entity.lerBytes(byteArray);
+					byte[] byteArrayDecifrado = criptografia.decifrar(byteArray);
+					entity.lerBytes(byteArrayDecifrado);
 				}
 				
 				catch (InstantiationException |
