@@ -1,9 +1,8 @@
 package seguranca;
 
-
 public class ElementoDeslocamento{
 	public char chave;
-	public int dado;
+	public int dado; //esse dado representa onde o caracterer irá começar na String
 	
 	public ElementoDeslocamento() {
 		this.chave = ' ';

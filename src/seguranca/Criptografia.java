@@ -149,7 +149,7 @@ public class Criptografia{
    }
 	
 	public static void main(String[] args) {
-		Criptografia cript = new Criptografia("puc");
+		Criptografia cript = new Criptografia("ana");
 		
 		cript.cifrar("Criptografia");
 		cript.decifrar("ioaaCpgfrtri");
