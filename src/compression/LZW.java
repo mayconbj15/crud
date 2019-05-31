@@ -18,12 +18,12 @@ public class LZW
 	
 	private static final ArrayList<byte[]> dictionary = new ArrayList<byte[]>();
 	{
-		for (byte i = 0; i < 255; i++) // muito cuidado com a condição de parada do for
+		for (byte i = 0; i != -1; i++) // muito cuidado com a condição de parada do for
 		{
 			dictionary.add( new byte[] { i } );
 		}
 		
-		dictionary.add( new byte[] { (byte) 255 } );
+		dictionary.add( new byte[] { (byte) -1 } );
 	}
 	
 	private void clearDictionary()
@@ -56,15 +56,15 @@ public class LZW
 	{
 		clearDictionary();
 		
-		ByteBuffer shortBuffer = ByteBuffer.allocate(2);
-		outputStream = new ByteArrayOutputStream(array.length);
+		ByteBuffer shortBuffer = ByteBuffer.allocate(Short.BYTES);
+		outputStream = new ByteArrayOutputStream(array.length * Short.BYTES);
 		currentWord = new ByteArrayOutputStream();
 		inputStream = new ByteArrayInputStream(array);
 		int currentByte = inputStream.read();
 		int lastIndexOnDictionary;
 		int currentIndexOnDictionary;
 		
-		if (currentByte != -1)
+		while (currentByte != -1)
 		{
 			// concatena o byte atual à corrente de saída e testa
 			// se os bytes dela correspondem a algum item do dicionário
@@ -84,6 +84,7 @@ public class LZW
 			try
 			{
 				outputStream.write( shortBuffer.array() );
+				shortBuffer.reset();
 			}
 			
 			catch (IOException e)
@@ -92,7 +93,6 @@ public class LZW
 			}
 			
 			currentWord.reset(); // reseta o contador de bytes escritos (remoção lógica)
-			currentWord.write(currentByte);
 		}
 		
 		return outputStream.toByteArray();

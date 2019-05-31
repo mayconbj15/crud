@@ -3,6 +3,7 @@ package user;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import compression.LZW;
 import crud.Arquivo;
 import crud.hash_dinamica.implementacoes.HashDinamicaIntInt;
 import crud.hash_dinamica.implementacoes.HashDinamicaStringInt;
@@ -251,17 +252,18 @@ public class Main {
 	}
 	
 	public static void main(String[] args) {
-		deleteFiles();
-		createFolders();
-		startVariables();
-		
-		// email da conta padrao para funcionario: F@F
-		// senha da conta padrao: f
-		
-		// email da conta padrao para funcionario: C@C
-		// senha da conta padrao: c
-		Crud.menu();
-		
-		closeFiles();
+		new LZW().encode(new byte[] { (byte) 5, (byte) 5, (byte) 5 });
+//		deleteFiles();
+//		createFolders();
+//		startVariables();
+//		
+//		// email da conta padrao para funcionario: F@F
+//		// senha da conta padrao: f
+//		
+//		// email da conta padrao para funcionario: C@C
+//		// senha da conta padrao: c
+//		Crud.menu();
+//		
+//		closeFiles();
 	}
 }
