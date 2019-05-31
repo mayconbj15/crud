@@ -12,9 +12,12 @@ import util.MyArray;
 public class LZW
 {
 	private byte[] currentBytes;
+	private ByteBuffer shortBuffer;
 	private ByteArrayInputStream inputStream;
 	private ByteArrayOutputStream currentWord;
 	private ByteArrayOutputStream outputStream;
+	private int lastIndexOnDictionary;
+	private int currentIndexOnDictionary;
 	
 	private static final ArrayList<byte[]> dictionary = new ArrayList<byte[]>();
 	{
@@ -61,10 +64,8 @@ public class LZW
 		currentWord = new ByteArrayOutputStream();
 		inputStream = new ByteArrayInputStream(array);
 		int currentByte = inputStream.read();
-		int lastIndexOnDictionary;
-		int currentIndexOnDictionary;
 		
-		while (currentByte != -1)
+		for (int i = 0; i < array.length; i++)
 		{
 			// concatena o byte atual à corrente de saída e testa
 			// se os bytes dela correspondem a algum item do dicionário
@@ -93,6 +94,82 @@ public class LZW
 			}
 			
 			currentWord.reset(); // reseta o contador de bytes escritos (remoção lógica)
+		}
+		
+		return outputStream.toByteArray();
+	}
+	
+	private int decodeAndWrite(byte[] currentBytes)
+	{
+		shortBuffer.put(currentBytes);
+		currentIndexOnDictionary = shortBuffer.getShort();
+		
+		byte[] data = dictionary.get(currentIndexOnDictionary);
+		
+		dictionary.add( Arrays )
+		
+		int index = MyArray.first(dictionary, (it) -> Arrays.equals(currentBytes, it));
+		
+		if (byteRead != -1)
+		{
+			currentWord.write(byteRead); // escreve o byte lido na palavra atual
+			currentBytes = currentWord.toByteArray(); // pegue o array de bytes da palavra atual
+			
+			// procura pela primeiro item do dicionário que seja igual ao array de bytes da palavra atual
+			index = MyArray.first(dictionary, (it) -> Arrays.equals(currentBytes, it));
+		}
+		
+		return index;
+	}
+	
+	public byte[] decode(byte[] array)
+	{
+		clearDictionary();
+		
+		shortBuffer = ByteBuffer.allocate(Short.BYTES);
+		outputStream = new ByteArrayOutputStream(array.length * Short.BYTES);
+		currentWord = new ByteArrayOutputStream();
+		inputStream = new ByteArrayInputStream(array);
+		
+		try
+		{
+			byte[] currentBytes = inputStream.readNBytes(2);
+			
+			for (int i = 0; i < array.length; i++)
+			{
+				// concatena o byte atual à corrente de saída e testa
+				// se os bytes dela correspondem a algum item do dicionário
+				currentIndexOnDictionary = (currentByte);
+				lastIndexOnDictionary = -1;
+				
+				while (currentIndexOnDictionary != -1)
+				{
+					lastIndexOnDictionary = currentIndexOnDictionary;
+					currentByte = inputStream.read();
+					currentIndexOnDictionary = writeAndGetIndexOnDictionary(currentByte);
+				}
+
+				dictionary.add(currentBytes);
+				shortBuffer.putShort((short) lastIndexOnDictionary);
+				
+				try
+				{
+					outputStream.write( shortBuffer.array() );
+					shortBuffer.reset();
+				}
+				
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
+				
+				currentWord.reset(); // reseta o contador de bytes escritos (remoção lógica)
+			}
+		}
+		
+		catch (IOException e)
+		{
+			e.printStackTrace();
 		}
 		
 		return outputStream.toByteArray();
