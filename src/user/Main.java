@@ -1,5 +1,6 @@
 package user;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
@@ -10,7 +11,6 @@ import crud.hash_dinamica.implementacoes.HashDinamicaStringInt;
 import entidades.*;
 import serializaveis.SerializavelAbstract;
 import util.Files;
-import util.IO;
 
 public class Main {
 	
@@ -20,8 +20,8 @@ public class Main {
 	public static final String INDEX_DIR_FILE_SUFFIX	= ".dir";
 	
 	// diretórios das entidades e dos índices compostos
-	public static final String ENTITIES_FOLDER			= "Entities\\";
-	public static final String COMPOSITE_INDEXES_FOLDER	= "CompositeIndexes\\";
+	public static final String ENTITIES_FOLDER			= "Entities" + File.separatorChar;
+	public static final String COMPOSITE_INDEXES_FOLDER	= "CompositeIndexes" + File.separatorChar;
 
 	// prefixos de arquivos de entidades
 	public static final String COMPRAS_FILE_NAME			= "compras";
@@ -64,7 +64,7 @@ public class Main {
 	
 	private static String getEntityFolderPath(String entityName)
 	{
-		return ENTITIES_FOLDER + entityName + "\\";
+		return ENTITIES_FOLDER + entityName + File.separatorChar;
 	}
 	
 	private static <T extends SerializavelAbstract & Entidade> Arquivo<T>
