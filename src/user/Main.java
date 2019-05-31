@@ -253,7 +253,7 @@ public class Main {
 	}
 	
 	public static void main(String[] args) {
-		new LZW().encode(new byte[] { (byte) 5, (byte) 5, (byte) 5 });
+		new LZW().encode(new byte[] { (byte) 5, (byte) 5, (byte) 5, (byte) 5, (byte) 5, (byte) 5 });
 //		deleteFiles();
 //		createFolders();
 //		startVariables();

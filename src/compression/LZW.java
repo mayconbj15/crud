@@ -11,6 +11,8 @@ import util.MyArray;
 
 public class LZW
 {
+	private static final byte[] ZERO = new byte[] { (byte) 0, (byte) 0 };
+	
 	private byte[] currentBytes;
 	private ByteBuffer shortBuffer;
 	private ByteArrayInputStream inputStream;
@@ -101,12 +103,12 @@ public class LZW
 	
 	private int decodeAndWrite(byte[] currentBytes)
 	{
-		shortBuffer.put(currentBytes);
-		currentIndexOnDictionary = shortBuffer.getShort();
+		shortBuffer.put(currentBytes); // escreve os bytes do índice da palavra no buffer
+		currentIndexOnDictionary = shortBuffer.getShort(); // obtém o índice da palavra no dicionário
 		
-		byte[] data = dictionary.get(currentIndexOnDictionary);
+		byte[] data = dictionary.get(currentIndexOnDictionary); // obtém a palavra
 		
-		dictionary.add( Arrays )
+		dictionary.add( MyArray.concatArrays(data, ZERO) );
 		
 		int index = MyArray.first(dictionary, (it) -> Arrays.equals(currentBytes, it));
 		

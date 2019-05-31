@@ -46,7 +46,7 @@ public class MyArray
 		return index;
 	}
 	
-	public byte[] concatArrays(byte[] array1, byte[] array2)
+	public static byte[] concatArrays(byte[] array1, byte[] array2)
 	{
 		byte[] newArray = new byte[array1.length + array2.length];
 		
