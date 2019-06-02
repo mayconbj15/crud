@@ -25,9 +25,23 @@ public class MyArray
 	
 	public static boolean contains(int element, int[] array)
 	{
-		return array != null && indexOf(element, array) != -1;
+		return indexOf(element, array) != -1;
 	}
 
+	/**
+	 * Procura pelo primeiro item em {@code array} que
+	 * satisfazer uma certa condição.
+	 * 
+	 * @param array Lista de itens.
+	 * @param comparator Método que receberá cada item
+	 * de {@code array} e retornará um booleano dizendo
+	 * se esse item satisfaz a condição ou não.
+	 * 
+	 * @return -1 caso nenhum elemento satisfaça a condição.
+	 * Caso contrário, o índice do primeiro elemento que
+	 * satisfazer a condição.
+	 */
+	
 	public static <T> int first(ArrayList<T> array, Function<T, Boolean> comparator)
 	{
 		int size = array.size();
@@ -51,7 +65,7 @@ public class MyArray
 		byte[] newArray = new byte[array1.length + array2.length];
 		
 		System.arraycopy(array1, 0, newArray, 0, array1.length);
-		System.arraycopy(array2, 0, newArray, 0, array2.length);
+		System.arraycopy(array2, 0, newArray, array1.length, array2.length);
 		
 		return newArray;
 	}

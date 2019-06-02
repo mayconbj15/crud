@@ -4,14 +4,12 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import compression.LZW;
 import crud.Arquivo;
 import crud.hash_dinamica.implementacoes.HashDinamicaIntInt;
 import crud.hash_dinamica.implementacoes.HashDinamicaStringInt;
 import entidades.*;
 import serializaveis.SerializavelAbstract;
 import util.Files;
-import util.IO;
 
 public class Main {
 	
@@ -253,18 +251,17 @@ public class Main {
 	}
 	
 	public static void main(String[] args) {
-		new LZW().encode(new byte[] { (byte) 5, (byte) 5, (byte) 5, (byte) 5, (byte) 5, (byte) 5 });
-//		deleteFiles();
-//		createFolders();
-//		startVariables();
-//		
-//		// email da conta padrao para funcionario: F@F
-//		// senha da conta padrao: f
-//		
-//		// email da conta padrao para funcionario: C@C
-//		// senha da conta padrao: c
-//		Crud.menu();
-//		
-//		closeFiles();
+		deleteFiles();
+		createFolders();
+		startVariables();
+		
+		// email da conta padrao para funcionario: F@F
+		// senha da conta padrao: f
+		
+		// email da conta padrao para funcionario: C@C
+		// senha da conta padrao: c
+		Crud.menu();
+		
+		closeFiles();
 	}
 }
