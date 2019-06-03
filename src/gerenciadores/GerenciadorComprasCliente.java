@@ -123,7 +123,7 @@ public class GerenciadorComprasCliente
 				int continuaCompra = 0;
 				
 				do {
-					IO.println("Estoque disponível");
+					IO.println("Estoque disponível\n");
 					Main.crudProduto.listar();
 					
 					// pergunta qual o produto e qual a quantidade deve ser comprada,

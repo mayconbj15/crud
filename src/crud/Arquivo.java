@@ -4,9 +4,11 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+import compression.LZW;
 import crud.hash_dinamica.implementacoes.HashDinamicaIntLong;
 import entidades.Entidade;
 import serializaveis.SerializavelAbstract;
+import seguranca.Criptografia;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -27,10 +29,10 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	private int lastID;
 	RandomAccessFile accessFile;
 	private Constructor<T> constructor;
+	Criptografia criptografia;
+	LZW compressor;
 	
 	public HashDinamicaIntLong indice;
-	//private final int TREE_ORDER = 21;
-	//private String indexFileName;
 	
 	/**
 	 * Cria um objeto que gerencia uma base de dados de objetos
@@ -48,11 +50,14 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 		Constructor<T> constructor,
 		String databaseFileName,
 		String indexesDirFileName,
-		String indexesFileName)
+		String indexesFileName, byte[] criptKey)
 	{
 		this.name = databaseFileName;
 		this.lastID = -1;
 		this.constructor = constructor;
+		
+		this.criptografia = new Criptografia(criptKey);
+		this.compressor = new LZW();
 		
 		try
 		{
@@ -192,6 +197,22 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 		return indice.pesquisarDadoPelaChave(entityId) != Long.MIN_VALUE;
 	}
 	
+	private byte[] comprimirECriptografar(byte[] register)
+	{
+		byte[] comprimido = compressor.compress(register);
+		byte[] criptografado = criptografia.cifrar(comprimido);
+		
+		return criptografado;
+	}
+	
+	private byte[] descriptografarEDescomprimir(byte[] register)
+	{
+		byte[] descriptografado = criptografia.decifrar(register);
+		byte[] descomprimido = compressor.decompress(descriptografado);
+		
+		return descomprimido;
+	}
+	
 	/**
 	 * Insere uma entidade na base de dados.
 	 * 
@@ -221,6 +242,7 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 				entity.setId(id);
 
 				byte[] byteArray = entity.obterBytes();
+				byte[] processedRegister = comprimirECriptografar(byteArray);
 
 				// go to final of file
 				accessFile.seek(accessFile.length());
@@ -230,8 +252,8 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 				indice.inserir(entity.getId(), accessFile.getFilePointer());
 
 				accessFile.writeByte(' '); // insere a lapide
-				accessFile.writeInt(byteArray.length); // insere o tamanho da entidade
-				accessFile.write(byteArray); // insere a entidade
+				accessFile.writeInt(processedRegister.length); // insere o tamanho da entidade criptografada
+				accessFile.write(processedRegister); // insere a entidade criptografada
 				
 				accessFile.close();
 				
@@ -339,7 +361,8 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 				try
 				{
 					entity = constructor.newInstance();
-					entity.lerBytes(byteArray);
+					byte[] processedRegister = descriptografarEDescomprimir(byteArray);
+					entity.lerBytes(processedRegister);
 				}
 				
 				catch (InstantiationException |
@@ -452,11 +475,16 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 				file.seek(entityAddress);
 				file.writeByte('*');
 				
-				// pula o número que diz o tamanho da entidade
-				file.skipBytes(Integer.BYTES);
+				int entitySize = file.readInt();
+				
+				byte[] byteArray = new byte[entitySize];
+				
+				file.read(byteArray);
+				
+				byte[] processedRegister = descriptografarEDescomprimir(byteArray);
 				
 				deletedObject = constructor.newInstance();
-				deletedObject.lerObjeto(file);
+				deletedObject.lerBytes(processedRegister);
 				
 				indice.excluir(id);
 				
@@ -548,6 +576,9 @@ public class Arquivo<T extends SerializavelAbstract & Entidade> {
 	// estrutura da base de dados
 	// [ ultimo_id_usado (int), registros... ]
 	//
-	// estrutura dos registros
+	// estrutura de um registro
 	// [ lápide (byte), tamanho_da_entidade (int), entidade ]
+	// 
+	// os registros agora são compactados e criptografados,
+	// então essa estrutura fica diferente.
 }
