@@ -348,7 +348,7 @@ public class CrudProduto extends CrudAbstract<Produto>
 		ArrayList<Integer> clientes = new ArrayList<Integer>();
 		
 		for(Produto produto : produtos) {
-			IO.println(produto);
+			IO.println(produto + "\n");
 		}
 		
 		int produto;

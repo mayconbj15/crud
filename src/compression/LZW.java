@@ -7,29 +7,13 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import util.IO;
 import util.MyArray;
 
 public class LZW
 {
 	private static final byte[] ZERO = new byte[] { (byte) 0 };
-
-	private static byte[] currentData;
-	private static byte[] lastData;
-	private static byte[] currentBytes;
-	private static ByteBuffer shortBuffer = ByteBuffer.allocate(Short.BYTES);
-	{
-		// cria uma marca de torno para a função reset()
-		shortBuffer.mark();
-	}
-	private static ByteArrayInputStream inputStream;
-	private static ByteArrayOutputStream currentWord;
-	private static ByteArrayOutputStream outputStream;
-	private static int numberOfBytesRead;
-	private static int lastIndexOnDictionary;
-	private static int currentIndexOnDictionary;
 	
-	private static final ArrayList<byte[]> dictionary = new ArrayList<byte[]>();
+	private final ArrayList<byte[]> dictionary = new ArrayList<byte[]>();
 	{
 		// muito cuidado com a condição de parada do for,
 		// o Java não tem tipo unsigned
@@ -40,6 +24,21 @@ public class LZW
 		
 		dictionary.add( new byte[] { (byte) -1 } );
 	}
+
+	private byte[] currentData;
+	private byte[] lastData;
+	private byte[] currentBytes;
+	private ByteBuffer shortBuffer = ByteBuffer.allocate(Short.BYTES);
+	{
+		// cria uma marca de torno para a função reset()
+		shortBuffer.mark();
+	}
+	private ByteArrayInputStream inputStream;
+	private ByteArrayOutputStream currentWord;
+	private ByteArrayOutputStream outputStream;
+	private int numberOfBytesRead;
+	private int lastIndexOnDictionary;
+	private int currentIndexOnDictionary;
 	
 	private void clearDictionary()
 	{
@@ -109,6 +108,7 @@ public class LZW
 		currentWord = new ByteArrayOutputStream();
 		inputStream = new ByteArrayInputStream(array);
 		currentData = new byte[2];
+		shortBuffer.reset();
 		int currentByte = inputStream.read();
 		
 		for (int i = 0; i < array.length; i++)
