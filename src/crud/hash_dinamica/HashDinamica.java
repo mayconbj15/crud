@@ -394,7 +394,7 @@ public class HashDinamica<TIPO_DAS_CHAVES extends SerializavelAbstract, TIPO_DOS
 	 * que irá separar cada campo registro. (lápide, chave, dado).
 	 * @param mostrarApenasAsChavesDosRegistros Se {@code true},
 	 * mostra apenas as chaves dos registros do bucket ignorando
-	 * os valores ligados às chaves e as lápides.
+	 * os valores ligados às chaves e às lápides.
 	 * @param mostrarDiretorio Se {@code true}, mostra o diretório
 	 * da hash dinâmica.
 	 * 
@@ -431,7 +431,7 @@ public class HashDinamica<TIPO_DAS_CHAVES extends SerializavelAbstract, TIPO_DOS
 	 * 
 	 * @param mostrarApenasAsChavesDosRegistros Se {@code true},
 	 * mostra apenas as chaves dos registros do bucket ignorando
-	 * os valores ligados às chaves e as lápides.
+	 * os valores ligados às chaves e às lápides.
 	 * @param mostrarDiretorio Se {@code true}, mostra o diretório
 	 * da hash dinâmica.
 	 * 
@@ -442,7 +442,7 @@ public class HashDinamica<TIPO_DAS_CHAVES extends SerializavelAbstract, TIPO_DOS
 	public String toString(boolean mostrarApenasAsChavesDosRegistros, boolean mostrarDiretorio)
 	{
 		return toString(
-			"\n", ", ", ", ",
+			"\n", "\t, ", ", ",
 			mostrarApenasAsChavesDosRegistros,
 			mostrarDiretorio);
 	}
@@ -453,7 +453,7 @@ public class HashDinamica<TIPO_DAS_CHAVES extends SerializavelAbstract, TIPO_DOS
 	 * 
 	 * @param mostrarApenasAsChavesDosRegistros Se {@code true},
 	 * mostra apenas as chaves dos registros do bucket ignorando
-	 * os valores ligados às chaves e as lápides.
+	 * os valores ligados às chaves e às lápides.
 	 * 
 	 * @return uma representação visual da hash dinâmica mostrando
 	 * o diretório e os buckets dela.
