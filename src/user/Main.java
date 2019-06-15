@@ -6,8 +6,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
 
 import crud.Arquivo;
-import crud.hash_dinamica.implementacoes.HashDinamicaIntInt;
-import crud.hash_dinamica.implementacoes.HashDinamicaStringInt;
+import crud.hashs.HashDinamicaIntInt;
+import crud.hashs.HashDinamicaStringInt;
 import entidades.*;
 import serializaveis.SerializavelAbstract;
 import util.Files;

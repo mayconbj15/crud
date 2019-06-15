@@ -22,12 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package crud.hash_dinamica.implementacoes;
+package crud.hashs;
 
 import java.util.ArrayList;
 import java.util.function.Function;
 
-import crud.hash_dinamica.HashDinamica;
+import crud.hash.HashDinamica;
 import serializaveis.IntSerializavel;
 import serializaveis.StringSerializavel;
 

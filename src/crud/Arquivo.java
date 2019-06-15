@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.function.Function;
 
 import compression.LZW;
-import crud.hash_dinamica.implementacoes.HashDinamicaIntLong;
+import crud.hashs.HashDinamicaIntLong;
 import entidades.Entidade;
 import serializaveis.SerializavelAbstract;
 import seguranca.Criptografia;

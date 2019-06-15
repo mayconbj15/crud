@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package crud.hash_dinamica;
+package crud.hash;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
