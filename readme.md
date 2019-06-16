@@ -11,18 +11,20 @@ O arquivo .jar disponibilizado no repositório é funcional e pode ser testado. Ca
 
 Relacionamento entre as entidades no banco de dados:
 
-    CATEGORIA       ->	PRODUTO         (1:N)
-    
-    PRODUTO         ->	CATEGORIA       (1:1)
-    
-    PRODUTO         ->	ITEM_COMPRADO   (1:N)
-    
-    ITEM_COMPRADO   ->	PRODUTO         (1:1)
-    
-    COMPRA          ->	ITEM_COMPRADO   (1:N)
-    
-    ITEM_COMPRADO   ->	COMPRA          (1:1)
-    
-    CLIENTE         ->	COMPRA          (1:N)
-    
-    COMPRA          ->	CLIENTE         (1:1)
+```
+CATEGORIA       ->	PRODUTO         (1:N)
+
+PRODUTO         ->	CATEGORIA       (1:1)
+
+PRODUTO         ->	ITEM_COMPRADO   (1:N)
+
+ITEM_COMPRADO   ->	PRODUTO         (1:1)
+
+COMPRA          ->	ITEM_COMPRADO   (1:N)
+
+ITEM_COMPRADO   ->	COMPRA          (1:1)
+
+CLIENTE         ->	COMPRA          (1:N)
+
+COMPRA          ->	CLIENTE         (1:1)
+```
